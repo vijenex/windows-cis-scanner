@@ -1,0 +1,99 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please describe your idea in detail.
+        
+        **⚠️ IMPORTANT**: This is proprietary software. We welcome feature suggestions but code modifications are not permitted.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have completed these steps
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have read the README and documentation
+          required: true
+        - label: I understand this is proprietary software and I'm suggesting a feature, not offering code
+          required: true
+
+  - type: textarea
+    id: feature-summary
+    attributes:
+      label: Feature Summary
+      description: Brief description of the feature you'd like to see
+      placeholder: Summarize your feature request in 1-2 sentences
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case / Problem
+      description: What problem would this feature solve? What's your use case?
+      placeholder: Describe the problem or need this feature would address
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: Describe your ideal solution in detail
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Feature Category
+      description: What area does this feature relate to?
+      options:
+        - Reporting (HTML/CSV output)
+        - New CIS Controls
+        - Performance Improvements
+        - User Interface/Experience
+        - Documentation
+        - Command Line Options
+        - Error Handling
+        - Security Enhancements
+        - Other
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would be helpful
+        - High - Important for my use case
+        - Critical - Blocking my usage
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other solutions or workarounds have you considered?
+      placeholder: Describe any alternative approaches you've thought of
+
+  - type: textarea
+    id: business-value
+    attributes:
+      label: Business Value
+      description: What value would this feature provide to users?
+      placeholder: Explain why this feature would be valuable to the community
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or examples
+      placeholder: Add any other context, mockups, or examples here

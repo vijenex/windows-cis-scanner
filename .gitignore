@@ -1,0 +1,54 @@
+# Windows CIS Audit Tool - Git Ignore
+
+# Generated Reports
+*/reports/*.html
+*/reports/*.csv
+*/reports/*.log
+
+# Temporary Files
+*.tmp
+*.temp
+*.inf
+secpol-*.inf
+
+# PowerShell Execution Logs
+*.log
+*.out
+
+# System Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup Files
+*.bak
+*.backup
+*~
+
+# Personal Configuration
+config.local.*
+settings.local.*
+
+# Large Documentation (users should download separately)
+*.pdf
+*.docx
+*.doc
+
+# Sensitive Information
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.*
+secrets.*
+
+# Test Files
+test-*
+debug-*
+temp-*

@@ -1,0 +1,130 @@
+name: Bug Report
+description: Report a bug or issue with the Windows CIS Audit Tool
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out this form completely.
+        
+        **⚠️ IMPORTANT**: This is proprietary software. Code modifications are not permitted.
+        
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have completed these steps
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have read the README and documentation
+          required: true
+        - label: I understand this is proprietary software and code modifications are not permitted
+          required: true
+
+  - type: input
+    id: windows-version
+    attributes:
+      label: Windows Version
+      description: What version of Windows Server are you running?
+      placeholder: "e.g., Windows Server 2025 Datacenter"
+    validations:
+      required: true
+
+  - type: input
+    id: build-number
+    attributes:
+      label: Build Number
+      description: What is the Windows build number?
+      placeholder: "e.g., 10.0.26100"
+    validations:
+      required: true
+
+  - type: input
+    id: powershell-version
+    attributes:
+      label: PowerShell Version
+      description: What PowerShell version are you using?
+      placeholder: "e.g., 5.1.26100.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the issue you're experiencing
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Run command '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: Describe what should have happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: Describe what actually happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-output
+    attributes:
+      label: Error Output
+      description: Full error messages or output
+      placeholder: Paste complete error messages here
+      render: shell
+
+  - type: textarea
+    id: command-used
+    attributes:
+      label: Command Used
+      description: The exact PowerShell command you ran
+      placeholder: "powershell -NoProfile -ExecutionPolicy Bypass -File ..."
+      render: shell
+
+  - type: dropdown
+    id: milestone-files
+    attributes:
+      label: Milestone Files Involved
+      description: Which milestone files were you testing?
+      multiple: true
+      options:
+        - All milestones
+        - milestone-1.ps1 (Account Policies)
+        - milestone-2.ps1 (Local Policies)
+        - milestone-5.ps1 (System Services)
+        - milestone-9.ps1 (Windows Defender Firewall)
+        - milestone-17.ps1 (Advanced Audit Policy)
+        - milestone-18.ps1 (Administrative Templates Computer)
+        - milestone-19.ps1 (Administrative Templates User)
+        - Other milestone files
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem
+      placeholder: Add any other context, screenshots, or information here
