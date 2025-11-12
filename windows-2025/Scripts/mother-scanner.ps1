@@ -361,6 +361,22 @@ $($rows -join "`n")
 Assert-Admin
 New-Dir $OutputDir
 
+# Display Verityx CLI signature
+Write-Host "
+" -ForegroundColor White
+Write-Host "██╗   ██╗███████╗██████╗ ██╗████████╗██╗   ██╗██╗  ██╗" -ForegroundColor Cyan
+Write-Host "██║   ██║██╔════╝██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝╚██╗██╔╝" -ForegroundColor Cyan
+Write-Host "██║   ██║█████╗  ██████╔╝██║   ██║    ╚████╔╝  ╚███╔╝ " -ForegroundColor Cyan
+Write-Host "╚██╗ ██╔╝██╔══╝  ██╔══██╗██║   ██║     ╚██╔╝   ██╔██╗ " -ForegroundColor Cyan
+Write-Host " ╚████╔╝ ███████╗██║  ██║██║   ██║      ██║   ██╔╝ ██╗" -ForegroundColor Cyan
+Write-Host "  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝" -ForegroundColor Cyan
+Write-Host "
+           Windows Server 2025 CIS Compliance Scanner" -ForegroundColor White
+Write-Host "           Powered by Verityx Security Platform" -ForegroundColor Yellow
+Write-Host "           https://github.com/satishk8s/Windows-Server-CIS-Audit" -ForegroundColor Gray
+Write-Host "
+" -ForegroundColor White
+
 $os=Get-OSInfo
 Write-Host "Scanning host: $($os.Caption) ($($os.Version) build $($os.BuildNumber))" -ForegroundColor Cyan
 
