@@ -371,7 +371,7 @@ Write-Host "╚██╗ ██╔╝██╔══╝  ██╔══██�
 Write-Host " ╚████╔╝ ███████╗██║  ██║██║   ██║      ██║   ██╔╝ ██╗" -ForegroundColor Cyan
 Write-Host "  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝" -ForegroundColor Cyan
 Write-Host "
-           Windows Server 2025 CIS Compliance Scanner" -ForegroundColor White
+      Windows Server 2025 CIS Compliance Scanner (Standalone/Workgroup)" -ForegroundColor White
 Write-Host "           Powered by Verityx Security Platform" -ForegroundColor Yellow
 Write-Host "           https://github.com/satishk8s/Windows-Server-CIS-Audit" -ForegroundColor Gray
 Write-Host "
