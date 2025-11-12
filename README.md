@@ -1,3 +1,15 @@
+```
+██╗   ██╗███████╗██████╗ ██╗████████╗██╗   ██╗██╗  ██╗
+██║   ██║██╔════╝██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝╚██╗██╔╝
+██║   ██║█████╗  ██████╔╝██║   ██║    ╚████╔╝  ╚███╔╝ 
+╚██╗ ██╔╝██╔══╝  ██╔══██╗██║   ██║     ╚██╔╝   ██╔██╗ 
+ ╚████╔╝ ███████╗██║  ██║██║   ██║      ██║   ██╔╝ ██╗
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝
+
+                    Windows CIS Audit Tool
+           Powered by Verityx Security Platform
+```
+
 # Windows CIS Audit Tool
 
 A comprehensive PowerShell-based security auditing tool for Windows Server systems based on Center for Internet Security (CIS) benchmarks.
