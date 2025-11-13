@@ -140,16 +140,16 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 - **Compliance tracking** over time
 
 ### 📑 PDF Report (`cis-report.pdf`)
+- **Browser-based PDF generation** (no additional software needed)
+- **Print-friendly HTML** with one-click PDF creation
 - **Professional format** for executive reporting
 - **Complete system information** and audit results
-- **Print-ready** compliance documentation
-- **Requires**: wkhtmltopdf (auto-installed instructions provided)
 
 ### 📝 Word Document (`cis-report.docx`)
-- **Editable format** for team collaboration
+- **RTF format** - opens in Word, LibreOffice, or any word processor
+- **No Office installation required**
 - **Structured tables** with all audit findings
 - **System details** for audit trail
-- **Requires**: Microsoft Word installed
 
 ### 🎯 Output Format Options
 - `HTML,CSV` (default)
