@@ -21,6 +21,8 @@ This repository contains open source software under MIT License. **CONTRIBUTIONS
 
 This platform provides automated security compliance auditing for Windows systems against official CIS (Center for Internet Security) benchmarks. It performs comprehensive security assessments without making any system changes - **audit-only mode**.
 
+![Vijenex Security Platform](docs/images/Gemini_Generated_Image_gmppzdgmppzdgmpp.jpeg)
+
 ### ✨ Key Features
 
 - **🔍 Multi-Version Support**: Dedicated modules for different Windows versions (2025, 2022, 2019, etc.)
@@ -126,6 +128,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 ## 📊 Report Output
 
 The tool generates comprehensive reports in multiple formats with detailed system information:
+
+![Sample Report Output](docs/images/Screenshot%202025-11-13%20at%203.03.35PM.png)
 
 ### 📄 HTML Report (`cis-report.html`)
 - **System Information**: OS version, IP address, machine ID, scan date
