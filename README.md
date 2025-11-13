@@ -76,9 +76,30 @@ This platform provides automated security compliance auditing for Windows system
 - **Administrator privileges** (required for security policy access)
 
 ### Installation
-1. **Clone or download** the repository
-2. **Extract** to your preferred location (if downloaded as ZIP)
-3. **Navigate** to the `windows-2025` directory
+
+#### System Installation (Recommended)
+
+**Latest Release (Stable):**
+```powershell
+# Download latest release
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.0.zip" -OutFile "vijenex-windows-cis-v1.0.0.zip"
+Expand-Archive -Path "vijenex-windows-cis-v1.0.0.zip" -DestinationPath "C:\Tools\"
+cd "C:\Tools\windows-cis-scanner-1.0.0\windows-2025"
+```
+
+**Development Version:**
+```powershell
+# Clone the repository
+git clone https://github.com/vijenex/windows-cis-scanner.git
+cd windows-cis-scanner\windows-2025
+```
+
+**Specific Version:**
+```powershell
+# Install specific version (replace v1.0.0 with desired version)
+git clone --branch v1.0.0 https://github.com/vijenex/windows-cis-scanner.git
+cd windows-cis-scanner\windows-2025
+```
 
 ### Usage
 
@@ -296,12 +317,30 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 
 ---
 
-## 🏷️ Version Information
+## 🏷️ Releases
 
-- **Platform Version**: 1.0.0
-- **Supported OS**: Windows Server 2025 (more versions coming)
+### Current Stable Release
+- **v1.0.0** - Windows Server 2025 CIS Scanner
+  - Complete CIS benchmark implementation (300+ controls)
+  - PowerShell-based automated auditing
+  - Multiple report formats (HTML, CSV, PDF, Word)
+  - Enterprise-grade security assessment
+  - Zero false positive design
+
+### Download Options
+```powershell
+# Latest stable release
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.0.zip" -OutFile "vijenex-windows-cis-v1.0.0.zip"
+
+# All releases
+# Visit: https://github.com/vijenex/windows-cis-scanner/releases
+```
+
+### Version Information
+- **Current Version**: v1.0.0
+- **Supported OS**: Windows Server 2025
 - **CIS Compliance**: Based on official CIS benchmark documentation
-- **Last Updated**: November 2025
+- **Release Date**: November 2024
 
 ---
 
