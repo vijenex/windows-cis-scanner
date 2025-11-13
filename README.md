@@ -146,12 +146,12 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 - **Complete system information** and audit results
 - **Usage**: Open in browser → Click "Print to PDF" button → Save as PDF
 
-### 📝 Word Document (`cis-report.rtf`)
-- **RTF format** - opens in Word, LibreOffice, or any word processor
-- **No Office installation required**
+### 📝 Word Document (`cis-report.docx`)
+- **Native DOCX format** - professional Word document
+- **Requires Microsoft Word** for generation
 - **Structured tables** with all audit findings
 - **System details** for audit trail
-- **Usage**: Double-click to open in default word processor
+- **Usage**: Opens directly in Microsoft Word
 
 ### 🎯 Output Format Options
 - `HTML,CSV` (default)

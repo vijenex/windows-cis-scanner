@@ -338,7 +338,7 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   $csv = Join-Path $OutDir 'cis-results.csv'
   $html = Join-Path $OutDir 'cis-report.html'
   $pdf = Join-Path $OutDir 'cis-report-pdf.html'
-  $word = Join-Path $OutDir 'cis-report.rtf'
+  $word = Join-Path $OutDir 'cis-report.docx'
   $outputs = @{}
   
   # Copy CIS documentation if available
@@ -470,59 +470,83 @@ $($rows -join "`n")
     Write-Host "PDF:  $pdf (Open in browser, click Print to PDF button)" -ForegroundColor Green
   }
   
-  # Generate Word-compatible RTF document if requested
+  # Generate Word DOCX document if requested
   if ($Formats -contains 'All' -or $Formats -contains 'Word') {
     try {
-      # Generate RTF (Rich Text Format) - opens in Word without requiring Office
-      $rtfContent = @"
-{\rtf1\ansi\deff0 {\fonttbl {\f0 Times New Roman;}{\f1 Arial;}}
-{\colortbl;\red0\green0\blue0;\red255\green0\blue0;\red0\green128\blue0;}
-\f1\fs24\b CIS Compliance Audit Report\b0\par
-\par
-\fs20\b System Information\b0\par
-\fs18 Operating System: $($SystemInfo.Caption)\par
-Version: $($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))\par
-Computer Name: $($SystemInfo.ComputerName)\par
-Machine ID: $($SystemInfo.MachineID)\par
-IP Address: $($SystemInfo.IPAddress)\par
-Scan Date: $($SystemInfo.ScanDate)\par
-\par
-\fs20\b Summary\b0\par
-\fs18 Total Checks: $total\par
-Passed: \cf3 $passed\cf1\par
-Failed: \cf2 $failed\cf1\par
-Success Rate: $([math]::Round(($passed/$total)*100,1))%\par
-\par
-\fs20\b Detailed Results\b0\par
-\fs16
-{\trowd\trgaph108\trleft-108
-\cellx1440\cellx3600\cellx4680\cellx5760\cellx8640\cellx11520\cellx14400
-\b ID\cell Control\cell Section\cell Status\cell Description\cell Impact\cell Remediation\cell\row}
-"@
+      # Try to use Word COM object for native DOCX
+      $wordApp = New-Object -ComObject Word.Application -ErrorAction Stop
+      $wordApp.Visible = $false
+      $doc = $wordApp.Documents.Add()
       
-      # Add data rows
-      foreach ($result in $Results) {
-        $status = if($result.Passed){"Pass"}{"Fail"}
-        $desc = if($result.Description){($result.Description -replace '\\','\\\\' -replace '{','\{' -replace '}','\}').Substring(0, [Math]::Min(100, $result.Description.Length)) + "..."}else{"N/A"}
-        $impact = if($result.Impact){($result.Impact -replace '\\','\\\\' -replace '{','\{' -replace '}','\}').Substring(0, [Math]::Min(100, $result.Impact.Length)) + "..."}else{"N/A"}
-        $remediation = ($result.Remediation -replace '\\','\\\\' -replace '{','\{' -replace '}','\}').Substring(0, [Math]::Min(150, $result.Remediation.Length)) + "..."
-        
-        $rtfContent += "$($result.Id)\t$($result.Title)\t$($result.Section)\t$status\t$desc\t$impact\t$remediation\par`n"
+      # Add title
+      $selection = $wordApp.Selection
+      $selection.Font.Size = 16
+      $selection.Font.Bold = $true
+      $selection.TypeText("CIS Compliance Audit Report`n`n")
+      
+      # Add system information
+      $selection.Font.Size = 14
+      $selection.Font.Bold = $true
+      $selection.TypeText("System Information`n")
+      $selection.Font.Size = 11
+      $selection.Font.Bold = $false
+      $selection.TypeText("Operating System: $($SystemInfo.Caption)`n")
+      $selection.TypeText("Version: $($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))`n")
+      $selection.TypeText("Computer Name: $($SystemInfo.ComputerName)`n")
+      $selection.TypeText("Machine ID: $($SystemInfo.MachineID)`n")
+      $selection.TypeText("IP Address: $($SystemInfo.IPAddress)`n")
+      $selection.TypeText("Scan Date: $($SystemInfo.ScanDate)`n`n")
+      
+      # Add summary
+      $selection.Font.Size = 14
+      $selection.Font.Bold = $true
+      $selection.TypeText("Summary`n")
+      $selection.Font.Size = 11
+      $selection.Font.Bold = $false
+      $selection.TypeText("Total Checks: $total`n")
+      $selection.TypeText("Passed: $passed`n")
+      $selection.TypeText("Failed: $failed`n")
+      $selection.TypeText("Success Rate: $([math]::Round(($passed/$total)*100,1))%`n`n")
+      
+      # Add table
+      $selection.Font.Size = 14
+      $selection.Font.Bold = $true
+      $selection.TypeText("Detailed Results`n")
+      
+      $table = $doc.Tables.Add($selection.Range, $Results.Count + 1, 7)
+      $table.Borders.Enable = $true
+      
+      # Headers
+      $table.Cell(1,1).Range.Text = "ID"
+      $table.Cell(1,2).Range.Text = "Control"
+      $table.Cell(1,3).Range.Text = "Section"
+      $table.Cell(1,4).Range.Text = "Status"
+      $table.Cell(1,5).Range.Text = "Description"
+      $table.Cell(1,6).Range.Text = "Impact"
+      $table.Cell(1,7).Range.Text = "Remediation"
+      
+      # Data rows
+      for ($i = 0; $i -lt $Results.Count; $i++) {
+        $row = $i + 2
+        $result = $Results[$i]
+        $table.Cell($row,1).Range.Text = $result.Id
+        $table.Cell($row,2).Range.Text = $result.Title
+        $table.Cell($row,3).Range.Text = $result.Section
+        $table.Cell($row,4).Range.Text = if($result.Passed){"Pass"}else{"Fail"}
+        $table.Cell($row,5).Range.Text = if($result.Description){$result.Description}else{"N/A"}
+        $table.Cell($row,6).Range.Text = if($result.Impact){$result.Impact}else{"N/A"}
+        $table.Cell($row,7).Range.Text = $result.Remediation
       }
       
-      $rtfContent += @"
-\par
-\par
-\fs14\i Audit-only scan; no changes made. Generated by Vijenex Security Platform.\par
-Report generated on $($SystemInfo.ScanDate) for $($SystemInfo.ComputerName)\i0
-}
-"@
+      $doc.SaveAs2($word)
+      $doc.Close()
+      $wordApp.Quit()
+      [System.Runtime.Interopservices.Marshal]::ReleaseComObject($wordApp) | Out-Null
       
-      Set-Content -Path $word -Value $rtfContent -Encoding ASCII
       $outputs['Word'] = $word
-      Write-Host "Word: $word (RTF format - opens in Word/LibreOffice)" -ForegroundColor Green
+      Write-Host "Word: $word (DOCX format)" -ForegroundColor Green
     } catch {
-      Write-Warning "Word document generation failed: $($_.Exception.Message)"
+      Write-Warning "Word DOCX generation failed: $($_.Exception.Message). Ensure Microsoft Word is installed."
     }
   }
   
