@@ -85,22 +85,31 @@ This platform provides automated security compliance auditing for Windows system
 # Navigate to your Windows version folder (e.g., windows-2025)
 cd windows-2025
 
-# Run comprehensive CIS audit
+# Run comprehensive CIS audit (HTML + CSV by default)
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1
+
+# Generate all formats (HTML, CSV, PDF, Word)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
 #### Advanced Options
 ```powershell
 # From within version-specific folder (e.g., windows-2025)
 
-# Scan specific milestones only
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Milestones @("milestone-1.ps1","milestone-2.ps1") -OutputDir .\reports
+# Generate only Word document
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputFormat Word -OutputDir .\reports
 
-# Include specific controls
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Include @("1.1.1","2.2.1") -OutputDir .\reports
+# Generate only PDF report
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputFormat PDF -OutputDir .\reports
 
-# Exclude specific controls  
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Exclude @("9.2.1","9.3.1") -OutputDir .\reports
+# Generate multiple formats
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputFormat HTML,PDF,Word -OutputDir .\reports
+
+# Scan specific milestones with Word output
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Milestones @("milestone-1.ps1","milestone-2.ps1") -OutputFormat Word -OutputDir .\reports
+
+# Include specific controls with all formats
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Include @("1.1.1","2.2.1") -OutputFormat All -OutputDir .\reports
 ```
 
 ### Parameters
@@ -109,15 +118,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 |-----------|-------------|---------|---------|
 | `-OutputDir` | Report output directory | `.\reports` | `-OutputDir "C:\Audit"` |
 | `-Profile` | CIS profile level | `Level1` | `-Profile Level2` |
+| `-OutputFormat` | Report formats to generate | `HTML,CSV` | `-OutputFormat All` or `-OutputFormat Word,PDF` |
 | `-Milestones` | Specific milestone files | All files | `-Milestones @("milestone-1.ps1")` |
 | `-Include` | Include specific control IDs | None | `-Include @("1.1.1","2.2.1")` |
 | `-Exclude` | Exclude specific control IDs | None | `-Exclude @("9.2.1")` |
 
 ## 📊 Report Output
 
-The tool generates comprehensive reports in multiple formats:
+The tool generates comprehensive reports in multiple formats with detailed system information:
 
 ### 📄 HTML Report (`cis-report.html`)
+- **System Information**: OS version, IP address, machine ID, scan date
 - **Visual dashboard** with pass/fail summary
 - **Detailed findings** with descriptions and impact
 - **Remediation guidance** for each control
@@ -127,6 +138,25 @@ The tool generates comprehensive reports in multiple formats:
 - **Structured data** for analysis and tracking
 - **Import-friendly** format for spreadsheet applications
 - **Compliance tracking** over time
+
+### 📑 PDF Report (`cis-report.pdf`)
+- **Professional format** for executive reporting
+- **Complete system information** and audit results
+- **Print-ready** compliance documentation
+- **Requires**: wkhtmltopdf (auto-installed instructions provided)
+
+### 📝 Word Document (`cis-report.docx`)
+- **Editable format** for team collaboration
+- **Structured tables** with all audit findings
+- **System details** for audit trail
+- **Requires**: Microsoft Word installed
+
+### 🎯 Output Format Options
+- `HTML,CSV` (default)
+- `All` (HTML + CSV + PDF + Word)
+- `Word` (Word document only)
+- `PDF` (PDF report only)
+- `HTML,PDF,Word` (custom combination)
 
 ### 📚 CIS Documentation
 - **Official CIS benchmark guide** included with reports
