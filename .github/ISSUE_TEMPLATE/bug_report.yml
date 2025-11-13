@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for taking the time to report a bug! Please fill out this form completely.
         
-        **⚠️ IMPORTANT**: This is proprietary software. Code modifications are not permitted.
+        **ℹ️ INFO**: This is open source software under MIT License. Contributions are welcome!
         
   - type: checkboxes
     id: terms
@@ -20,7 +20,7 @@ body:
           required: true
         - label: I have read the README and documentation
           required: true
-        - label: I understand this is proprietary software and code modifications are not permitted
+        - label: I understand this is open source software and I can contribute under MIT License
           required: true
 
   - type: input

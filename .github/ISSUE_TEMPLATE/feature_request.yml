@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for suggesting a new feature! Please describe your idea in detail.
         
-        **⚠️ IMPORTANT**: This is proprietary software. We welcome feature suggestions but code modifications are not permitted.
+        **ℹ️ INFO**: This is open source software under MIT License. We welcome both feature suggestions and code contributions!
 
   - type: checkboxes
     id: terms
@@ -20,7 +20,7 @@ body:
           required: true
         - label: I have read the README and documentation
           required: true
-        - label: I understand this is proprietary software and I'm suggesting a feature, not offering code
+        - label: I understand this is open source software and I can contribute features or code under MIT License
           required: true
 
   - type: textarea
