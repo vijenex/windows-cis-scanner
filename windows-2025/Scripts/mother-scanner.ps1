@@ -368,7 +368,7 @@ Write-Host "                        VIJENEX                              " -Fore
 Write-Host "      Windows Server 2025 CIS Compliance Scanner           " -ForegroundColor White
 Write-Host "                 (Standalone/Workgroup)                     " -ForegroundColor White
 Write-Host "           Powered by Vijenex Security Platform             " -ForegroundColor Yellow
-Write-Host "     https://github.com/satishk8s/Windows-Server-CIS-Audit  " -ForegroundColor Gray
+Write-Host "        https://github.com/vijenex/windows-cis-scanner       " -ForegroundColor Gray
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host "`n" -ForegroundColor White
 
