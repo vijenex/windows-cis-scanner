@@ -94,6 +94,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
+![Scanner in Action](docs/images/Screenshot%202025-11-13%20at%203.03.35PM.png)
+
 #### Advanced Options
 ```powershell
 # From within version-specific folder (e.g., windows-2025)
