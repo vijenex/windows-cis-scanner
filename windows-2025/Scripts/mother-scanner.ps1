@@ -36,8 +36,21 @@ function Get-OSInfo {
   $os=Get-CimInstance Win32_OperatingSystem
   $cs=Get-CimInstance Win32_ComputerSystem
   $net=Get-CimInstance Win32_NetworkAdapterConfiguration | Where-Object {$_.IPEnabled -eq $true} | Select-Object -First 1
+  
+  # Determine if system is domain-joined or standalone
+  $domainRole = $cs.DomainRole
+  $osType = switch ($domainRole) {
+    0 { "$($os.Caption) (Standalone Workstation)" }
+    1 { "$($os.Caption) (Member Workstation)" }
+    2 { "$($os.Caption) (Standalone Server)" }
+    3 { "$($os.Caption) (Member Server)" }
+    4 { "$($os.Caption) (Backup Domain Controller)" }
+    5 { "$($os.Caption) (Primary Domain Controller)" }
+    default { "$($os.Caption) (Unknown Role)" }
+  }
+  
   [pscustomobject]@{
-    Caption=$os.Caption
+    Caption=$osType
     Version=$os.Version
     BuildNumber=[int]$os.BuildNumber
     ComputerName=$env:COMPUTERNAME
@@ -353,7 +366,7 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   $failed=$total-$passed
   
   $rows = $Results | ForEach-Object {
-    $status = if($_.Passed){'✓ Pass'}else{'✗ Fail'}
+    $status = if($_.Passed){'&#x2713; Pass'}else{'&#x2717; Fail'}
     $cls = if($_.Passed){'pass-row'}else{'fail-row'}
     $desc = if($_.PSObject.Properties['Description'] -and $_.Description){$_.Description}elseif($_.Type -eq 'PrivRight'){"Expected: $($_.Expected) | Current: $($_.Current)"}else{'N/A'}
     $impact = if($_.PSObject.Properties['Impact'] -and $_.Impact){$_.Impact}elseif($_.Type -eq 'PrivRight'){'User Rights Assignment compliance check'}else{'N/A'}
@@ -420,7 +433,7 @@ function printToPDF() {
 </script>
 </head><body>
 <div class="no-print">
-<button class="print-btn" onclick="printToPDF()">🖨️ Print to PDF (Ctrl+P)</button>
+<button class="print-btn" onclick="printToPDF()">&#x1F5A8; Print to PDF (Ctrl+P)</button>
 <p><strong>Instructions:</strong> Click the button above or press Ctrl+P, then select "Save as PDF" as your printer.</p>
 </div>
 <h1>CIS Compliance Audit Report</h1>
