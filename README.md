@@ -1,34 +1,35 @@
 ```
-██╗   ██╗███████╗██████╗ ██╗████████╗██╗   ██╗██╗  ██╗
-██║   ██║██╔════╝██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝╚██╗██╔╝
-██║   ██║█████╗  ██████╔╝██║   ██║    ╚████╔╝  ╚███╔╝ 
-╚██╗ ██╔╝██╔══╝  ██╔══██╗██║   ██║     ╚██╔╝   ██╔██╗ 
- ╚████╔╝ ███████╗██║  ██║██║   ██║      ██║   ██╔╝ ██╗
-  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝
+██╗   ██╗██╗     ██╗███████╗███╗   ██╗███████╗██╗  ██╗
+██║   ██║██║     ██║██╔════╝████╗  ██║██╔════╝╚██╗██╔╝
+██║   ██║██║     ██║█████╗  ██╔██╗ ██║█████╗   ╚███╔╝ 
+╚██╗ ██╔╝██║██   ██║██╔══╝  ██║╚██╗██║██╔══╝   ██╔██╗ 
+ ╚████╔╝ ██║╚█████╔╝███████╗██║ ╚████║███████╗██╔╝ ██╗
+  ╚═══╝  ╚═╝ ╚════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
 
                     Windows CIS Audit Tool
-           Powered by Verityx Security Platform
+           Powered by Vijenex Security Platform
 ```
 
-# Windows CIS Audit Tool
+# Windows CIS Audit Platform
 
-A comprehensive PowerShell-based security auditing tool for Windows Server systems based on Center for Internet Security (CIS) benchmarks.
+A comprehensive PowerShell-based security auditing platform for Windows systems based on official Center for Internet Security (CIS) benchmarks. Supports multiple Windows versions with dedicated audit modules.
 
-## 🔒 **IMPORTANT: PROPRIETARY SOFTWARE**
-This repository contains proprietary software. **NO MODIFICATIONS OR REDISTRIBUTION ALLOWED**. See [LICENSE](LICENSE) for full terms.
+## 🔓 **OPEN SOURCE SOFTWARE**
+This repository contains open source software under MIT License. **CONTRIBUTIONS WELCOME**. See [LICENSE](LICENSE) for full terms.
 
 ## 📋 Overview
 
-This tool provides automated security compliance auditing for Windows Server systems against CIS (Center for Internet Security) benchmarks. It performs comprehensive security assessments without making any system changes - **audit-only mode**.
+This platform provides automated security compliance auditing for Windows systems against official CIS (Center for Internet Security) benchmarks. It performs comprehensive security assessments without making any system changes - **audit-only mode**.
 
 ### ✨ Key Features
 
-- **🔍 Comprehensive Coverage**: Covers all 19 sections of CIS Windows Server benchmarks
+- **🔍 Multi-Version Support**: Dedicated modules for different Windows versions (2025, 2022, 2019, etc.)
+- **📋 Official CIS Compliance**: Strictly follows official CIS benchmark documentation
 - **🛡️ Multiple Rule Types**: Supports SecEdit, AuditPolicy, User Rights Assignment, Registry, and Manual checks
 - **📊 Detailed Reporting**: Generates HTML and CSV reports with remediation guidance
 - **🚫 Audit-Only**: No system modifications - safe to run in production
 - **⚡ Automated**: Minimal user interaction required
-- **📖 Documentation**: Includes official CIS benchmark documentation
+- **📖 Documentation**: Includes official CIS benchmark documentation for each version
 
 ### 🎯 Supported Rule Types
 
@@ -56,34 +57,42 @@ This tool provides automated security compliance auditing for Windows Server sys
 │   │   ├── milestone-18.ps1      # Administrative Templates (Computer)
 │   │   ├── milestone-19.ps1      # Administrative Templates (User)
 │   │   └── ...                   # Additional milestones
+│   ├── documentation/            # Official CIS benchmark PDF
 │   └── reports/                  # Generated audit reports
-├── windows-2022/           # [Future] Windows Server 2022 tools
-├── windows-2019/           # [Future] Windows Server 2019 tools
-└── LICENSE                 # Proprietary license terms
+├── windows-2022/           # [Planned] Windows Server 2022 tools
+├── windows-2019/           # [Planned] Windows Server 2019 tools
+├── windows-11/             # [Planned] Windows 11 Enterprise tools
+├── windows-10/             # [Planned] Windows 10 Enterprise tools
+└── LICENSE                 # MIT License
 ```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Windows Server 2025 (target system)
+- Supported Windows system (see version-specific folders)
 - PowerShell 5.1 or later
 - **Administrator privileges** (required for security policy access)
 
 ### Installation
-1. **Download** the repository (DO NOT FORK - see license terms)
-2. **Extract** to your preferred location
+1. **Clone or download** the repository
+2. **Extract** to your preferred location (if downloaded as ZIP)
 3. **Navigate** to the `windows-2025` directory
 
 ### Usage
 
 #### Basic Scan (All Controls)
 ```powershell
+# Navigate to your Windows version folder (e.g., windows-2025)
+cd windows-2025
+
 # Run comprehensive CIS audit
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1
 ```
 
 #### Advanced Options
 ```powershell
+# From within version-specific folder (e.g., windows-2025)
+
 # Scan specific milestones only
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Milestones @("milestone-1.ps1","milestone-2.ps1") -OutputDir .\reports
 
@@ -126,7 +135,9 @@ The tool generates comprehensive reports in multiple formats:
 
 ## 🎯 CIS Coverage
 
-### Windows Server 2025 Standalone/Workgroup
+### Currently Supported Versions
+
+#### Windows Server 2025 Standalone/Workgroup
 
 | Section | Controls | Coverage |
 |---------|----------|----------|
@@ -138,7 +149,16 @@ The tool generates comprehensive reports in multiple formats:
 | **18** Administrative Templates (Computer) | 164+ | Registry-based security settings |
 | **19** Administrative Templates (User) | 12 | User configuration policies |
 
-**Total: 300+ Security Controls**
+**Total: 133 Security Controls**
+
+### Planned Versions
+
+- **Windows Server 2022** - Coming soon
+- **Windows Server 2019** - Coming soon  
+- **Windows 11 Enterprise** - Planned
+- **Windows 10 Enterprise** - Planned
+
+> All implementations strictly follow official CIS benchmark documentation for each respective version.
 
 ## 🔧 Understanding Results
 
@@ -240,13 +260,13 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 
 ## 🏷️ Version Information
 
-- **Current Version**: 1.0.0
-- **Target OS**: Windows Server 2025
-- **CIS Benchmark**: Windows Server 2025 Standalone/Workgroup
+- **Platform Version**: 1.0.0
+- **Supported OS**: Windows Server 2025 (more versions coming)
+- **CIS Compliance**: Based on official CIS benchmark documentation
 - **Last Updated**: November 2025
 
 ---
 
 **⭐ If this tool helps secure your environment, please star the repository!**
 
-**🔒 Remember: This is proprietary software - see LICENSE for usage terms**
+**🔓 Remember: This is open source software under MIT License - contributions welcome!**

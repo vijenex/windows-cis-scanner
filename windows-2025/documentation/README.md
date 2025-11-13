@@ -2,9 +2,10 @@
 
 This folder contains official CIS benchmark documentation for remediation guidance.
 
-## Included Documents
+## Required Documents (Not Included)
 
 - **CIS_Microsoft_Windows_Server_2025_Benchmark_v1.0.0.pdf** - Official CIS benchmark guide
+- **YOU MUST DOWNLOAD THIS SEPARATELY** from https://www.cisecurity.org/cis-benchmarks
 - Contains detailed remediation steps for each control
 - Provides rationale and impact analysis for security settings
 
@@ -16,6 +17,6 @@ This folder contains official CIS benchmark documentation for remediation guidan
 
 ## Note
 
-Place the official CIS benchmark PDF in this folder. The scanner will automatically copy it to the reports folder for easy access during remediation.
+Place the official CIS benchmark PDF in this folder. The Vijenex scanner will automatically copy it to the reports folder for easy access during remediation.
 
 Download the latest CIS benchmarks from: https://www.cisecurity.org/cis-benchmarks

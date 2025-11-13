@@ -1,8 +1,8 @@
 # Contributing Guidelines
 
-## 🚫 Code Modifications Not Permitted
+## 🤝 Welcome Contributors!
 
-This is **proprietary software**. Code modifications, forks, and redistributions are **NOT ALLOWED** under the license terms.
+This is **open source software** by Vijenex Security Platform. We welcome contributions, forks, and community involvement under the MIT License.
 
 ## 🐛 Issue Reporting
 
@@ -175,4 +175,4 @@ Your feedback helps make this tool better for everyone. We appreciate:
 
 ---
 
-**Remember**: This is proprietary software. Contributing ideas and feedback is welcome, but code modifications are not permitted under the license terms.
+**Remember**: This is open source software by Vijenex Security Platform under MIT License. We welcome code contributions, ideas, feedback, and community collaboration.

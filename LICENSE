@@ -1,36 +1,21 @@
-PROPRIETARY LICENSE
+MIT License
 
-Copyright (c) 2025 Windows CIS Audit Tool. All rights reserved.
+Copyright (c) 2025 Vijenex Security Platform
 
-TERMS AND CONDITIONS:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-1. OWNERSHIP: This software and all associated documentation files (the "Software") 
-   are proprietary and confidential information owned exclusively by the copyright holder.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-2. RESTRICTIONS: 
-   - NO modification, adaptation, or derivative works are permitted
-   - NO redistribution, sublicensing, or commercial use is allowed
-   - NO reverse engineering, decompilation, or disassembly is permitted
-   - Users may NOT fork, copy, or create derivative repositories
-
-3. PERMITTED USE:
-   - View and download for personal evaluation only
-   - Report issues through official channels
-   - Use for security auditing of your own Windows systems
-
-4. ISSUE REPORTING:
-   - Users may report bugs or request features through GitHub Issues
-   - All fixes and enhancements remain property of the copyright holder
-   - Contributors assign all rights to submitted content to the copyright holder
-
-5. NO WARRANTY:
-   - Software is provided "AS IS" without warranty of any kind
-   - Use at your own risk
-
-6. TERMINATION:
-   - This license terminates automatically upon violation of any terms
-   - Upon termination, you must destroy all copies of the Software
-
-For licensing inquiries or commercial use, contact the repository owner.
-
-VIOLATION OF THESE TERMS MAY RESULT IN LEGAL ACTION.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
