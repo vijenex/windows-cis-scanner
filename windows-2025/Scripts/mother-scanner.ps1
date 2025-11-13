@@ -341,7 +341,9 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   
   # Generate CSV if requested
   if ($Formats -contains 'All' -or $Formats -contains 'CSV') {
-    $Results | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
+    # Generate CSV with required columns including Passed status
+  $csvData = $Results | Select-Object Id, Title, Section, @{Name='Status';Expression={if($_.Passed){'Pass'}else{'Fail'}}}, Passed, Description, Impact, Remediation
+  $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
     $outputs['CSV'] = $csv
     Write-Host "CSV:  $csv" -ForegroundColor Green
   }
@@ -487,16 +489,12 @@ Success Rate: $([math]::Round(($passed/$total)*100,1))%\par
       
       # Add data rows
       foreach ($result in $Results) {
-        $status = if($result.Passed){"\cf3 Pass\cf1"}{"\cf2 Fail\cf1"}
-        $desc = if($result.Description){$result.Description -replace '\\','\\\\' -replace '{','\{' -replace '}','\}'}else{"N/A"}
-        $impact = if($result.Impact){$result.Impact -replace '\\','\\\\' -replace '{','\{' -replace '}','\}'}else{"N/A"}
-        $remediation = $result.Remediation -replace '\\','\\\\' -replace '{','\{' -replace '}','\}'
+        $status = if($result.Passed){"Pass"}{"Fail"}
+        $desc = if($result.Description){($result.Description -replace '\\','\\\\' -replace '{','\{' -replace '}','\}').Substring(0, [Math]::Min(100, $result.Description.Length)) + "..."}else{"N/A"}
+        $impact = if($result.Impact){($result.Impact -replace '\\','\\\\' -replace '{','\{' -replace '}','\}').Substring(0, [Math]::Min(100, $result.Impact.Length)) + "..."}else{"N/A"}
+        $remediation = ($result.Remediation -replace '\\','\\\\' -replace '{','\{' -replace '}','\}').Substring(0, [Math]::Min(150, $result.Remediation.Length)) + "..."
         
-        $rtfContent += @"
-{\trowd\trgaph108\trleft-108
-\cellx1440\cellx3600\cellx4680\cellx5760\cellx8640\cellx11520\cellx14400
-$($result.Id)\cell $($result.Title)\cell $($result.Section)\cell $status\cell $desc\cell $impact\cell $remediation\cell\row}
-"@
+        $rtfContent += "$($result.Id)\t$($result.Title)\t$($result.Section)\t$status\t$desc\t$impact\t$remediation\par`n"
       }
       
       $rtfContent += @"
