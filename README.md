@@ -139,17 +139,19 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 - **Import-friendly** format for spreadsheet applications
 - **Compliance tracking** over time
 
-### 📑 PDF Report (`cis-report.pdf`)
+### 📑 PDF Report (`cis-report-pdf.html`)
 - **Browser-based PDF generation** (no additional software needed)
-- **Print-friendly HTML** with one-click PDF creation
+- **Print-friendly HTML** with one-click PDF creation button
 - **Professional format** for executive reporting
 - **Complete system information** and audit results
+- **Usage**: Open in browser → Click "Print to PDF" button → Save as PDF
 
-### 📝 Word Document (`cis-report.docx`)
+### 📝 Word Document (`cis-report.rtf`)
 - **RTF format** - opens in Word, LibreOffice, or any word processor
 - **No Office installation required**
 - **Structured tables** with all audit findings
 - **System details** for audit trail
+- **Usage**: Double-click to open in default word processor
 
 ### 🎯 Output Format Options
 - `HTML,CSV` (default)

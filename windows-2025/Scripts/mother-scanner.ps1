@@ -324,8 +324,8 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   New-Dir $OutDir
   $csv = Join-Path $OutDir 'cis-results.csv'
   $html = Join-Path $OutDir 'cis-report.html'
-  $pdf = Join-Path $OutDir 'cis-report.pdf'
-  $word = Join-Path $OutDir 'cis-report.docx'
+  $pdf = Join-Path $OutDir 'cis-report-pdf.html'
+  $word = Join-Path $OutDir 'cis-report.rtf'
   $outputs = @{}
   
   # Copy CIS documentation if available
@@ -452,7 +452,7 @@ $($rows -join "`n")
 "@
     Set-Content -Path $pdf -Value $pdfHtml -Encoding UTF8
     $outputs['PDF'] = $pdf
-    Write-Host "PDF:  $pdf (Open in browser and print to PDF)" -ForegroundColor Green
+    Write-Host "PDF:  $pdf (Open in browser, click Print to PDF button)" -ForegroundColor Green
   }
   
   # Generate Word-compatible RTF document if requested
