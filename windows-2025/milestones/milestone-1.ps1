@@ -13,7 +13,7 @@ $Global:Rules += @(
     Expected=24
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -28,7 +28,7 @@ $Global:Rules += @(
     )
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -43,7 +43,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -58,7 +58,7 @@ $Global:Rules += @(
     Expected=14
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -73,7 +73,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -88,7 +88,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -103,7 +103,7 @@ $Global:Rules += @(
     Expected=0
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.1.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -120,7 +120,7 @@ $Global:Rules += @(
     Expected=15
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -135,7 +135,7 @@ $Global:Rules += @(
     )
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.2.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -148,7 +148,7 @@ $Global:Rules += @(
     Evidence='Local Security Policy path noted in report'
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.2.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
@@ -163,7 +163,7 @@ $Global:Rules += @(
     Expected=15
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='1.2.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   }
 )

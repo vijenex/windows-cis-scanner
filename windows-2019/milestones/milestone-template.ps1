@@ -18,7 +18,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='X.X.X'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   }
 )

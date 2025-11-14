@@ -12,7 +12,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.5.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -28,7 +28,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.6.6.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -45,7 +45,7 @@ $Global:Rules += @(
     Expected=2
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.5.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
   @{
@@ -59,7 +59,7 @@ $Global:Rules += @(
     Expected=3
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.5.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -75,7 +75,7 @@ $Global:Rules += @(
     Expected=2
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.8.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
   @{
@@ -89,7 +89,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.8.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
   @{
@@ -103,7 +103,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.8.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
   @{
@@ -117,7 +117,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.8.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
   @{
@@ -131,7 +131,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.8.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -147,7 +147,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.26.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -163,7 +163,7 @@ $Global:Rules += @(
     Expected=0
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.44.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
@@ -179,7 +179,7 @@ $Global:Rules += @(
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='19.7.46.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2019 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   }
 )
