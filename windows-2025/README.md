@@ -1,7 +1,7 @@
 # Windows Server 2025 CIS Compliance Scanner
 
 ## Overview
-This directory contains the CIS compliance scanner for Windows Server 2025, implementing **327+ CIS benchmark controls** for comprehensive security auditing based on official CIS Microsoft Windows Server 2025 Benchmark v1.0.0.
+This directory contains the CIS compliance scanner for Windows Server 2025, evaluating **212 security controls** (164 unique control definitions) for comprehensive security auditing based on official CIS Microsoft Windows Server 2025 Benchmark v1.0.0.
 
 ## Directory Structure
 ```
@@ -57,13 +57,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps
 ### ✅ Implemented Sections
 - **Section 1**: Account Policies (11 controls) - Password Policy, Account Lockout Policy
 - **Section 2**: Local Policies (98 controls) - User Rights Assignment, Security Options
-- **Section 5**: System Services (1 control) - Print Spooler configuration
-- **Section 9**: Windows Defender Firewall (14 controls) - Private/Public profile settings
-- **Section 17**: Advanced Audit Policy (27 controls) - Comprehensive audit logging
-- **Section 18**: Administrative Templates - Computer (164+ controls) - Registry-based security settings
+- **Sections 3-8**: System Services & Firewall (14 controls) - Event Log, Services, Firewall
+- **Section 9**: Windows Defender Firewall (7 controls) - Private/Public profile settings
+- **Section 18**: Administrative Templates - Computer (29 controls) - Registry-based security settings
 - **Section 19**: Administrative Templates - User (12 controls) - User configuration policies
 
-**Total: 327+ Security Controls**
+**Total: 212 Security Controls Evaluated** (164 unique control definitions)
 
 ### Control Types Supported
 - **SecEdit**: Security policy settings (Password, Account Lockout, Security Options)
@@ -85,10 +84,10 @@ After scan completion, displays:
 =============================================================
                     SCAN COMPLETED                           
 =============================================================
-Total Checks: 327
-Passed: 189
-Failed: 138
-Success Rate: 57.8%
+Total Checks: 212
+Passed: 95
+Failed: 117
+Success Rate: 44.8%
 =============================================================
 ```
 

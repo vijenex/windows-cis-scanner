@@ -235,13 +235,12 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 |---------|----------|----------|
 | **1** Account Policies | 11 | Password Policy, Account Lockout Policy |
 | **2** Local Policies | 98 | User Rights Assignment, Security Options |
-| **5** System Services | 1 | Print Spooler configuration |
-| **9** Windows Defender Firewall | 14 | Private/Public profile settings |
-| **17** Advanced Audit Policy | 27 | Comprehensive audit logging |
-| **18** Administrative Templates (Computer) | 164+ | Registry-based security settings |
+| **3-8** System Services & Firewall | 14 | Event Log, Services, Firewall |
+| **9** Windows Defender Firewall | 7 | Private/Public profile settings |
+| **18** Administrative Templates (Computer) | 29 | Registry-based security settings |
 | **19** Administrative Templates (User) | 12 | User configuration policies |
 
-**Total: 327+ Security Controls**
+**Total: 212 Security Controls Evaluated** (164 unique control definitions)
 
 #### Windows Server 2019 Standalone/Workgroup ✅ **NEW**
 
@@ -368,7 +367,7 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 
 ### Current Stable Release
 - **v2.1.2** - Windows Server 2025 & 2019 CIS Scanner
-  - **Windows Server 2025**: 327+ controls implemented
+  - **Windows Server 2025**: 212 controls evaluated (164 unique definitions)
   - **Windows Server 2019**: 533 controls evaluated (431 unique definitions, 57% CIS coverage)
   - Real-time scan progress display with pass/fail summary
   - Multiple report formats (HTML, CSV, PDF, Word)
