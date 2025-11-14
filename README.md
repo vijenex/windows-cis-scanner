@@ -21,7 +21,7 @@ This repository contains open source software under MIT License. **CONTRIBUTIONS
 
 This platform provides automated security compliance auditing for Windows systems against official CIS (Center for Internet Security) benchmarks. It performs comprehensive security assessments without making any system changes - **audit-only mode**.
 
-![Vijenex Security Platform](docs/images/Gemini_Generated_Image_gmppzdgmppzdgmpp.jpeg)
+![Vijenex Security Platform](docs/images/logo.jpeg)
 
 ### ✨ Key Features
 
@@ -136,7 +136,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
-![Scanner in Action](docs/images/Screenshot%202025-11-13%20at%203.03.35%E2%80%AFPM.png)
+### Scanner in Action
+
+**Scan Process:**
+![Scanner Process](docs/images/scan-process.png)
+
+**Scan Output with Summary:**
+![Scan Output](docs/images/scan-output.png)
 
 #### Advanced Options
 ```powershell
@@ -173,14 +179,20 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 
 The tool generates comprehensive reports in multiple formats with detailed system information:
 
-![Sample Report Output](docs/images/Screenshot%202025-11-13%20at%203.03.35PM.png)
+### Sample HTML Report
+![HTML Report Output](docs/images/html-ouput.png)
+
+### Scan Summary Display
+![Scan Summary](docs/images/scan-output.png)
 
 ### 📄 HTML Report (`vijenex-cis-report.html`)
 - **System Information**: OS version, IP address, machine ID, scan date
 - **Visual dashboard** with pass/fail summary
-- **Detailed findings** with descriptions and impact
+- **Detailed findings** with CIS Reference links
 - **Remediation guidance** for each control
-- **Color-coded results** for easy identification
+- **Color-coded results** for easy identification (green for pass, red for fail)
+
+![HTML Report Sample](docs/images/html-ouput.png)
 
 ### 📈 CSV Report (`vijenex-cis-results.csv`)
 - **Structured data** for analysis and tracking
