@@ -418,7 +418,7 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   $failed=$total-$passed
   
   $rows = $Results | ForEach-Object {
-    $status = if($_.Passed){'&#x2713; Pass'}else{'&#x2717; Fail'}
+    $status = if($_.Passed){'[PASS]'}else{'[FAIL]'}
     $cls = if($_.Passed){'pass-row'}else{'fail-row'}
     $cisLink = if($_.CISReference){"<a href='$($_.CISReference)' target='_blank'>CIS Benchmark</a>"}else{'N/A'}
     $refNote = if($_.ReferenceNote){$_.ReferenceNote}else{'Refer to official CIS benchmark documentation'}
@@ -552,7 +552,7 @@ foreach($rule in $rules){
   $results.Add($result)
   
   # Display real-time progress like Linux scanner
-  $status = if($result.Passed){"✓ PASS"}else{"✗ FAIL"}
+  $status = if($result.Passed){"[PASS]"}else{"[FAIL]"}
   $statusColor = if($result.Passed){"Green"}else{"Red"}
   $manualNote = if($result.Type -eq 'Manual'){" (Manual Review Required)"}else{""}
   
