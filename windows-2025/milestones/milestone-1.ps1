@@ -11,9 +11,10 @@ $Global:Rules += @(
     Key='PasswordHistorySize'
     Operator='GreaterOrEqual'
     Expected=24
-    Description='This policy setting determines the number of renewed, unique passwords that have to be associated with a user account before you can reuse an old password. The value for this policy setting must be between 0 and 24 passwords. The default value for stand-alone systems is 0 passwords, but the default setting when joined to a domain is 24 passwords. To maintain the effectiveness of this policy setting, use the Minimum password age setting to prevent users from repeatedly changing their password. The recommended state for this setting is: 24 or more password(s).'
-    Impact='The major impact of this configuration is that users must create a new password every time they are required to change their old one. If users are required to change their passwords to new unique values, there is an increased risk of users who write their passwords somewhere so that they do not forget them. Another risk is that users may create passwords that change incrementally (for example, password01, password02, and so on) to facilitate memorization but make them easier to guess.'
-    Remediation='To establish the recommended configuration via GP, set the following UI path to 24 or more password(s): Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Enforce password history'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='1.1.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2025 Benchmark document at the above URL.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
   },
   @{ 
     Id='1.1.2'
