@@ -1,8 +1,11 @@
 # Template for Windows Server 2019 CIS Controls
 # Copy this template and modify for each milestone section
+# DO NOT add actual rules to this template file
+
+<#
+Example control structure:
 
 $Global:Rules += @(
-  # Example control structure
   @{ 
     Id='X.X.X'
     Title='(L1) Example Control Title'
@@ -19,3 +22,4 @@ $Global:Rules += @(
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   }
 )
+#>

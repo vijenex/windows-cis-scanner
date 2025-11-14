@@ -75,10 +75,16 @@ function Export-SecEdit {
       throw "Invalid temp path detected"
     }
     
-    $result = Start-Process -FilePath "secedit.exe" -ArgumentList "/export", "/cfg", "`"$tmp`"" -Wait -PassThru -NoNewWindow -RedirectStandardError $null
+    $errFile = Join-Path $env:TEMP ("secpol-err-" + [guid]::NewGuid().Guid + ".txt")
+    $result = Start-Process -FilePath "secedit.exe" -ArgumentList "/export", "/cfg", "`"$tmp`"" -Wait -PassThru -NoNewWindow -RedirectStandardError $errFile
+    
     if ($result.ExitCode -ne 0) {
-      throw "secedit export failed with exit code $($result.ExitCode)"
+      $errContent = if (Test-Path $errFile) { Get-Content $errFile -Raw } else { "Unknown error" }
+      Remove-Item $errFile -Force -ErrorAction SilentlyContinue
+      throw "secedit export failed with exit code $($result.ExitCode): $errContent"
     }
+    
+    Remove-Item $errFile -Force -ErrorAction SilentlyContinue
     
     if (-not (Test-Path $tmp)) {
       throw "secedit export did not create expected file"
@@ -93,7 +99,7 @@ function Export-SecEdit {
 
 function Parse-InfFile([string]$Path){
   $map=@{}
-  if (-not (Test-Path $Path)) { return $map }
+  if ([string]::IsNullOrWhiteSpace($Path) -or -not (Test-Path $Path)) { return $map }
   $section=''
   foreach($line in Get-Content -LiteralPath $Path){
     $t=$line.Trim()
