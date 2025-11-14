@@ -563,6 +563,25 @@ foreach($rule in $rules){
   Write-Host ""
 }
 
+# Display summary like Linux scanner
+$totalChecks = $results.Count
+$passedChecks = @($results | Where-Object { $_.Passed }).Count
+$failedChecks = $totalChecks - $passedChecks
+$successRate = if ($totalChecks -gt 0) { [math]::Round(($passedChecks / $totalChecks) * 100, 1) } else { 0 }
+
+Write-Host "`n" -ForegroundColor White
+Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "                    SCAN COMPLETED                           " -ForegroundColor Cyan
+Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "Total Checks: $totalChecks" -ForegroundColor White
+Write-Host "Passed: " -NoNewline -ForegroundColor White
+Write-Host "$passedChecks" -ForegroundColor Green
+Write-Host "Failed: " -NoNewline -ForegroundColor White
+Write-Host "$failedChecks" -ForegroundColor Red
+Write-Host "Success Rate: $successRate%" -ForegroundColor Yellow
+Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "`n" -ForegroundColor White
+
 # Handle output format parameter
 if ($OutputFormat -contains 'All') {
   $formats = @('HTML','CSV')
