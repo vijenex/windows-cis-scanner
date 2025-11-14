@@ -1,153 +1,155 @@
-# 1 Account Policies (Windows Server 2019) — Audit-only
+# 19 Administrative Templates (User) - User Configuration Controls (Windows Server 2019)
 $Global:Rules += @(
-  # 1.1 Password Policy
-  @{ 
-    Id='1.1.1'
-    Title='(L1) Ensure ''Enforce password history'' is set to ''24 or more password(s)'' (Automated)'
-    Section='1.1 Password Policy'
+  # 19.5.1 Notifications
+  @{
+    Id='19.5.1.1'
+    Title='(L1) Ensure ''Turn off toast notifications on the lock screen'' is set to ''Enabled'' (Automated)'
+    Section='19.5.1 Notifications'
     Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='PasswordHistorySize'
-    Operator='GreaterOrEqual'
-    Expected=24
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
-  },
-  @{ 
-    Id='1.1.2'
-    Title='(L1) Ensure ''Maximum password age'' is set to ''365 or fewer days, but not 0'' (Automated)'
-    Section='1.1 Password Policy'
-    Profile='Level1'
-    Type='Composite'
-    AllOf=@(
-        @{ Type='SecEdit'; SectionName='System Access'; Key='MaximumPasswordAge'; Operator='LessOrEqual'; Expected=365 },
-        @{ Type='SecEdit'; SectionName='System Access'; Key='MaximumPasswordAge'; Operator='NotEquals'; Expected=0 }
-    )
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.1.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
-  },
-  @{ 
-    Id='1.1.3'
-    Title='(L1) Ensure ''Minimum password age'' is set to ''1 or more day(s)'' (Automated)'
-    Section='1.1 Password Policy'
-    Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='MinimumPasswordAge'
-    Operator='GreaterOrEqual'
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications'
+    ValueName='NoToastApplicationNotificationOnLockScreen'
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.1.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
-  },
-  @{ 
-    Id='1.1.4'
-    Title='(L1) Ensure ''Minimum password length'' is set to ''14 or more character(s)'' (Automated)'
-    Section='1.1 Password Policy'
-    Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='MinimumPasswordLength'
-    Operator='GreaterOrEqual'
-    Expected=14
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.1.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
-  },
-  @{ 
-    Id='1.1.5'
-    Title='(L1) Ensure ''Password must meet complexity requirements'' is set to ''Enabled'' (Automated)'
-    Section='1.1 Password Policy'
-    Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='PasswordComplexity'
-    Operator='Equals'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.1.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
-  },
-  @{ 
-    Id='1.1.6'
-    Title='(L1) Ensure ''Store passwords using reversible encryption'' is set to ''Disabled'' (Automated)'
-    Section='1.1 Password Policy'
-    Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='ClearTextPassword'
-    Operator='Equals'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.1.6'
+    CISControlID='19.5.1.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
 
-  # 1.2 Account Lockout Policy
-  @{ 
-    Id='1.2.1'
-    Title='(L1) Ensure ''Account lockout duration'' is set to ''15 or more minute(s)'' (Automated)'
-    Section='1.2 Account Lockout Policy'
-    Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='LockoutDuration'
-    Operator='GreaterOrEqual'
-    Expected=15
+  # 19.6.6.1 Internet Communication settings
+  @{
+    Id='19.6.6.1.1'
+    Title='(L2) Ensure ''Turn off Help Experience Improvement Program'' is set to ''Enabled'' (Automated)'
+    Section='19.6.6.1 Internet Communication settings'
+    Profile='Level2'
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\Assistance\Client\1.0'
+    ValueName='NoImplicitFeedback'
+    Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.2.1'
+    CISControlID='19.6.6.1.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
-  @{ 
-    Id='1.2.2'
-    Title='(L1) Ensure ''Account lockout threshold'' is set to ''5 or fewer invalid logon attempt(s), but not 0'' (Automated)'
-    Section='1.2 Account Lockout Policy'
+
+  # 19.7.5 Attachment Manager
+  @{
+    Id='19.7.5.1'
+    Title='(L1) Ensure ''Do not preserve zone information in file attachments'' is set to ''Disabled'' (Automated)'
+    Section='19.7.5 Attachment Manager'
     Profile='Level1'
-    Type='Composite'
-    AllOf=@(
-        @{ Type='SecEdit'; SectionName='System Access'; Key='LockoutBadCount'; Operator='LessOrEqual'; Expected=5 },
-        @{ Type='SecEdit'; SectionName='System Access'; Key='LockoutBadCount'; Operator='NotEquals'; Expected=0 }
-    )
+    Type='Registry'
+    Key='HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments'
+    ValueName='SaveZoneInformation'
+    Expected=2
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.2.2'
+    CISControlID='19.7.5.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
-  @{ 
-    Id='1.2.3'
-    Title='(L1) Ensure ''Allow Administrator account lockout'' is set to ''Enabled'' (MS only) (Manual)'
-    Section='1.2 Account Lockout Policy'
+  @{
+    Id='19.7.5.2'
+    Title='(L1) Ensure ''Notify antivirus programs when opening attachments'' is set to ''Enabled'' (Automated)'
+    Section='19.7.5 Attachment Manager'
     Profile='Level1'
-    Type='Manual'
-    Expected='Enabled'
-    Evidence='Local Security Policy path noted in report'
+    Type='Registry'
+    Key='HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments'
+    ValueName='ScanWithAntiVirus'
+    Expected=3
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.2.3'
+    CISControlID='19.7.5.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   },
-  @{ 
-    Id='1.2.4'
-    Title='(L1) Ensure ''Reset account lockout counter after'' is set to ''15 or more minute(s)'' (Automated)'
-    Section='1.2 Account Lockout Policy'
+
+  # 19.7.8 Cloud Content
+  @{
+    Id='19.7.8.1'
+    Title='(L1) Ensure ''Configure Windows spotlight on lock screen'' is set to ''Disabled'' (Automated)'
+    Section='19.7.8 Cloud Content'
     Profile='Level1'
-    Type='SecEdit'
-    SectionName='System Access'
-    Key='ResetLockoutCount'
-    Operator='GreaterOrEqual'
-    Expected=15
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\Windows\CloudContent'
+    ValueName='ConfigureWindowsSpotlight'
+    Expected=2
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='1.2.4'
+    CISControlID='19.7.8.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='19.7.8.2'
+    Title='(L1) Ensure ''Do not suggest third-party content in Windows spotlight'' is set to ''Enabled'' (Automated)'
+    Section='19.7.8 Cloud Content'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\Windows\CloudContent'
+    ValueName='DisableThirdPartySuggestions'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='19.7.8.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='19.7.8.5'
+    Title='(L1) Ensure ''Turn off Spotlight collection on Desktop'' is set to ''Enabled'' (Automated)'
+    Section='19.7.8 Cloud Content'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\Windows\CloudContent'
+    ValueName='DisableSpotlightCollectionOnDesktop'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='19.7.8.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
+  },
+
+  # 19.7.26 Network Sharing
+  @{
+    Id='19.7.26.1'
+    Title='(L1) Ensure ''Prevent users from sharing files within their profile.'' is set to ''Enabled'' (Automated)'
+    Section='19.7.26 Network Sharing'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+    ValueName='NoInPlaceSharing'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='19.7.26.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
+  },
+
+  # 19.7.44 Windows Installer
+  @{
+    Id='19.7.44.1'
+    Title='(L1) Ensure ''Always install with elevated privileges'' is set to ''Disabled'' (Automated)'
+    Section='19.7.44 Windows Installer'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\Windows\Installer'
+    ValueName='AlwaysInstallElevated'
+    Expected=0
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='19.7.44.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
+  },
+
+  # 19.7.46.2 Playbook - Final Control
+  @{
+    Id='19.7.46.2.1'
+    Title='(L2) Ensure ''Prevent Codec Download'' is set to ''Enabled'' (Automated)'
+    Section='19.7.46.2 Playback'
+    Profile='Level2'
+    Type='Registry'
+    Key='HKCU:\Software\Policies\Microsoft\WindowsMediaPlayer'
+    ValueName='PreventCodecDownload'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='19.7.46.2.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, please refer to the official CIS Microsoft Windows Server 2019 Benchmark document at the above URL.'
     Remediation='Refer to official CIS Microsoft Windows Server 2019 Benchmark documentation for detailed remediation steps.'
   }

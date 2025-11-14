@@ -543,12 +543,24 @@ if ($Exclude){
 $rules = @($rules)
 
 Write-Host "Evaluating $($rules.Count) rules..." -ForegroundColor Cyan
+Write-Host ""
 
 # Evaluate rules
 $results = New-Object System.Collections.Generic.List[object]
 foreach($rule in $rules){ 
   $result = Evaluate-Rule -Rule $rule -Context $ctx
   $results.Add($result)
+  
+  # Display real-time progress like Linux scanner
+  $status = if($result.Passed){"✓ PASS"}else{"✗ FAIL"}
+  $statusColor = if($result.Passed){"Green"}else{"Red"}
+  $manualNote = if($result.Type -eq 'Manual'){" (Manual Review Required)"}else{""}
+  
+  Write-Host "[$($result.Id)] $($result.Title)$manualNote" -ForegroundColor White
+  Write-Host "    Status: " -NoNewline -ForegroundColor Gray
+  Write-Host $status -ForegroundColor $statusColor
+  if($result.Evidence){ Write-Host "    Evidence: $($result.Evidence)" -ForegroundColor Gray }
+  Write-Host ""
 }
 
 # Handle output format parameter
