@@ -587,8 +587,8 @@ $($rows -join "`n")
         $table.Cell($row,2).Range.Text = $result.Title
         $table.Cell($row,3).Range.Text = $result.Section
         $table.Cell($row,4).Range.Text = if($result.Passed){"Pass"}else{"Fail"}
-        $table.Cell($row,5).Range.Text = if($result.Description){$result.Description}else{"N/A"}
-        $table.Cell($row,6).Range.Text = if($result.Impact){$result.Impact}else{"N/A"}
+        $table.Cell($row,5).Range.Text = if($result.ReferenceNote){$result.ReferenceNote}else{"N/A"}
+        $table.Cell($row,6).Range.Text = if($result.Evidence){$result.Evidence}else{"N/A"}
         $table.Cell($row,7).Range.Text = $result.Remediation
       }
       
@@ -632,9 +632,9 @@ $($rows -join "`n")
       foreach ($result in $Results) {
         $statusClass = if($result.Passed){"pass"}else{"fail"}
         $status = if($result.Passed){"Pass"}else{"Fail"}
-        $desc = if($result.Description){$result.Description}else{"N/A"}
-        $impact = if($result.Impact){$result.Impact}else{"N/A"}
-        $wordHtml += "<tr class='$statusClass'><td>$($result.Id)</td><td>$($result.Title)</td><td>$($result.Section)</td><td>$status</td><td>$desc</td><td>$impact</td><td>$($result.Remediation)</td></tr>`n"
+        $refNote = if($result.ReferenceNote){$result.ReferenceNote}else{"N/A"}
+        $evidence = if($result.Evidence){$result.Evidence}else{"N/A"}
+        $wordHtml += "<tr class='$statusClass'><td>$($result.Id)</td><td>$($result.Title)</td><td>$($result.Section)</td><td>$status</td><td>$refNote</td><td>$evidence</td><td>$($result.Remediation)</td></tr>`n"
       }
       
       $wordHtml += @"

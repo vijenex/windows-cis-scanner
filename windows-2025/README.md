@@ -1,7 +1,7 @@
 # Windows Server 2025 CIS Compliance Scanner
 
 ## Overview
-This directory contains the CIS compliance scanner for Windows Server 2025, evaluating **212 security controls** (164 unique control definitions) for comprehensive security auditing based on official CIS Microsoft Windows Server 2025 Benchmark v1.0.0.
+This directory contains the CIS compliance scanner for Windows Server 2025, evaluating **203 security controls** (164 unique control definitions) for comprehensive security auditing based on official CIS Microsoft Windows Server 2025 Benchmark v1.0.0.
 
 ## Directory Structure
 ```
@@ -62,7 +62,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps
 - **Section 18**: Administrative Templates - Computer (29 controls) - Registry-based security settings
 - **Section 19**: Administrative Templates - User (12 controls) - User configuration policies
 
-**Total: 212 Security Controls Evaluated** (164 unique control definitions)
+**Total: 203 Security Controls Evaluated** (164 unique control definitions)
 
 ### Control Types Supported
 - **SecEdit**: Security policy settings (Password, Account Lockout, Security Options)
@@ -84,10 +84,10 @@ After scan completion, displays:
 =============================================================
                     SCAN COMPLETED                           
 =============================================================
-Total Checks: 212
-Passed: 95
-Failed: 117
-Success Rate: 44.8%
+Total Checks: 203
+Passed: 30
+Failed: 173
+Success Rate: 14.8%
 =============================================================
 ```
 

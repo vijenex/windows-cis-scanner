@@ -367,7 +367,7 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 
 ### Current Stable Release
 - **v2.1.2** - Windows Server 2025 & 2019 CIS Scanner
-  - **Windows Server 2025**: 212 controls evaluated (164 unique definitions)
+  - **Windows Server 2025**: 203 controls evaluated (164 unique definitions)
   - **Windows Server 2019**: 533 controls evaluated (431 unique definitions, 57% CIS coverage)
   - Real-time scan progress display with pass/fail summary
   - Multiple report formats (HTML, CSV, PDF, Word)
