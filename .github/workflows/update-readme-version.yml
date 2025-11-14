@@ -1,0 +1,51 @@
+name: Update README Version on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "version=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Version: $TAG_NAME"
+
+      - name: Update README.md with new version
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # Update download URLs
+          sed -i "s|archive/refs/tags/v[0-9]\+\.[0-9]\+\.[0-9]\+\.zip|archive/refs/tags/$VERSION.zip|g" README.md
+          sed -i "s|windows-cis-scanner-[0-9]\+\.[0-9]\+\.[0-9]\+|windows-cis-scanner-${VERSION#v}|g" README.md
+          
+          # Update version references
+          sed -i "s|--branch v[0-9]\+\.[0-9]\+\.[0-9]\+|--branch $VERSION|g" README.md
+          sed -i "s|\*\*Current Version\*\*: v[0-9]\+\.[0-9]\+\.[0-9]\+|\*\*Current Version\*\*: $VERSION|g" README.md
+          sed -i "s|- \*\*v[0-9]\+\.[0-9]\+\.[0-9]\+\*\*|- \*\*$VERSION\*\*|g" README.md
+          
+          echo "Updated README.md with version $VERSION"
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if git diff --quiet README.md; then
+            echo "No changes to commit"
+          else
+            git add README.md
+            git commit -m "Auto-update README version to ${{ steps.version.outputs.version }}"
+            git push origin HEAD:main
+          fi

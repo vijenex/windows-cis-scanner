@@ -82,9 +82,9 @@ This platform provides automated security compliance auditing for Windows system
 **Latest Release (Stable):**
 ```powershell
 # Download latest release
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.0.zip" -OutFile "vijenex-windows-cis-v1.0.0.zip"
-Expand-Archive -Path "vijenex-windows-cis-v1.0.0.zip" -DestinationPath "C:\Tools\"
-cd "C:\Tools\windows-cis-scanner-1.0.0\windows-2025"
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.1.zip" -OutFile "vijenex-windows-cis-v1.0.1.zip"
+Expand-Archive -Path "vijenex-windows-cis-v1.0.1.zip" -DestinationPath "C:\Tools\"
+cd "C:\Tools\windows-cis-scanner-1.0.1\windows-2025"
 ```
 
 **Development Version:**
@@ -96,8 +96,8 @@ cd windows-cis-scanner\windows-2025
 
 **Specific Version:**
 ```powershell
-# Install specific version (replace v1.0.0 with desired version)
-git clone --branch v1.0.0 https://github.com/vijenex/windows-cis-scanner.git
+# Install specific version (replace v1.0.1 with desired version)
+git clone --branch v1.0.1 https://github.com/vijenex/windows-cis-scanner.git
 cd windows-cis-scanner\windows-2025
 ```
 
@@ -154,26 +154,26 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 
 ![Sample Report Output](docs/images/Screenshot%202025-11-13%20at%203.03.35PM.png)
 
-### 📄 HTML Report (`cis-report.html`)
+### 📄 HTML Report (`vijenex-cis-report.html`)
 - **System Information**: OS version, IP address, machine ID, scan date
 - **Visual dashboard** with pass/fail summary
 - **Detailed findings** with descriptions and impact
 - **Remediation guidance** for each control
 - **Color-coded results** for easy identification
 
-### 📈 CSV Report (`cis-results.csv`)
+### 📈 CSV Report (`vijenex-cis-results.csv`)
 - **Structured data** for analysis and tracking
 - **Import-friendly** format for spreadsheet applications
 - **Compliance tracking** over time
 
-### 📑 PDF Report (`cis-report-pdf.html`)
+### 📑 PDF Report (`vijenex-cis-report-pdf.html`)
 - **Browser-based PDF generation** (no additional software needed)
 - **Print-friendly HTML** with one-click PDF creation button
 - **Professional format** for executive reporting
 - **Complete system information** and audit results
 - **Usage**: Open in browser → Click "Print to PDF" button → Save as PDF
 
-### 📝 Word Document (`cis-report.docx`)
+### 📝 Word Document (`vijenex-cis-report.docx`)
 - **Native DOCX format** - professional Word document
 - **Requires Microsoft Word** for generation
 - **Structured tables** with all audit findings
@@ -320,24 +320,25 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 ## 🏷️ Releases
 
 ### Current Stable Release
-- **v1.0.0** - Windows Server 2025 CIS Scanner
+- **v1.0.1** - Windows Server 2025 CIS Scanner
   - Complete CIS benchmark implementation (300+ controls)
-  - PowerShell-based automated auditing
-  - Multiple report formats (HTML, CSV, PDF, Word)
+  - PowerShell-based automated auditing with security enhancements
+  - Multiple report formats with Vijenex branding (HTML, CSV, PDF, Word)
   - Enterprise-grade security assessment
+  - Enhanced path validation and command injection prevention
   - Zero false positive design
 
 ### Download Options
 ```powershell
 # Latest stable release
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.0.zip" -OutFile "vijenex-windows-cis-v1.0.0.zip"
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.1.zip" -OutFile "vijenex-windows-cis-v1.0.1.zip"
 
 # All releases
 # Visit: https://github.com/vijenex/windows-cis-scanner/releases
 ```
 
 ### Version Information
-- **Current Version**: v1.0.0
+- **Current Version**: v1.0.1
 - **Supported OS**: Windows Server 2025
 - **CIS Compliance**: Based on official CIS benchmark documentation
 - **Release Date**: November 2024

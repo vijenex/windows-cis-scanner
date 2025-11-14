@@ -7,13 +7,18 @@
 #>
 
 param(
-  [string]$OutputDir = (Join-Path $PSScriptRoot "reports"),
+  [string]$OutputDir,
   [string]$Profile = "Level1",
   [string[]]$Milestones,
   [string[]]$Include,
   [string[]]$Exclude,
   [ValidateSet('All','HTML','CSV','PDF','Word')][string[]]$OutputFormat = @('HTML','CSV')
 )
+
+# Set default output directory to reports folder in parent directory
+if (-not $OutputDir) {
+  $OutputDir = Join-Path (Split-Path $PSScriptRoot) "reports"
+}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -61,9 +66,29 @@ function Get-OSInfo {
 }
 
 function Export-SecEdit { 
-  $tmp=Join-Path $env:TEMP ("secpol-"+[guid]::NewGuid().Guid+".inf")
-  secedit /export /cfg $tmp 2>$null | Out-Null
-  $tmp 
+  try {
+    $tmp = Join-Path $env:TEMP ("secpol-" + [guid]::NewGuid().Guid + ".inf")
+    
+    # Validate temp path to prevent path traversal
+    $resolvedPath = [System.IO.Path]::GetFullPath($tmp)
+    if (-not $resolvedPath.StartsWith([System.IO.Path]::GetTempPath())) {
+      throw "Invalid temp path detected"
+    }
+    
+    $result = Start-Process -FilePath "secedit.exe" -ArgumentList "/export", "/cfg", "`"$tmp`"" -Wait -PassThru -NoNewWindow -RedirectStandardError $null
+    if ($result.ExitCode -ne 0) {
+      throw "secedit export failed with exit code $($result.ExitCode)"
+    }
+    
+    if (-not (Test-Path $tmp)) {
+      throw "secedit export did not create expected file"
+    }
+    
+    return $tmp
+  } catch {
+    Write-Warning "Failed to export security policy: $($_.Exception.Message)"
+    return $null
+  }
 }
 
 function Parse-InfFile([string]$Path){
@@ -147,8 +172,30 @@ function Get-PrivilegeRaw {
 function Get-AuditPolicies {
   $map = @{}
   try {
-    $raw = & auditpol.exe /get /subcategory:* 2>&1
-    if ($LASTEXITCODE -ne 0) { return $map }
+    # Validate auditpol.exe exists and is in system path
+    $auditpolPath = Get-Command "auditpol.exe" -ErrorAction SilentlyContinue
+    if (-not $auditpolPath) {
+      Write-Warning "auditpol.exe not found in system PATH"
+      return $map
+    }
+    
+    $result = Start-Process -FilePath $auditpolPath.Source -ArgumentList "/get", "/subcategory:*" -Wait -PassThru -NoNewWindow -RedirectStandardOutput "temp_audit.txt" -RedirectStandardError "temp_audit_err.txt"
+    
+    if ($result.ExitCode -ne 0) { 
+      Write-Warning "auditpol failed with exit code $($result.ExitCode)"
+      return $map 
+    }
+    
+    if (Test-Path "temp_audit.txt") {
+      $raw = Get-Content "temp_audit.txt"
+      Remove-Item "temp_audit.txt" -Force -ErrorAction SilentlyContinue
+    } else {
+      return $map
+    }
+    
+    if (Test-Path "temp_audit_err.txt") {
+      Remove-Item "temp_audit_err.txt" -Force -ErrorAction SilentlyContinue
+    }
     
     foreach ($ln in $raw) {
       if (-not $ln) { continue }
@@ -335,10 +382,10 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
 
 function Write-Reports([System.Collections.Generic.List[object]]$Results,[string]$OutDir,[object]$SystemInfo,[string[]]$Formats){
   New-Dir $OutDir
-  $csv = Join-Path $OutDir 'cis-results.csv'
-  $html = Join-Path $OutDir 'cis-report.html'
-  $pdf = Join-Path $OutDir 'cis-report-pdf.html'
-  $word = Join-Path $OutDir 'cis-report.docx'
+  $csv = Join-Path $OutDir 'vijenex-cis-results.csv'
+  $html = Join-Path $OutDir 'vijenex-cis-report.html'
+  $pdf = Join-Path $OutDir 'vijenex-cis-report-pdf.html'
+  $word = Join-Path $OutDir 'vijenex-cis-report.docx'
   $outputs = @{}
   
   # Copy CIS documentation if available
@@ -623,15 +670,41 @@ Write-Host "Machine: $($systemInfo.ComputerName) | IP: $($systemInfo.IPAddress) 
 
 # Load milestones (all if not specified)
 $milestoneFolder = Join-Path (Split-Path $PSScriptRoot) "milestones"
+
+# Validate milestone folder exists
+if (-not (Test-Path $milestoneFolder)) {
+  throw "Milestones folder not found: $milestoneFolder"
+}
+
 if (-not $Milestones -or $Milestones.Count -eq 0) {
   $Milestones = Get-ChildItem -Path $milestoneFolder -Filter *.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
 }
 
 foreach ($m in $Milestones) {
+  # Validate milestone filename to prevent path traversal
+  if ($m -match '[\\/\.]\.' -or $m -notmatch '^[a-zA-Z0-9_-]+\.ps1$') {
+    Write-Warning "Invalid milestone filename: $m"
+    continue
+  }
+  
   $p = Join-Path $milestoneFolder $m
+  
+  # Ensure the resolved path is within the milestones folder
+  $resolvedPath = [System.IO.Path]::GetFullPath($p)
+  $resolvedMilestoneFolder = [System.IO.Path]::GetFullPath($milestoneFolder)
+  
+  if (-not $resolvedPath.StartsWith($resolvedMilestoneFolder)) {
+    Write-Warning "Path traversal attempt detected: $m"
+    continue
+  }
+  
   if (Test-Path $p) { 
     Write-Host "Loading $m ..." -ForegroundColor Cyan
-    . $p 
+    try {
+      . $p 
+    } catch {
+      Write-Warning "Failed to load milestone $m : $($_.Exception.Message)"
+    }
   } else { 
     Write-Warning "Milestone not found: $m" 
   }
@@ -680,6 +753,12 @@ if ($OutputFormat -contains 'All') {
 $paths = Write-Reports -Results $results -OutDir $OutputDir -SystemInfo $systemInfo -Formats $formats
 
 # Cleanup
-if (Test-Path $seceditPath) { Remove-Item $seceditPath -Force -ErrorAction SilentlyContinue }
+if ($seceditPath -and (Test-Path $seceditPath)) { 
+  try {
+    Remove-Item $seceditPath -Force -ErrorAction SilentlyContinue 
+  } catch {
+    Write-Warning "Failed to cleanup temporary file: $seceditPath"
+  }
+}
 
 exit (@($results | Where-Object { -not $_.Passed }).Count)
