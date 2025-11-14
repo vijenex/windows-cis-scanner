@@ -526,81 +526,7 @@ $($rows -join "`n")
   
   # Generate Word DOCX document if requested
   if ($Formats -contains 'All' -or $Formats -contains 'Word') {
-    try {
-      # Try to use Word COM object for native DOCX
-      $wordApp = New-Object -ComObject Word.Application -ErrorAction Stop
-      $wordApp.Visible = $false
-      $doc = $wordApp.Documents.Add()
-      
-      # Add title
-      $selection = $wordApp.Selection
-      $selection.Font.Size = 16
-      $selection.Font.Bold = $true
-      $selection.TypeText("CIS Compliance Audit Report`n`n")
-      
-      # Add system information
-      $selection.Font.Size = 14
-      $selection.Font.Bold = $true
-      $selection.TypeText("System Information`n")
-      $selection.Font.Size = 11
-      $selection.Font.Bold = $false
-      $selection.TypeText("Operating System: $($SystemInfo.Caption)`n")
-      $selection.TypeText("Version: $($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))`n")
-      $selection.TypeText("Computer Name: $($SystemInfo.ComputerName)`n")
-      $selection.TypeText("Machine ID: $($SystemInfo.MachineID)`n")
-      $selection.TypeText("IP Address: $($SystemInfo.IPAddress)`n")
-      $selection.TypeText("Scan Date: $($SystemInfo.ScanDate)`n`n")
-      
-      # Add summary
-      $selection.Font.Size = 14
-      $selection.Font.Bold = $true
-      $selection.TypeText("Summary`n")
-      $selection.Font.Size = 11
-      $selection.Font.Bold = $false
-      $selection.TypeText("Total Checks: $total`n")
-      $selection.TypeText("Passed: $passed`n")
-      $selection.TypeText("Failed: $failed`n")
-      $selection.TypeText("Success Rate: $([math]::Round(($passed/$total)*100,1))%`n`n")
-      
-      # Add table
-      $selection.Font.Size = 14
-      $selection.Font.Bold = $true
-      $selection.TypeText("Detailed Results`n")
-      
-      $table = $doc.Tables.Add($selection.Range, $Results.Count + 1, 7)
-      $table.Borders.Enable = $true
-      
-      # Headers
-      $table.Cell(1,1).Range.Text = "ID"
-      $table.Cell(1,2).Range.Text = "Control"
-      $table.Cell(1,3).Range.Text = "Section"
-      $table.Cell(1,4).Range.Text = "Status"
-      $table.Cell(1,5).Range.Text = "Description"
-      $table.Cell(1,6).Range.Text = "Impact"
-      $table.Cell(1,7).Range.Text = "Remediation"
-      
-      # Data rows
-      for ($i = 0; $i -lt $Results.Count; $i++) {
-        $row = $i + 2
-        $result = $Results[$i]
-        $table.Cell($row,1).Range.Text = $result.Id
-        $table.Cell($row,2).Range.Text = $result.Title
-        $table.Cell($row,3).Range.Text = $result.Section
-        $table.Cell($row,4).Range.Text = if($result.Passed){"Pass"}else{"Fail"}
-        $table.Cell($row,5).Range.Text = if($result.ReferenceNote){$result.ReferenceNote}else{"N/A"}
-        $table.Cell($row,6).Range.Text = if($result.Evidence){$result.Evidence}else{"N/A"}
-        $table.Cell($row,7).Range.Text = $result.Remediation
-      }
-      
-      $doc.SaveAs2($word)
-      $doc.Close()
-      $wordApp.Quit()
-      [System.Runtime.Interopservices.Marshal]::ReleaseComObject($wordApp) | Out-Null
-      
-      $outputs['Word'] = $word
-      Write-Host "Word: $word (DOCX format)" -ForegroundColor Green
-    } catch {
-      # Fallback: Generate Word-compatible HTML when Word COM is not available
+    # Generate Word-compatible HTML (skip COM to avoid hanging)
       $wordHtml = @"
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"/><title>CIS Compliance Audit Report</title>
@@ -646,11 +572,10 @@ Report generated on $($SystemInfo.ScanDate) for $($SystemInfo.ComputerName)
 <p style="color:#666;font-size:10px;text-align:center;">Note: Open this file in Microsoft Word and save as DOCX for native Word format.</p>
 </body></html>
 "@
-      
-      Set-Content -Path $word -Value $wordHtml -Encoding UTF8
-      $outputs['Word'] = $word
-      Write-Host "Word: $word (HTML format - open in Word to save as DOCX)" -ForegroundColor Yellow
-    }
+    
+    Set-Content -Path $word -Value $wordHtml -Encoding UTF8
+    $outputs['Word'] = $word
+    Write-Host "Word: $word (HTML format - open in Word to save as DOCX)" -ForegroundColor Yellow
   }
   
   return $outputs
