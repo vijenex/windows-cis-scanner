@@ -1,7 +1,7 @@
 # Windows Server 2019 CIS Compliance Scanner
 
 ## Overview
-This directory contains the CIS compliance scanner for Windows Server 2019, implementing **431 out of 751 total CIS benchmark controls** (57% coverage) for comprehensive security auditing. All critical security sections are 100% complete.
+This directory contains the CIS compliance scanner for Windows Server 2019, evaluating **533 security controls** (431 unique control definitions representing 57% of 751 total CIS benchmark controls) for comprehensive security auditing. All critical security sections are 100% complete.
 
 ## Directory Structure
 ```
@@ -48,6 +48,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 
 ## Implementation Coverage
 
+**Total Controls Evaluated**: 533 (Level1 profile)
+**Unique Control Definitions**: 431 (57% of 751 total CIS controls)
+
 ### ✅ Complete Sections (100% Coverage)
 - **Section 1**: Account Policies (10 controls)
 - **Section 2**: Local Policies (95 controls)
@@ -89,10 +92,10 @@ After scan completion, displays:
 =============================================================
                     SCAN COMPLETED                           
 =============================================================
-Total Checks: 431
+Total Checks: 533
 Passed: 245
-Failed: 186
-Success Rate: 56.8%
+Failed: 288
+Success Rate: 45.9%
 =============================================================
 ```
 

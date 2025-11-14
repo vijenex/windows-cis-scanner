@@ -255,7 +255,8 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 | **18** Administrative Templates (Computer) | 230+ | Registry-based security settings |
 | **19** Administrative Templates (User) | 13 | User configuration policies |
 
-**Total: 431 Security Controls** (57% of 751 total CIS controls)
+**Total: 533 Security Controls Evaluated** (Level1 profile)
+**Unique Control Definitions: 431** (57% of 751 total CIS controls)
 
 ### Planned Versions
 
@@ -368,7 +369,7 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 ### Current Stable Release
 - **v2.1.2** - Windows Server 2025 & 2019 CIS Scanner
   - **Windows Server 2025**: 327+ controls implemented
-  - **Windows Server 2019**: 431 controls implemented (57% coverage)
+  - **Windows Server 2019**: 533 controls evaluated (431 unique definitions, 57% CIS coverage)
   - Real-time scan progress display with pass/fail summary
   - Multiple report formats (HTML, CSV, PDF, Word)
   - Standardized format across both versions
