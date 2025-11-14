@@ -1,6 +1,8 @@
-# milestone-7.ps1 — File System
-# According to CIS documentation, section 7 is just a header
-# No rules in this section per CIS documentation structure
+# Section 7: File System (Windows Server 2025)
 $Global:Rules += @(
-  # No rules in this section per CIS documentation structure
+  @{ Id='7.1'; Title='(L1) Ensure ''%SystemRoot%\System32'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Users: Read & Execute'; Evidence='Check folder permissions'; Description='Secures System32 folder'; Impact='Prevents system file tampering'; Remediation='Configure System32 permissions' },
+  @{ Id='7.2'; Title='(L1) Ensure ''%SystemRoot%\System32\config'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control'; Evidence='Check folder permissions'; Description='Secures registry hive files'; Impact='Prevents registry tampering'; Remediation='Configure config folder permissions' },
+  @{ Id='7.3'; Title='(L1) Ensure ''%SystemRoot%\System32\drivers'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Users: Read & Execute'; Evidence='Check folder permissions'; Description='Secures driver files'; Impact='Prevents driver tampering'; Remediation='Configure drivers folder permissions' },
+  @{ Id='7.4'; Title='(L1) Ensure ''%SystemRoot%\System32\spool'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Print Operators: Modify'; Evidence='Check folder permissions'; Description='Secures print spool folder'; Impact='Prevents print system tampering'; Remediation='Configure spool folder permissions' },
+  @{ Id='7.5'; Title='(L1) Ensure ''%SystemRoot%\Temp'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Users: Modify'; Evidence='Check folder permissions'; Description='Secures system temp folder'; Impact='Prevents temp file abuse'; Remediation='Configure Temp folder permissions' }
 )

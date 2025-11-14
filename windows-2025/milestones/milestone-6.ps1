@@ -1,6 +1,5 @@
-# milestone-6.ps1 — Registry
-# According to CIS documentation, section 6 is just a header
-# No rules in this section per CIS documentation structure
+# Section 6: Registry (Windows Server 2025)
 $Global:Rules += @(
-  # No rules in this section per CIS documentation structure
+  @{ Id='6.1'; Title='(L1) Ensure ''HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg\AllowedExactPaths'' is configured'; Section='6 Registry'; Profile='Level1'; Type='Registry'; Key='HKLM:\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg'; ValueName='AllowedExactPaths'; Expected='System\CurrentControlSet\Control\ProductOptions,System\CurrentControlSet\Control\Server Applications,Software\Microsoft\Windows NT\CurrentVersion'; Description='Configures allowed registry paths'; Impact='Restricts remote registry access'; Remediation='Configure allowed exact paths' },
+  @{ Id='6.2'; Title='(L1) Ensure ''HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg\AllowedPaths'' is configured'; Section='6 Registry'; Profile='Level1'; Type='Registry'; Key='HKLM:\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg'; ValueName='AllowedPaths'; Expected='System\CurrentControlSet\Control\Print\Printers,System\CurrentControlSet\Services\Eventlog,Software\Microsoft\OLAP Server,Software\Microsoft\Windows NT\CurrentVersion\Print,Software\Microsoft\Windows NT\CurrentVersion\Windows,System\CurrentControlSet\Control\ContentIndex,System\CurrentControlSet\Control\Terminal Server,System\CurrentControlSet\Control\Terminal Server\UserConfig,System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration,Software\Microsoft\Windows NT\CurrentVersion\Perflib,System\CurrentControlSet\Services\SysmonLog'; Description='Configures allowed registry paths'; Impact='Restricts remote registry access'; Remediation='Configure allowed paths' }
 )

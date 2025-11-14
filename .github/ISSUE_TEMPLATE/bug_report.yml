@@ -6,9 +6,22 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out this form completely.
+        # 🐛 Bug Report for Windows CIS Audit Tool
         
-        **ℹ️ INFO**: This is open source software under MIT License. Contributions are welcome!
+        Thanks for taking the time to report a bug! Please fill out this form completely to help us resolve the issue quickly.
+        
+        ## 📋 Before You Start
+        - **Repository**: [Vijenex Windows CIS Scanner](https://github.com/vijenex/windows-cis-scanner)
+        - **License**: MIT License - Open source contributions welcome
+        - **Support**: Community-driven support through GitHub issues
+        - **Documentation**: See [README.md](../README.md) for setup and usage instructions
+        
+        ## 🔍 What We Need
+        Please provide detailed information to help us reproduce and fix the issue:
+        - System environment details
+        - Exact steps to reproduce
+        - Complete error messages
+        - Expected vs actual behavior
         
   - type: checkboxes
     id: terms

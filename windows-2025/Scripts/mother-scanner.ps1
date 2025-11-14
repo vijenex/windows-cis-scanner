@@ -678,6 +678,8 @@ if (-not (Test-Path $milestoneFolder)) {
 
 if (-not $Milestones -or $Milestones.Count -eq 0) {
   $Milestones = Get-ChildItem -Path $milestoneFolder -Filter *.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
+  # Ensure all milestone files are loaded in order
+  $Milestones = $Milestones | Sort-Object { [int]($_ -replace '\D') }
 }
 
 foreach ($m in $Milestones) {
