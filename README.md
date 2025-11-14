@@ -47,7 +47,7 @@ This platform provides automated security compliance auditing for Windows system
 ## 🗂️ Repository Structure
 
 ```
-├── windows-2025/           # Windows Server 2025 CIS audit tools
+├── windows-2025/           # Windows Server 2025 CIS audit tools (COMPLETE)
 │   ├── Scripts/
 │   │   └── mother-scanner.ps1    # Main scanner engine
 │   ├── milestones/               # CIS control definitions
@@ -61,8 +61,21 @@ This platform provides automated security compliance auditing for Windows system
 │   │   └── ...                   # Additional milestones
 │   ├── documentation/            # Official CIS benchmark PDF
 │   └── reports/                  # Generated audit reports
+├── windows-2019/           # Windows Server 2019 CIS audit tools (COMPLETE)
+│   ├── Scripts/
+│   │   └── mother-scanner.ps1    # Main scanner engine
+│   ├── milestones/               # CIS control definitions (431 controls)
+│   │   ├── milestone-1.ps1       # Account Policies
+│   │   ├── milestone-2.ps1       # Local Policies
+│   │   ├── milestone-5.ps1       # System Services
+│   │   ├── milestone-9.ps1       # Windows Defender Firewall
+│   │   ├── milestone-17.ps1      # Advanced Audit Policy
+│   │   ├── milestone-18.ps1      # Administrative Templates (Computer)
+│   │   ├── milestone-19.ps1      # Administrative Templates (User)
+│   │   └── ...                   # Additional milestones
+│   ├── documentation/            # CIS benchmark documentation
+│   └── reports/                  # Generated audit reports
 ├── windows-2022/           # [Planned] Windows Server 2022 tools
-├── windows-2019/           # [Planned] Windows Server 2019 tools
 ├── windows-11/             # [Planned] Windows 11 tools
 ├── windows-10/             # [Planned] Windows 10 tools
 └── LICENSE                 # MIT License
@@ -81,24 +94,32 @@ This platform provides automated security compliance auditing for Windows system
 
 **Latest Release (Stable):**
 ```powershell
-# Download latest release
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.1.zip" -OutFile "vijenex-windows-cis-v1.0.1.zip"
-Expand-Archive -Path "vijenex-windows-cis-v1.0.1.zip" -DestinationPath "C:\Tools\"
-cd "C:\Tools\windows-cis-scanner-1.0.1\windows-2025"
+# Download latest release (v2.1.2)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v2.1.2.zip" -OutFile "vijenex-windows-cis-v2.1.2.zip"
+Expand-Archive -Path "vijenex-windows-cis-v2.1.2.zip" -DestinationPath "C:\Tools\"
+cd "C:\Tools\Windows-Server-CIS-Audit-2.1.2\windows-2025"
+
+# Or for Windows Server 2019
+cd "C:\Tools\Windows-Server-CIS-Audit-2.1.2\windows-2019"
 ```
 
 **Development Version:**
 ```powershell
 # Clone the repository
 git clone https://github.com/vijenex/windows-cis-scanner.git
-cd windows-cis-scanner\windows-2025
+cd windows-cis-scanner
+
+# Navigate to your Windows version
+cd windows-2025  # For Windows Server 2025
+# OR
+cd windows-2019  # For Windows Server 2019
 ```
 
 **Specific Version:**
 ```powershell
-# Install specific version (replace v1.0.1 with desired version)
-git clone --branch v1.0.1 https://github.com/vijenex/windows-cis-scanner.git
-cd windows-cis-scanner\windows-2025
+# Install specific version (replace v2.1.2 with desired version)
+git clone --branch v2.1.2 https://github.com/vijenex/windows-cis-scanner.git
+cd windows-cis-scanner\windows-2025  # or windows-2019
 ```
 
 ### Usage
@@ -208,12 +229,25 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 | **18** Administrative Templates (Computer) | 164+ | Registry-based security settings |
 | **19** Administrative Templates (User) | 12 | User configuration policies |
 
-**Total: 133 Security Controls**
+**Total: 327+ Security Controls**
+
+#### Windows Server 2019 Standalone/Workgroup ✅ **NEW**
+
+| Section | Controls | Coverage |
+|---------|----------|----------|
+| **1** Account Policies | 10 | Password Policy, Account Lockout Policy |
+| **2** Local Policies | 95 | User Rights Assignment, Security Options |
+| **5** System Services | 2 | Print Spooler, Remote Registry |
+| **9** Windows Defender Firewall | 27 | Domain, Private, Public profiles |
+| **17** Advanced Audit Policy | 54 | Comprehensive audit logging |
+| **18** Administrative Templates (Computer) | 230+ | Registry-based security settings |
+| **19** Administrative Templates (User) | 13 | User configuration policies |
+
+**Total: 431 Security Controls** (57% of 751 total CIS controls)
 
 ### Planned Versions
 
 - **Windows Server 2022** - Coming soon
-- **Windows Server 2019** - Coming soon  
 - **Windows 11** - Planned
 - **Windows 10** - Planned
 
@@ -274,8 +308,8 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 
 ## 🤝 Contributing
 
-### 🚫 Code Modifications
-**NOT PERMITTED** - This is proprietary software. See [LICENSE](LICENSE).
+### ✅ Code Contributions
+**WELCOME** - This is open source software under MIT License. See [LICENSE](LICENSE) for details.
 
 ### 🐛 Issue Reporting
 We welcome issue reports and feature requests:
@@ -304,7 +338,7 @@ We welcome issue reports and feature requests:
 ## ⚖️ Legal
 
 ### License
-This software is proprietary. See [LICENSE](LICENSE) for complete terms.
+This software is open source under MIT License. See [LICENSE](LICENSE) for complete terms.
 
 ### Disclaimer
 - **No warranty** provided - use at your own risk
@@ -320,28 +354,30 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 ## 🏷️ Releases
 
 ### Current Stable Release
-- **v1.0.1** - Windows Server 2025 CIS Scanner
-  - Complete CIS benchmark implementation (300+ controls)
-  - PowerShell-based automated auditing with security enhancements
-  - Multiple report formats with Vijenex branding (HTML, CSV, PDF, Word)
-  - Comprehensive security assessment
-  - Enhanced path validation and command injection prevention
-  - Zero false positive design
+- **v2.1.2** - Windows Server 2025 & 2019 CIS Scanner
+  - **Windows Server 2025**: 327+ controls implemented
+  - **Windows Server 2019**: 431 controls implemented (57% coverage)
+  - Real-time scan progress display with pass/fail summary
+  - Multiple report formats (HTML, CSV, PDF, Word)
+  - Standardized format across both versions
+  - Enhanced security with path validation
+  - Comprehensive audit logging
 
 ### Download Options
 ```powershell
-# Latest stable release
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.0.1.zip" -OutFile "vijenex-windows-cis-v1.0.1.zip"
+# Latest stable release (v2.1.2)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v2.1.2.zip" -OutFile "vijenex-windows-cis-v2.1.2.zip"
 
 # All releases
 # Visit: https://github.com/vijenex/windows-cis-scanner/releases
 ```
 
 ### Version Information
-- **Current Version**: v1.0.1
-- **Supported OS**: Windows Server 2025
+- **Current Version**: v2.1.2
+- **Supported OS**: Windows Server 2025, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
 - **Release Date**: November 2024
+- **New Features**: Scan summary display, standardized format, improved reporting
 
 ---
 

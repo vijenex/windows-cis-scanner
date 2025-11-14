@@ -1,18 +1,24 @@
-# Windows Server 2019 CIS Compliance Scanner
+# Windows Server 2025 CIS Compliance Scanner
 
 ## Overview
-This directory contains the CIS compliance scanner for Windows Server 2019, implementing **431 out of 751 total CIS benchmark controls** (57% coverage) for comprehensive security auditing. All critical security sections are 100% complete.
+This directory contains the CIS compliance scanner for Windows Server 2025, implementing **327+ CIS benchmark controls** for comprehensive security auditing based on official CIS Microsoft Windows Server 2025 Benchmark v1.0.0.
 
 ## Directory Structure
 ```
-windows-2019/
+windows-2025/
 ├── Scripts/
 │   └── mother-scanner.ps1      # Main scanner engine
 ├── milestones/                 # CIS control definitions
-│   ├── milestone-template.ps1  # Template for new controls
-│   └── milestone-*.ps1         # Individual milestone files
+│   ├── milestone-1.ps1         # Account Policies
+│   ├── milestone-2.ps1         # Local Policies
+│   ├── milestone-5.ps1         # System Services
+│   ├── milestone-9.ps1         # Windows Defender Firewall
+│   ├── milestone-17.ps1        # Advanced Audit Policy
+│   ├── milestone-18.ps1        # Administrative Templates (Computer)
+│   ├── milestone-19.ps1        # Administrative Templates (User)
+│   └── ...                     # Additional milestones
 ├── reports/                    # Generated scan reports
-└── documentation/              # CIS benchmark documentation
+└── documentation/              # CIS benchmark PDF documentation
 ```
 
 ## Usage
@@ -48,16 +54,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 
 ## Implementation Coverage
 
-### ✅ Complete Sections (100% Coverage)
-- **Section 1**: Account Policies (10 controls)
-- **Section 2**: Local Policies (95 controls)
-- **Section 5**: System Services (2 controls)
-- **Section 9**: Windows Defender Firewall (27 controls)
-- **Section 17**: Advanced Audit Policy Configuration (54 controls)
+### ✅ Implemented Sections
+- **Section 1**: Account Policies (11 controls) - Password Policy, Account Lockout Policy
+- **Section 2**: Local Policies (98 controls) - User Rights Assignment, Security Options
+- **Section 5**: System Services (1 control) - Print Spooler configuration
+- **Section 9**: Windows Defender Firewall (14 controls) - Private/Public profile settings
+- **Section 17**: Advanced Audit Policy (27 controls) - Comprehensive audit logging
+- **Section 18**: Administrative Templates - Computer (164+ controls) - Registry-based security settings
+- **Section 19**: Administrative Templates - User (12 controls) - User configuration policies
 
-### ⚠️ Partial Coverage
-- **Section 18**: Administrative Templates - Computer (230+ controls implemented)
-- **Section 19**: Administrative Templates - User (13 controls implemented)
+**Total: 327+ Security Controls**
 
 ### Control Types Supported
 - **SecEdit**: Security policy settings (Password, Account Lockout, Security Options)
@@ -66,16 +72,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 - **PrivRight**: User Rights Assignment automation
 - **Composite**: Multi-condition validation
 - **Manual**: Manual verification required (Firewall, Services)
-
-## CIS Reference
-All controls reference the official CIS Microsoft Windows Server 2019 Benchmark available at:
-https://www.cisecurity.org/benchmark/microsoft_windows_server
-
-## Requirements
-- Windows Server 2019
-- PowerShell 5.1 or later
-- Administrator privileges
-- Network access for CIS documentation links
 
 ## Output Formats
 - **HTML**: Visual dashboard with color-coded results
@@ -89,17 +85,27 @@ After scan completion, displays:
 =============================================================
                     SCAN COMPLETED                           
 =============================================================
-Total Checks: 431
-Passed: 245
-Failed: 186
-Success Rate: 56.8%
+Total Checks: 327
+Passed: 189
+Failed: 138
+Success Rate: 57.8%
 =============================================================
 ```
+
+## CIS Reference
+All controls reference the official CIS Microsoft Windows Server 2025 Benchmark v1.0.0 available at:
+https://www.cisecurity.org/benchmark/microsoft_windows_server
+
+## Requirements
+- Windows Server 2025
+- PowerShell 5.1 or later
+- Administrator privileges
+- Network access for CIS documentation links
 
 ## Notes
 - **Audit-only scanner** - makes no system changes
 - **Real-time progress** - displays each control as it's evaluated
 - **Reports stored** in reports/ directory by default
 - **CIS Reference links** included for each control
-- **Standardized format** - matches Windows 2025 implementation
-- **Enterprise-ready** - 100% coverage of critical security sections
+- **Standardized format** - matches Windows 2019 implementation
+- **Enterprise-ready** - comprehensive security baseline for Windows Server 2025
