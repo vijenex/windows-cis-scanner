@@ -63,8 +63,8 @@ This platform provides automated security compliance auditing for Windows system
 │   └── reports/                  # Generated audit reports
 ├── windows-2022/           # [Planned] Windows Server 2022 tools
 ├── windows-2019/           # [Planned] Windows Server 2019 tools
-├── windows-11/             # [Planned] Windows 11 Enterprise tools
-├── windows-10/             # [Planned] Windows 10 Enterprise tools
+├── windows-11/             # [Planned] Windows 11 tools
+├── windows-10/             # [Planned] Windows 10 tools
 └── LICENSE                 # MIT License
 ```
 
@@ -169,12 +169,12 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 ### 📑 PDF Report (`vijenex-cis-report-pdf.html`)
 - **Browser-based PDF generation** (no additional software needed)
 - **Print-friendly HTML** with one-click PDF creation button
-- **Professional format** for executive reporting
+- **Clean format** for executive reporting
 - **Complete system information** and audit results
 - **Usage**: Open in browser → Click "Print to PDF" button → Save as PDF
 
 ### 📝 Word Document (`vijenex-cis-report.docx`)
-- **Native DOCX format** - professional Word document
+- **Native DOCX format** - Word document
 - **Requires Microsoft Word** for generation
 - **Structured tables** with all audit findings
 - **System details** for audit trail
@@ -214,8 +214,8 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 
 - **Windows Server 2022** - Coming soon
 - **Windows Server 2019** - Coming soon  
-- **Windows 11 Enterprise** - Planned
-- **Windows 10 Enterprise** - Planned
+- **Windows 11** - Planned
+- **Windows 10** - Planned
 
 > All implementations strictly follow official CIS benchmark documentation for each respective version.
 
@@ -324,7 +324,7 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
   - Complete CIS benchmark implementation (300+ controls)
   - PowerShell-based automated auditing with security enhancements
   - Multiple report formats with Vijenex branding (HTML, CSV, PDF, Word)
-  - Enterprise-grade security assessment
+  - Comprehensive security assessment
   - Enhanced path validation and command injection prevention
   - Zero false positive design
 
