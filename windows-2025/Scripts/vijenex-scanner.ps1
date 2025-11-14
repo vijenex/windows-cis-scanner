@@ -1,5 +1,5 @@
 <#
-  Windows Server 2019 CIS-style Scanner (Audit-only)
+  Windows Server 2025 CIS-style Scanner (Audit-only)
   - Loads all *.ps1 rule packs from ../milestones (unless -Milestones passed)
   - Reads live settings via `secedit` and `auditpol`
   - Writes HTML + CSV to -OutputDir (defaults ../reports)
@@ -75,16 +75,10 @@ function Export-SecEdit {
       throw "Invalid temp path detected"
     }
     
-    $errFile = Join-Path $env:TEMP ("secpol-err-" + [guid]::NewGuid().Guid + ".txt")
-    $result = Start-Process -FilePath "secedit.exe" -ArgumentList "/export", "/cfg", "`"$tmp`"" -Wait -PassThru -NoNewWindow -RedirectStandardError $errFile
-    
+    $result = Start-Process -FilePath "secedit.exe" -ArgumentList "/export", "/cfg", "`"$tmp`"" -Wait -PassThru -NoNewWindow -RedirectStandardError $null
     if ($result.ExitCode -ne 0) {
-      $errContent = if (Test-Path $errFile) { Get-Content $errFile -Raw } else { "Unknown error" }
-      Remove-Item $errFile -Force -ErrorAction SilentlyContinue
-      throw "secedit export failed with exit code $($result.ExitCode): $errContent"
+      throw "secedit export failed with exit code $($result.ExitCode)"
     }
-    
-    Remove-Item $errFile -Force -ErrorAction SilentlyContinue
     
     if (-not (Test-Path $tmp)) {
       throw "secedit export did not create expected file"
@@ -99,7 +93,7 @@ function Export-SecEdit {
 
 function Parse-InfFile([string]$Path){
   $map=@{}
-  if ([string]::IsNullOrWhiteSpace($Path) -or -not (Test-Path $Path)) { return $map }
+  if (-not (Test-Path $Path)) { return $map }
   $section=''
   foreach($line in Get-Content -LiteralPath $Path){
     $t=$line.Trim()
@@ -391,6 +385,8 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   New-Dir $OutDir
   $csv = Join-Path $OutDir 'vijenex-cis-results.csv'
   $html = Join-Path $OutDir 'vijenex-cis-report.html'
+  $pdf = Join-Path $OutDir 'vijenex-cis-report-pdf.html'
+  $word = Join-Path $OutDir 'vijenex-cis-report.docx'
   $outputs = @{}
   
   # Copy CIS documentation if available
@@ -430,7 +426,7 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
     $htmlContent = @"
 <!doctype html>
 <html><head><meta charset="utf-8"/><title>CIS Scan Report - $($SystemInfo.Caption)</title>
-<style>body{font-family:Arial,sans-serif;margin:20px}h1{margin-bottom:0}.system-info{background:#f8f9fa;padding:15px;border-radius:5px;margin:15px 0}.system-info h3{margin-top:0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:6px;text-align:left;font-size:12px}th{background:#f0f0f0}tr.fail-row{background:#ffe6e6}tr.pass-row{background:#e6ffe6}.desc{max-width:300px;word-wrap:break-word}</style>
+<style>body{font-family:Arial,sans-serif;margin:20px}h1{margin-bottom:0}.system-info{background:#f8f9fa;padding:15px;border-radius:5px;margin:15px 0}.system-info h3{margin-top:0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:6px;text-align:left;font-size:12px}th{background:#f0f0f0}tr.fail-row{background:#ffe6e6}tr.pass-row{background:#e6ffe6}.desc,.impact{max-width:300px;word-wrap:break-word}</style>
 </head><body>
 <h1>CIS Compliance Audit Report</h1>
 <div class="system-info">
@@ -453,6 +449,204 @@ $($rows -join "`n")
     Write-Host "HTML: $html" -ForegroundColor Green
   }
   
+  # Generate PDF-ready HTML if requested
+  if ($Formats -contains 'All' -or $Formats -contains 'PDF') {
+    $pdfHtml = @"
+<!doctype html>
+<html><head><meta charset="utf-8"/><title>CIS Scan Report - $($SystemInfo.Caption)</title>
+<style>
+@media print {
+  body { margin: 0; }
+  .no-print { display: none; }
+}
+body{font-family:Arial,sans-serif;margin:20px;font-size:12px;line-height:1.4}
+h1{margin-bottom:10px;color:#333}
+.system-info{background:#f8f9fa;padding:15px;border:1px solid #ddd;margin:15px 0;border-radius:5px}
+.system-info h3{margin-top:0;font-size:14px;color:#333}
+.system-info p{margin:5px 0}
+table{border-collapse:collapse;width:100%;margin-top:20px;font-size:11px}
+th,td{border:1px solid #333;padding:8px;text-align:left;vertical-align:top}
+th{background:#f0f0f0;font-weight:bold}
+tr.fail-row{background:#ffe6e6}
+tr.pass-row{background:#e6ffe6}
+.desc,.impact{max-width:250px;word-wrap:break-word}
+.summary{margin:20px 0;padding:15px;background:#f8f9fa;border-radius:5px}
+.print-btn{margin:20px 0;padding:10px 20px;background:#007bff;color:white;border:none;border-radius:5px;cursor:pointer;font-size:14px}
+.print-btn:hover{background:#0056b3}
+</style>
+<script>
+function printToPDF() {
+  window.print();
+}
+</script>
+</head><body>
+<div class="no-print">
+<button class="print-btn" onclick="printToPDF()">&#x1F5A8; Print to PDF (Ctrl+P)</button>
+<p><strong>Instructions:</strong> Click the button above or press Ctrl+P, then select "Save as PDF" as your printer.</p>
+</div>
+<h1>CIS Compliance Audit Report</h1>
+<div class="system-info">
+<h3>System Information</h3>
+<p><strong>Operating System:</strong> $($SystemInfo.Caption)</p>
+<p><strong>Version:</strong> $($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))</p>
+<p><strong>Computer Name:</strong> $($SystemInfo.ComputerName)</p>
+<p><strong>Machine ID:</strong> $($SystemInfo.MachineID)</p>
+<p><strong>IP Address:</strong> $($SystemInfo.IPAddress)</p>
+<p><strong>Scan Date:</strong> $($SystemInfo.ScanDate)</p>
+</div>
+<div class="summary">
+<h3>Summary</h3>
+<p><strong>Total Checks:</strong> $total</p>
+<p><strong>Passed:</strong> $passed</p>
+<p><strong>Failed:</strong> $failed</p>
+<p><strong>Success Rate:</strong> $([math]::Round(($passed/$total)*100,1))%</p>
+</div>
+<h3>Detailed Results</h3>
+<table>
+<thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Description</th><th>Impact</th><th>Remediation</th></tr></thead>
+<tbody>
+$($rows -join "`n")
+</tbody></table>
+<div style="margin-top:30px;color:#666;font-size:10px;text-align:center;">
+<p>Audit-only scan; no changes made. Generated by Vijenex Security Platform.</p>
+<p>Report generated on $($SystemInfo.ScanDate) for $($SystemInfo.ComputerName)</p>
+</div>
+</body></html>
+"@
+    Set-Content -Path $pdf -Value $pdfHtml -Encoding UTF8
+    $outputs['PDF'] = $pdf
+    Write-Host "PDF:  $pdf (Open in browser, click Print to PDF button)" -ForegroundColor Green
+  }
+  
+  # Generate Word DOCX document if requested
+  if ($Formats -contains 'All' -or $Formats -contains 'Word') {
+    try {
+      # Try to use Word COM object for native DOCX
+      $wordApp = New-Object -ComObject Word.Application -ErrorAction Stop
+      $wordApp.Visible = $false
+      $doc = $wordApp.Documents.Add()
+      
+      # Add title
+      $selection = $wordApp.Selection
+      $selection.Font.Size = 16
+      $selection.Font.Bold = $true
+      $selection.TypeText("CIS Compliance Audit Report`n`n")
+      
+      # Add system information
+      $selection.Font.Size = 14
+      $selection.Font.Bold = $true
+      $selection.TypeText("System Information`n")
+      $selection.Font.Size = 11
+      $selection.Font.Bold = $false
+      $selection.TypeText("Operating System: $($SystemInfo.Caption)`n")
+      $selection.TypeText("Version: $($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))`n")
+      $selection.TypeText("Computer Name: $($SystemInfo.ComputerName)`n")
+      $selection.TypeText("Machine ID: $($SystemInfo.MachineID)`n")
+      $selection.TypeText("IP Address: $($SystemInfo.IPAddress)`n")
+      $selection.TypeText("Scan Date: $($SystemInfo.ScanDate)`n`n")
+      
+      # Add summary
+      $selection.Font.Size = 14
+      $selection.Font.Bold = $true
+      $selection.TypeText("Summary`n")
+      $selection.Font.Size = 11
+      $selection.Font.Bold = $false
+      $selection.TypeText("Total Checks: $total`n")
+      $selection.TypeText("Passed: $passed`n")
+      $selection.TypeText("Failed: $failed`n")
+      $selection.TypeText("Success Rate: $([math]::Round(($passed/$total)*100,1))%`n`n")
+      
+      # Add table
+      $selection.Font.Size = 14
+      $selection.Font.Bold = $true
+      $selection.TypeText("Detailed Results`n")
+      
+      $table = $doc.Tables.Add($selection.Range, $Results.Count + 1, 7)
+      $table.Borders.Enable = $true
+      
+      # Headers
+      $table.Cell(1,1).Range.Text = "ID"
+      $table.Cell(1,2).Range.Text = "Control"
+      $table.Cell(1,3).Range.Text = "Section"
+      $table.Cell(1,4).Range.Text = "Status"
+      $table.Cell(1,5).Range.Text = "Description"
+      $table.Cell(1,6).Range.Text = "Impact"
+      $table.Cell(1,7).Range.Text = "Remediation"
+      
+      # Data rows
+      for ($i = 0; $i -lt $Results.Count; $i++) {
+        $row = $i + 2
+        $result = $Results[$i]
+        $table.Cell($row,1).Range.Text = $result.Id
+        $table.Cell($row,2).Range.Text = $result.Title
+        $table.Cell($row,3).Range.Text = $result.Section
+        $table.Cell($row,4).Range.Text = if($result.Passed){"Pass"}else{"Fail"}
+        $table.Cell($row,5).Range.Text = if($result.Description){$result.Description}else{"N/A"}
+        $table.Cell($row,6).Range.Text = if($result.Impact){$result.Impact}else{"N/A"}
+        $table.Cell($row,7).Range.Text = $result.Remediation
+      }
+      
+      $doc.SaveAs2($word)
+      $doc.Close()
+      $wordApp.Quit()
+      [System.Runtime.Interopservices.Marshal]::ReleaseComObject($wordApp) | Out-Null
+      
+      $outputs['Word'] = $word
+      Write-Host "Word: $word (DOCX format)" -ForegroundColor Green
+    } catch {
+      # Fallback: Generate Word-compatible HTML when Word COM is not available
+      $wordHtml = @"
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><title>CIS Compliance Audit Report</title>
+<style>body{font-family:Calibri,Arial,sans-serif;margin:40px;line-height:1.4}h1{color:#2E75B6;border-bottom:2px solid #2E75B6;padding-bottom:10px}h2{color:#2E75B6;margin-top:30px}.info-table{border-collapse:collapse;margin:20px 0}.info-table td{padding:8px;border:1px solid #ddd}.info-table td:first-child{background:#f0f0f0;font-weight:bold;width:150px}table{border-collapse:collapse;width:100%;margin-top:20px;font-size:11px}th,td{border:1px solid #333;padding:6px;text-align:left;vertical-align:top}th{background:#2E75B6;color:white;font-weight:bold}.pass{background:#d4edda;color:#155724}.fail{background:#f8d7da;color:#721c24}</style>
+</head><body>
+<h1>CIS Compliance Audit Report</h1>
+<h2>System Information</h2>
+<table class="info-table">
+<tr><td>Operating System</td><td>$($SystemInfo.Caption)</td></tr>
+<tr><td>Version</td><td>$($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))</td></tr>
+<tr><td>Computer Name</td><td>$($SystemInfo.ComputerName)</td></tr>
+<tr><td>Machine ID</td><td>$($SystemInfo.MachineID)</td></tr>
+<tr><td>IP Address</td><td>$($SystemInfo.IPAddress)</td></tr>
+<tr><td>Scan Date</td><td>$($SystemInfo.ScanDate)</td></tr>
+</table>
+<h2>Summary</h2>
+<table class="info-table">
+<tr><td>Total Checks</td><td>$total</td></tr>
+<tr><td>Passed</td><td class="pass">$passed</td></tr>
+<tr><td>Failed</td><td class="fail">$failed</td></tr>
+<tr><td>Success Rate</td><td>$([math]::Round(($passed/$total)*100,1))%</td></tr>
+</table>
+<h2>Detailed Results</h2>
+<table>
+<thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Description</th><th>Impact</th><th>Remediation</th></tr></thead>
+<tbody>
+"@
+      
+      foreach ($result in $Results) {
+        $statusClass = if($result.Passed){"pass"}else{"fail"}
+        $status = if($result.Passed){"Pass"}else{"Fail"}
+        $desc = if($result.Description){$result.Description}else{"N/A"}
+        $impact = if($result.Impact){$result.Impact}else{"N/A"}
+        $wordHtml += "<tr class='$statusClass'><td>$($result.Id)</td><td>$($result.Title)</td><td>$($result.Section)</td><td>$status</td><td>$desc</td><td>$impact</td><td>$($result.Remediation)</td></tr>`n"
+      }
+      
+      $wordHtml += @"
+</tbody></table>
+<p style="margin-top:30px;color:#666;font-size:12px;text-align:center;">
+Audit-only scan; no changes made. Generated by Vijenex Security Platform.<br>
+Report generated on $($SystemInfo.ScanDate) for $($SystemInfo.ComputerName)
+</p>
+<p style="color:#666;font-size:10px;text-align:center;">Note: Open this file in Microsoft Word and save as DOCX for native Word format.</p>
+</body></html>
+"@
+      
+      Set-Content -Path $word -Value $wordHtml -Encoding UTF8
+      $outputs['Word'] = $word
+      Write-Host "Word: $word (HTML format - open in Word to save as DOCX)" -ForegroundColor Yellow
+    }
+  }
+  
   return $outputs
 }
 
@@ -460,11 +654,11 @@ $($rows -join "`n")
 Assert-Admin
 New-Dir $OutputDir
 
-# Display Vijenex CLI signature
+# Display Verityx CLI signature
 Write-Host "`n" -ForegroundColor White
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host "                        VIJENEX                              " -ForegroundColor Cyan
-Write-Host "      Windows Server 2019 CIS Compliance Scanner           " -ForegroundColor White
+Write-Host "      Windows Server 2025 CIS Compliance Scanner           " -ForegroundColor White
 Write-Host "                 (Standalone/Workgroup)                     " -ForegroundColor White
 Write-Host "           Powered by Vijenex Security Platform             " -ForegroundColor Yellow
 Write-Host "        https://github.com/vijenex/windows-cis-scanner       " -ForegroundColor Gray
@@ -472,6 +666,27 @@ Write-Host "=============================================================" -Fore
 Write-Host "`n" -ForegroundColor White
 
 $systemInfo=Get-OSInfo
+
+# Validate Windows version
+$expectedBuild = 26100  # Windows Server 2025
+if ($systemInfo.BuildNumber -lt ($expectedBuild - 1000) -or $systemInfo.BuildNumber -gt ($expectedBuild + 1000)) {
+  Write-Host "`n" -ForegroundColor Red
+  Write-Host "=============================================================" -ForegroundColor Red
+  Write-Host "                VERSION MISMATCH WARNING                     " -ForegroundColor Yellow
+  Write-Host "=============================================================" -ForegroundColor Red
+  Write-Host "Expected: Windows Server 2025 (Build ~$expectedBuild)" -ForegroundColor Yellow
+  Write-Host "Detected: Build $($systemInfo.BuildNumber)" -ForegroundColor Yellow
+  Write-Host "`nYou may be running the wrong scanner version!" -ForegroundColor Red
+  Write-Host "Please use the correct folder for your Windows version." -ForegroundColor Yellow
+  Write-Host "=============================================================" -ForegroundColor Red
+  Write-Host "`n" -ForegroundColor White
+  
+  $response = Read-Host "Continue anyway? (yes/no)"
+  if ($response -ne 'yes') {
+    throw "Scan cancelled due to version mismatch"
+  }
+}
+
 Write-Host "Scanning host: $($systemInfo.Caption) ($($systemInfo.Version) build $($systemInfo.BuildNumber))" -ForegroundColor Cyan
 Write-Host "Machine: $($systemInfo.ComputerName) | IP: $($systemInfo.IPAddress) | Date: $($systemInfo.ScanDate)" -ForegroundColor Gray
 
@@ -491,7 +706,7 @@ if (-not $Milestones -or $Milestones.Count -eq 0) {
 
 foreach ($m in $Milestones) {
   # Validate milestone filename to prevent path traversal
-  if ($m -match '[\\\/\.]\.' -or $m -notmatch '^[a-zA-Z0-9_-]+\.ps1$') {
+  if ($m -match '[\\/\.]\.' -or $m -notmatch '^[a-zA-Z0-9_-]+\.ps1$') {
     Write-Warning "Invalid milestone filename: $m"
     continue
   }
@@ -584,7 +799,7 @@ Write-Host "`n" -ForegroundColor White
 
 # Handle output format parameter
 if ($OutputFormat -contains 'All') {
-  $formats = @('HTML','CSV')
+  $formats = @('HTML','CSV','PDF','Word')
 } else {
   $formats = $OutputFormat
 }

@@ -49,7 +49,7 @@ This platform provides automated security compliance auditing for Windows system
 ```
 ├── windows-2025/           # Windows Server 2025 CIS audit tools (COMPLETE)
 │   ├── Scripts/
-│   │   └── mother-scanner.ps1    # Main scanner engine
+│   │   └── vijenex-scanner.ps1    # Main scanner engine
 │   ├── milestones/               # CIS control definitions
 │   │   ├── milestone-1.ps1       # Account Policies
 │   │   ├── milestone-2.ps1       # Local Policies  
@@ -63,7 +63,7 @@ This platform provides automated security compliance auditing for Windows system
 │   └── reports/                  # Generated audit reports
 ├── windows-2019/           # Windows Server 2019 CIS audit tools (COMPLETE)
 │   ├── Scripts/
-│   │   └── mother-scanner.ps1    # Main scanner engine
+│   │   └── vijenex-scanner.ps1    # Main scanner engine
 │   ├── milestones/               # CIS control definitions (431 controls)
 │   │   ├── milestone-1.ps1       # Account Policies
 │   │   ├── milestone-2.ps1       # Local Policies
@@ -130,10 +130,10 @@ cd windows-cis-scanner\windows-2025  # or windows-2019
 cd windows-2025
 
 # Run comprehensive CIS audit (HTML + CSV by default)
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1
 
 # Generate all formats (HTML, CSV, PDF, Word)
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
 ### Scanner in Action
@@ -149,19 +149,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1
 # From within version-specific folder (e.g., windows-2025)
 
 # Generate only Word document
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputFormat Word -OutputDir .\reports
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputFormat Word -OutputDir .\reports
 
 # Generate only PDF report
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputFormat PDF -OutputDir .\reports
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputFormat PDF -OutputDir .\reports
 
 # Generate multiple formats
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputFormat HTML,PDF,Word -OutputDir .\reports
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputFormat HTML,PDF,Word -OutputDir .\reports
 
 # Scan specific milestones with Word output
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Milestones @("milestone-1.ps1","milestone-2.ps1") -OutputFormat Word -OutputDir .\reports
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -Milestones @("milestone-1.ps1","milestone-2.ps1") -OutputFormat Word -OutputDir .\reports
 
 # Include specific controls with all formats
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -Include @("1.1.1","2.2.1") -OutputFormat All -OutputDir .\reports
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -Include @("1.1.1","2.2.1") -OutputFormat All -OutputDir .\reports
 ```
 
 ### Parameters

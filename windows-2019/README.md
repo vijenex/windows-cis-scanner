@@ -7,7 +7,7 @@ This directory contains the CIS compliance scanner for Windows Server 2019, eval
 ```
 windows-2019/
 ├── Scripts/
-│   └── mother-scanner.ps1      # Main scanner engine
+│   └── vijenex-scanner.ps1      # Main scanner engine
 ├── milestones/                 # CIS control definitions
 │   ├── milestone-template.ps1  # Template for new controls
 │   └── milestone-*.ps1         # Individual milestone files
@@ -20,30 +20,30 @@ windows-2019/
 ### Basic Scan
 ```powershell
 # Run comprehensive CIS audit (HTML + CSV by default)
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1
 
 # Generate all formats (HTML, CSV, PDF, Word)
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\mother-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
 ### Advanced Options
 ```powershell
 # Specify output directory
-.\Scripts\mother-scanner.ps1 -OutputDir "C:\Reports"
+.\Scripts\vijenex-scanner.ps1 -OutputDir "C:\Reports"
 
 # Run specific profile (Level1 or Level2)
-.\Scripts\mother-scanner.ps1 -Profile "Level2"
+.\Scripts\vijenex-scanner.ps1 -Profile "Level2"
 
 # Run specific milestones
-.\Scripts\mother-scanner.ps1 -Milestones @("milestone-1.ps1", "milestone-2.ps1")
+.\Scripts\vijenex-scanner.ps1 -Milestones @("milestone-1.ps1", "milestone-2.ps1")
 
 # Generate specific formats
-.\Scripts\mother-scanner.ps1 -OutputFormat @("HTML", "CSV")
-.\Scripts\mother-scanner.ps1 -OutputFormat All  # HTML, CSV, PDF, Word
+.\Scripts\vijenex-scanner.ps1 -OutputFormat @("HTML", "CSV")
+.\Scripts\vijenex-scanner.ps1 -OutputFormat All  # HTML, CSV, PDF, Word
 
 # Include/Exclude specific controls
-.\Scripts\mother-scanner.ps1 -Include @("1.1.1", "2.2.1")
-.\Scripts\mother-scanner.ps1 -Exclude @("9.2.1")
+.\Scripts\vijenex-scanner.ps1 -Include @("1.1.1", "2.2.1")
+.\Scripts\vijenex-scanner.ps1 -Exclude @("9.2.1")
 ```
 
 ## Implementation Coverage
