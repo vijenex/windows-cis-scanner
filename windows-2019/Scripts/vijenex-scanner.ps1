@@ -24,6 +24,13 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $Global:Rules = @()
 
+# Import effective policy module
+$effectivePolicyModule = Join-Path $PSScriptRoot "Get-EffectivePolicy.ps1"
+if (Test-Path $effectivePolicyModule) {
+  . $effectivePolicyModule
+  Write-Verbose "Loaded effective policy module"
+}
+
 # ===== ALL FUNCTIONS DEFINED FIRST =====
 function Assert-Admin {
   $id = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -304,25 +311,51 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
   try{
     switch ($Rule.Type){
       'SecEdit' {
-        $secpol=$Context.SecEdit
-        $section=$Rule.SectionName
-        $key=$Rule.Key
-        $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
-        $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
-          $secpol[$section][$key] 
-        } else { 
-          $null 
+        # Try to get effective value from registry first (more accurate)
+        $val = $null
+        $fromRegistry = $false
+        
+        # Map common SecEdit settings to registry paths
+        $registryMap = @{
+          'LimitBlankPasswordUse' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'; Name='LimitBlankPasswordUse'}
+          'ForceLogoffWhenHourExpire' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters'; Name='EnableForcedLogoff'}
+          'ClearTextPassword' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'; Name='ClearTextPassword'}
+          'NoLMHash' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'; Name='NoLMHash'}
         }
+        
+        if ($registryMap.ContainsKey($Rule.Key) -and (Get-Command Get-EffectiveSecurityOption -ErrorAction SilentlyContinue)) {
+          $regInfo = $registryMap[$Rule.Key]
+          $val = Get-EffectiveSecurityOption -Path $regInfo.Path -Name $regInfo.Name
+          if ($null -ne $val) {
+            $fromRegistry = $true
+          }
+        }
+        
+        # Fallback to secedit if registry not available
+        if (-not $fromRegistry) {
+          $secpol=$Context.SecEdit
+          $section=$Rule.SectionName
+          $key=$Rule.Key
+          $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
+            $secpol[$section][$key] 
+          } else { 
+            $null 
+          }
+        }
+        
+        $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
+        
         if ($null -eq $val -and $null -ne $defaultValue) {
           $result.Current = "<default: $defaultValue>"
           $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
           $result.Passed = Test-Compare -Current $defaultValue -Expected $Rule.Expected -Operator $Rule.Operator
-          $result.Evidence = "[$section] $key (using default)"
+          $result.Evidence = "[$($Rule.SectionName)] $($Rule.Key) (using default)"
         } else {
           $result.Current = if ($null -eq $val){'<unset>'} else { $val }
           $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
           $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
-          $result.Evidence = "[$section] $key"
+          $evidenceSource = if ($fromRegistry) { 'Registry (Effective)' } else { 'SecEdit' }
+          $result.Evidence = "[$evidenceSource] $($Rule.Key)"
         }
       }
       
@@ -389,57 +422,44 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       
       'PrivRight' {
         try {
-          $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
+          # Use LSA API to get EFFECTIVE user rights instead of secedit
+          $effectiveAccounts = @()
+          if (Get-Command Get-EffectiveUserRight -ErrorAction SilentlyContinue) {
+            $effectiveAccounts = @(Get-EffectiveUserRight -Right $Rule.Key)
+          } else {
+            # Fallback to secedit if LSA API not available
+            $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
+            $effectiveAccounts = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
+          }
+          
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
-          # If privilege doesn't exist and DefaultValue is defined, use DefaultValue
-          if ($null -eq $raw -and $null -ne $defaultValue) {
-            $curTokens = @($defaultValue)
-            $curSet = Normalize-PrincipalSet -Tokens $curTokens
-            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
-            
-            # For display, show that we're using default
-            if ($defaultValue.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
-              $result.Current = '<default: none>'
-              $result.Expected = ''
-            } else {
-              $result.Current = "<default: $(if ($defaultValue.Count -gt 0) { ($defaultValue -join ', ') } else { 'none' })>"
-              $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-            }
-            
-            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-            $result.Evidence = "[Privilege Rights] $($Rule.Key) (using default)"
-          } else {
-            # Normal evaluation when privilege exists or no default defined
-            $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
-            $curSet = Normalize-PrincipalSet -Tokens $curTokens
-            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
-
-            # Resolve current tokens for display
-            $resolvedCurrent = @()
-            if ($curTokens.Count -gt 0) {
-              foreach ($tok in $curTokens) {
-                if ($tok) {
-                  $resolvedCurrent += Resolve-Principal $tok
-                }
+          # Normalize effective accounts
+          $curSet = Normalize-PrincipalSet -Tokens $effectiveAccounts
+          $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+          $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+          
+          # Resolve for display
+          $resolvedCurrent = @()
+          if ($effectiveAccounts.Count -gt 0) {
+            foreach ($acc in $effectiveAccounts) {
+              if ($acc) {
+                $resolvedCurrent += Resolve-Principal $acc
               }
             }
-            $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
-            
-            # Handle display: show empty string for both if both are empty ("No One" case)
-            if ($resolvedCurrent.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
-              $result.Current = ''
-              $result.Expected = ''
-            } else {
-              $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
-              $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-            }
-            
-            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-            $result.Evidence = "[Privilege Rights] $($Rule.Key)"
           }
+          
+          # Handle display
+          if ($resolvedCurrent.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
+            $result.Current = ''
+            $result.Expected = ''
+          } else {
+            $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
+            $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+          }
+          
+          $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+          $result.Evidence = "[Effective Rights] $($Rule.Key)"
         } catch {
           $result.Current = "<error: $($_.Exception.Message)>"
           $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
