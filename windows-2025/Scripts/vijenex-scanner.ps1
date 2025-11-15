@@ -144,8 +144,10 @@ function Resolve-Principal {
 function Normalize-PrincipalSet {
   param([string[]]$Tokens)
   $hs = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
-  foreach ($x in ($Tokens | Where-Object { $_ })) {
-    [void]$hs.Add( (Resolve-Principal $x) )
+  if ($Tokens) {
+    foreach ($x in ($Tokens | Where-Object { $_ })) {
+      [void]$hs.Add( (Resolve-Principal $x) )
+    }
   }
   return $hs
 }
