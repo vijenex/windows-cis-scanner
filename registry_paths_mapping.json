@@ -1,0 +1,274 @@
+{
+  "2.3.1.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:LimitBlankPasswordUsePage 164",
+    "expected": 1
+  },
+  "2.3.2.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:SCENoApplyLegacyAuditPolicy",
+    "expected": 1
+  },
+  "2.3.2.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:CrashOnAuditFail",
+    "expected": 0
+  },
+  "2.3.4.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Print\\Providers\\LanMan Print",
+    "expected": 1
+  },
+  "2.3.5.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:SubmitControl",
+    "expected": 0
+  },
+  "2.3.5.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:Vuln",
+    "expected": null
+  },
+  "2.3.5.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters:LdapEnforceChannelBind",
+    "expected": null
+  },
+  "2.3.5.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters:LDAPServerIntegrity",
+    "expected": null
+  },
+  "2.3.5.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:RefusePasswordChan",
+    "expected": 0
+  },
+  "2.3.6.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:RequireSignOrSeal",
+    "expected": 1
+  },
+  "2.3.6.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:SealSecureChannel",
+    "expected": 1
+  },
+  "2.3.6.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:SignSecureChannelPage 198",
+    "expected": 1
+  },
+  "2.3.6.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:DisablePasswordCha",
+    "expected": 0
+  },
+  "2.3.6.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters:MaximumPasswordAge",
+    "expected": null
+  },
+  "2.3.6.6": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:RequireStrongKey",
+    "expected": 1
+  },
+  "2.3.7.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:DisableCADPage 207",
+    "expected": 0
+  },
+  "2.3.7.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:DontDisplayLas",
+    "expected": 1
+  },
+  "2.3.7.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:",
+    "expected": null
+  },
+  "2.3.7.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:",
+    "expected": null
+  },
+  "2.3.7.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:",
+    "expected": null
+  },
+  "2.3.7.6": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows",
+    "expected": null
+  },
+  "2.3.7.7": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows",
+    "expected": null
+  },
+  "2.3.7.8": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon:ForceUnlockLogonPage 221",
+    "expected": 1
+  },
+  "2.3.7.9": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows",
+    "expected": null
+  },
+  "2.3.8.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters:RequireSe",
+    "expected": 1
+  },
+  "2.3.8.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters:EnableSec",
+    "expected": 1
+  },
+  "2.3.8.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters:EnablePla",
+    "expected": 0
+  },
+  "2.3.9.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:",
+    "expected": null
+  },
+  "2.3.9.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:RequireSecurit",
+    "expected": 1
+  },
+  "2.3.9.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:EnableSecurity",
+    "expected": 1
+  },
+  "2.3.9.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:enableforcedlo",
+    "expected": 1
+  },
+  "2.3.9.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:SMBServerNameH",
+    "expected": null
+  },
+  "2.3.10.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Lsa:TurnOffAnonymousBlock",
+    "expected": 0
+  },
+  "2.3.10.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:RestrictAnonymousSAMPage 251",
+    "expected": 1
+  },
+  "2.3.10.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:RestrictAnonymousPage 253",
+    "expected": 1
+  },
+  "2.3.10.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:DisableDomainCreds",
+    "expected": 1
+  },
+  "2.3.10.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:EveryoneIncludesAnonymous",
+    "expected": 0
+  },
+  "2.3.10.6": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:",
+    "expected": null
+  },
+  "2.3.10.7": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:NullSessionPip",
+    "expected": null
+  },
+  "2.3.10.8": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SecurePipeServers\\Winreg",
+    "expected": null
+  },
+  "2.3.10.9": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SecurePipeServers\\Winreg",
+    "expected": null
+  },
+  "2.3.10.10": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Para",
+    "expected": 1
+  },
+  "2.3.10.11": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:restrictremotesam",
+    "expected": null
+  },
+  "2.3.10.12": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanManServer\\Parameters:",
+    "expected": null
+  },
+  "2.3.10.13": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:ForceGuest",
+    "expected": null
+  },
+  "2.3.11.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:UseMachineIdPage 279",
+    "expected": 1
+  },
+  "2.3.11.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0:AllowNullSessionFallback",
+    "expected": 0
+  },
+  "2.3.11.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\pku2u:AllowOnlineID",
+    "expected": 0
+  },
+  "2.3.11.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+    "expected": null
+  },
+  "2.3.11.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:NoLMHashPage 288",
+    "expected": 1
+  },
+  "2.3.11.7": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa:LmCompatibilityLevel",
+    "expected": null
+  },
+  "2.3.11.8": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LDAP:LDAPClientIntegrity",
+    "expected": null
+  },
+  "2.3.11.9": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0:NTLMMinClientS",
+    "expected": null
+  },
+  "2.3.11.10": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0:NTLMMinServerS",
+    "expected": null
+  },
+  "2.3.11.11": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0:AuditReceivingNTLMTrafficPage 301",
+    "expected": null
+  },
+  "2.3.11.12": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Netlogon\\Parameters:Audi",
+    "expected": null
+  },
+  "2.3.11.13": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0:RestrictSendingNTLMTraffic",
+    "expected": null
+  },
+  "2.3.13.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:ShutdownWithou",
+    "expected": 0
+  },
+  "2.3.15.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session",
+    "expected": 1
+  },
+  "2.3.15.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager:ProtectionModePage 315",
+    "expected": 1
+  },
+  "2.3.17.1": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:FilterAdminist",
+    "expected": 1
+  },
+  "2.3.17.2": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:ConsentPromptB",
+    "expected": null
+  },
+  "2.3.17.3": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:ConsentPromptB",
+    "expected": null
+  },
+  "2.3.17.4": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:EnableInstalle",
+    "expected": 1
+  },
+  "2.3.17.5": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:EnableSecureUI",
+    "expected": 1
+  },
+  "2.3.17.6": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:EnableLUAPage 329",
+    "expected": 1
+  },
+  "2.3.17.7": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System:PromptOnSecure",
+    "expected": 1
+  },
+  "2.3.17.8": {
+    "registry_path": "HKEY_LOCAL_MACHINE\\SOFTWARE",
+    "expected": 1
+  }
+}
