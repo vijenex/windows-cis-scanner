@@ -178,55 +178,74 @@ function Get-PrivilegeRaw {
 function Get-AuditPolicies {
   $map = @{}
   try {
-    # Validate auditpol.exe exists and is in system path
     $auditpolPath = Get-Command "auditpol.exe" -ErrorAction SilentlyContinue
     if (-not $auditpolPath) {
       Write-Warning "auditpol.exe not found in system PATH"
       return $map
     }
     
-    $result = Start-Process -FilePath $auditpolPath.Source -ArgumentList "/get", "/subcategory:*" -Wait -PassThru -NoNewWindow -RedirectStandardOutput "temp_audit.txt" -RedirectStandardError "temp_audit_err.txt"
-    
-    if ($result.ExitCode -ne 0) { 
-      Write-Warning "auditpol failed with exit code $($result.ExitCode)"
-      return $map 
+    # GUID to subcategory name mapping from CIS benchmark
+    $guidMap = @{
+      '0cce923f-69ae-11d9-bed3-505054503030' = 'Credential Validation'
+      '0cce9242-69ae-11d9-bed3-505054503030' = 'Kerberos Authentication Service'
+      '0cce9240-69ae-11d9-bed3-505054503030' = 'Kerberos Service Ticket Operations'
+      '0cce9239-69ae-11d9-bed3-505054503030' = 'Application Group Management'
+      '0cce9236-69ae-11d9-bed3-505054503030' = 'Computer Account Management'
+      '0cce9238-69ae-11d9-bed3-505054503030' = 'Distribution Group Management'
+      '0cce923a-69ae-11d9-bed3-505054503030' = 'Other Account Management Events'
+      '0cce9237-69ae-11d9-bed3-505054503030' = 'Security Group Management'
+      '0cce9235-69ae-11d9-bed3-505054503030' = 'User Account Management'
+      '0cce9248-69ae-11d9-bed3-505054503030' = 'PNP Activity'
+      '0cce922b-69ae-11d9-bed3-505054503030' = 'Process Creation'
+      '0cce923b-69ae-11d9-bed3-505054503030' = 'Directory Service Access'
+      '0cce923c-69ae-11d9-bed3-505054503030' = 'Directory Service Changes'
+      '0cce9217-69ae-11d9-bed3-505054503030' = 'Account Lockout'
+      '0cce9249-69ae-11d9-bed3-505054503030' = 'Group Membership'
+      '0cce9216-69ae-11d9-bed3-505054503030' = 'Logoff'
+      '0cce9215-69ae-11d9-bed3-505054503030' = 'Logon'
+      '0cce921c-69ae-11d9-bed3-505054503030' = 'Other Logon/Logoff Events'
+      '0cce921b-69ae-11d9-bed3-505054503030' = 'Special Logon'
+      '0cce9244-69ae-11d9-bed3-505054503030' = 'Detailed File Share'
+      '0cce9224-69ae-11d9-bed3-505054503030' = 'File Share'
+      '0cce9227-69ae-11d9-bed3-505054503030' = 'Other Object Access Events'
+      '0cce9245-69ae-11d9-bed3-505054503030' = 'Removable Storage'
+      '0cce922f-69ae-11d9-bed3-505054503030' = 'Audit Policy Change'
+      '0cce9230-69ae-11d9-bed3-505054503030' = 'Authentication Policy Change'
+      '0cce9231-69ae-11d9-bed3-505054503030' = 'Authorization Policy Change'
+      '0cce9232-69ae-11d9-bed3-505054503030' = 'MPSSVC Rule-Level Policy Change'
+      '0cce9234-69ae-11d9-bed3-505054503030' = 'Other Policy Change Events'
+      '0cce9228-69ae-11d9-bed3-505054503030' = 'Sensitive Privilege Use'
+      '0cce9213-69ae-11d9-bed3-505054503030' = 'IPsec Driver'
+      '0cce9214-69ae-11d9-bed3-505054503030' = 'Other System Events'
+      '0cce9210-69ae-11d9-bed3-505054503030' = 'Security State Change'
+      '0cce9211-69ae-11d9-bed3-505054503030' = 'Security System Extension'
+      '0cce9212-69ae-11d9-bed3-505054503030' = 'System Integrity'
     }
     
-    if (Test-Path "temp_audit.txt") {
-      $raw = Get-Content "temp_audit.txt"
-      Remove-Item "temp_audit.txt" -Force -ErrorAction SilentlyContinue
-    } else {
-      return $map
-    }
-    
-    if (Test-Path "temp_audit_err.txt") {
-      Remove-Item "temp_audit_err.txt" -Force -ErrorAction SilentlyContinue
-    }
-    
-    foreach ($ln in $raw) {
-      if (-not $ln) { continue }
-      $t = "$ln".Trim()
+    # Query each GUID
+    foreach ($guid in $guidMap.Keys) {
+      $subcatName = $guidMap[$guid]
+      $result = Start-Process -FilePath $auditpolPath.Source -ArgumentList "/get", "/subcategory:{$guid}" -Wait -PassThru -NoNewWindow -RedirectStandardOutput "temp_audit_$guid.txt" -RedirectStandardError "temp_audit_err.txt" 2>$null
       
-      # Skip headers and category lines
-      if ($t -match '^\s*(System audit policy|Category|Subcategory|Machine Name|Policy Target|---|^\s*$)') { continue }
-      if ($t -match '^\s*\w+/\w+\s*$') { continue }
-      
-      # Match: name + 2+ spaces + setting
-      if ($t -match '^\s*(.+?)\s{2,}([^\s].+?)\s*$') {
-        $name = $matches[1].Trim()
-        $val = $matches[2].Trim()
+      if ($result.ExitCode -eq 0 -and (Test-Path "temp_audit_$guid.txt")) {
+        $raw = Get-Content "temp_audit_$guid.txt" -Raw
         
-        # Normalize values
-        switch -Regex ($val) {
-          '^(Success\s*and\s*Failure)$' { $val = 'Success and Failure' }
-          '^(Success)$' { $val = 'Success' }
-          '^(Failure)$' { $val = 'Failure' }
-          '^(No Auditing|None)$' { $val = 'No Auditing' }
+        # Extract setting value
+        if ($raw -match 'Success and Failure') {
+          $map[$subcatName] = 'Success and Failure'
+        } elseif ($raw -match '\s+Success\s*$') {
+          $map[$subcatName] = 'Success'
+        } elseif ($raw -match '\s+Failure\s*$') {
+          $map[$subcatName] = 'Failure'
+        } elseif ($raw -match 'No Auditing') {
+          $map[$subcatName] = 'No Auditing'
         }
         
-        if ($name) { $map[$name] = $val }
+        Remove-Item "temp_audit_$guid.txt" -Force -ErrorAction SilentlyContinue
       }
     }
+    
+    Remove-Item "temp_audit_err.txt" -Force -ErrorAction SilentlyContinue
   } catch { }
   return $map
 }
