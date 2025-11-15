@@ -362,14 +362,14 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       'PrivRight' {
         try {
           $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
-          $curTokens = if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() }
+          $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
           $curSet = Normalize-PrincipalSet -Tokens $curTokens
           $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
           $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
 
           # Resolve current tokens for display
           $resolvedCurrent = @()
-          if ($curTokens -and $curTokens.Count -gt 0) {
+          if ($curTokens.Count -gt 0) {
             foreach ($tok in $curTokens) {
               if ($tok) {
                 $resolvedCurrent += Resolve-Principal $tok
