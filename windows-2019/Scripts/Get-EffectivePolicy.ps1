@@ -238,6 +238,3 @@ function Get-EffectiveSecurityOption {
     
     return $null
 }
-
-# Export functions
-Export-ModuleMember -Function Get-EffectiveUserRight, Get-EffectivePasswordPolicy, Get-EffectiveSecurityOption
