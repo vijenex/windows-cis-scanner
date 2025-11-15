@@ -344,22 +344,33 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       }
       
       'PrivRight' {
-        $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
-        $curTokens = Split-PrivilegeValue -Raw $raw
-        $curSet = Normalize-PrincipalSet -Tokens $curTokens
-        $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-        $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+        try {
+          $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
+          $curTokens = if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() }
+          $curSet = Normalize-PrincipalSet -Tokens $curTokens
+          $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+          $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
 
-        # Resolve current tokens for display
-        $resolvedCurrent = @()
-        foreach ($tok in $curTokens) {
-          $resolvedCurrent += Resolve-Principal $tok
+          # Resolve current tokens for display
+          $resolvedCurrent = @()
+          if ($curTokens -and $curTokens.Count -gt 0) {
+            foreach ($tok in $curTokens) {
+              if ($tok) {
+                $resolvedCurrent += Resolve-Principal $tok
+              }
+            }
+          }
+          
+          $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
+          $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+          $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+          $result.Evidence = "[Privilege Rights] $($Rule.Key)"
+        } catch {
+          $result.Current = "<error: $($_.Exception.Message)>"
+          $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+          $result.Passed = $false
+          $result.Evidence = "[Privilege Rights] $($Rule.Key)"
         }
-        
-        $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
-        $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-        $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-        $result.Evidence = "[Privilege Rights] $($Rule.Key)"
       }
       
       'Registry' {
