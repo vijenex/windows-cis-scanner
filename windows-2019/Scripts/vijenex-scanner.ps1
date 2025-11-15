@@ -309,7 +309,14 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         
         $result.Current = if ($null -eq $val){'<unset>'} else { $val }
         $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
-        $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
+        
+        # If value is null/unset, it fails (except for specific cases)
+        if ($null -eq $val -or $val -eq '') {
+          $result.Passed = $false
+        } else {
+          $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
+        }
+        
         $result.Evidence = "[$section] $key"
       }
       
