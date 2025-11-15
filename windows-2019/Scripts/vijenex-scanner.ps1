@@ -406,8 +406,15 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           }
           $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
           
-          $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
-          $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+          # Handle display: show empty string for both if both are empty ("No One" case)
+          if ($resolvedCurrent.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
+            $result.Current = ''
+            $result.Expected = ''
+          } else {
+            $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
+            $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+          }
+          
           $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           $result.Evidence = "[Privilege Rights] $($Rule.Key)"
         } catch {
