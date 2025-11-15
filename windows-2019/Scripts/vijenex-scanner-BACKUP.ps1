@@ -132,14 +132,6 @@ function Resolve-Principal {
   param([string]$Tok)
   try {
     $t = $Tok.Trim().TrimStart('*')
-    $wellKnown = @{
-      'S-1-5-32-544'='BUILTIN\Administrators';'S-1-5-32-545'='BUILTIN\Users'
-      'S-1-5-32-546'='BUILTIN\Guests';'S-1-5-19'='NT AUTHORITY\LOCAL SERVICE'
-      'S-1-5-20'='NT AUTHORITY\NETWORK SERVICE';'S-1-5-6'='NT AUTHORITY\SERVICE'
-      'S-1-5-11'='NT AUTHORITY\Authenticated Users';'S-1-5-83-0'='NT VIRTUAL MACHINE\Virtual Machines'
-      'S-1-5-90-0'='Window Manager\Window Manager Group'
-    }
-    if($wellKnown.ContainsKey($t)){return $wellKnown[$t].ToUpperInvariant()}
     if ($t -match '^S-\d-\d+-.+$') {
       $sid = New-Object System.Security.Principal.SecurityIdentifier($t)
       $acc = $sid.Translate([System.Security.Principal.NTAccount])
@@ -307,23 +299,16 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $secpol=$Context.SecEdit
         $section=$Rule.SectionName
         $key=$Rule.Key
-        $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
         $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
           $secpol[$section][$key] 
         } else { 
           $null 
         }
-        if ($null -eq $val -and $null -ne $defaultValue) {
-          $result.Current = "<default: $defaultValue>"
-          $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
-          $result.Passed = Test-Compare -Current $defaultValue -Expected $Rule.Expected -Operator $Rule.Operator
-          $result.Evidence = "[$section] $key (using default)"
-        } else {
-          $result.Current = if ($null -eq $val){'<unset>'} else { $val }
-          $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
-          $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
-          $result.Evidence = "[$section] $key"
-        }
+        
+        $result.Current = if ($null -eq $val){'<unset>'} else { $val }
+        $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
+        $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
+        $result.Evidence = "[$section] $key"
       }
       
       'AuditPolicy' {
@@ -334,24 +319,15 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $result.Current = if ($null -eq $val){'<unset>'} else { $val }
         $result.Expected = $Rule.Expected
         
-        $includeMatch = $Rule.Expected -match '^include\s+(.+)$'
-        if ($includeMatch) {
-          $requiredSetting = $Matches[1].Trim()
-          if ($val -ieq 'Success and Failure') {
-            $result.Passed = $true
-          } elseif ($val -ieq $requiredSetting) {
-            $result.Passed = $true
-          } else {
-            $result.Passed = $false
-          }
+        # Handle "include" semantics: if Expected is "Success" or "Failure", 
+        # "Success and Failure" should also pass
+        if ($val -ieq $Rule.Expected) {
+          $result.Passed = $true
+        } elseif ($val -ieq 'Success and Failure') {
+          # "Success and Failure" includes both "Success" and "Failure"
+          $result.Passed = ($Rule.Expected -ieq 'Success' -or $Rule.Expected -ieq 'Failure')
         } else {
-          if ($val -ieq $Rule.Expected) {
-            $result.Passed = $true
-          } elseif ($val -ieq 'Success and Failure') {
-            $result.Passed = ($Rule.Expected -ieq 'Success' -or $Rule.Expected -ieq 'Failure')
-          } else {
-            $result.Passed = $false
-          }
+          $result.Passed = $false
         }
         
         $result.Evidence = "auditpol:$sub"
@@ -362,18 +338,15 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $ev=@()
         $ok=$true
         $secpol=$Context.SecEdit
-        $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
         
         foreach($sub in $Rule.AllOf){
           $section=$sub.SectionName
           $key=$sub.Key
-          $subDefault = if ($sub.ContainsKey('DefaultValue')) { $sub.DefaultValue } else { $defaultValue }
           $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
             $secpol[$section][$key] 
           } else { 
             $null 
           }
-          if ($null -eq $val -and $null -ne $subDefault) { $val = $subDefault }
           
           $pass = Test-Compare -Current $val -Expected $sub.Expected -Operator $sub.Operator
           $ok = $ok -and $pass
@@ -423,7 +396,6 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $regPath = $Rule.Key
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
-          $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
           if (Test-Path $regPath) {
             $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
@@ -431,22 +403,12 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
               $result.Current = $currentValue
               $result.Passed = ($currentValue -eq $expectedValue)
             } else {
-              if ($null -ne $defaultValue) {
-                $result.Current = "<default: $defaultValue>"
-                $result.Passed = ($defaultValue -eq $expectedValue)
-              } else {
-                $result.Current = '<not set>'
-                $result.Passed = $false
-              }
-            }
-          } else {
-            if ($null -ne $defaultValue) {
-              $result.Current = "<default: $defaultValue>"
-              $result.Passed = ($defaultValue -eq $expectedValue)
-            } else {
-              $result.Current = '<key not found>'
+              $result.Current = '<not set>'
               $result.Passed = $false
             }
+          } else {
+            $result.Current = '<key not found>'
+            $result.Passed = $false
           }
           
           $result.Expected = $expectedValue
