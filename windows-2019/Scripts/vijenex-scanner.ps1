@@ -331,7 +331,13 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
         $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
 
-        $result.Current = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { '<none>' }
+        # Resolve current tokens for display
+        $resolvedCurrent = @()
+        foreach ($tok in $curTokens) {
+          $resolvedCurrent += Resolve-Principal $tok
+        }
+        
+        $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
         $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
         $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
         $result.Evidence = "[Privilege Rights] $($Rule.Key)"
@@ -408,8 +414,8 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   
   # Generate CSV if requested
   if ($Formats -contains 'All' -or $Formats -contains 'CSV') {
-    # Generate CSV with required columns including Passed status
-  $csvData = $Results | Select-Object Id, Title, Section, @{Name='Status';Expression={if($_.Passed){'Pass'}else{'Fail'}}}, Passed, CISReference, ReferenceNote, Remediation
+    # Generate CSV with required columns including Passed status, Current and Expected values
+  $csvData = $Results | Select-Object Id, Title, Section, @{Name='Status';Expression={if($_.Passed){'Pass'}else{'Fail'}}}, Passed, Current, Expected, Evidence, CISReference, ReferenceNote, Remediation
   $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
     $outputs['CSV'] = $csv
     Write-Host "CSV:  $csv" -ForegroundColor Green
