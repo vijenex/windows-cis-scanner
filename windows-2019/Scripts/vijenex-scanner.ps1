@@ -122,7 +122,10 @@ function Split-PrivilegeValue {
   param([string]$Raw)
   if ([string]::IsNullOrWhiteSpace($Raw)) { return @() }
   $parts = $Raw -split '\s*,\s*' | Where-Object { $_ -and $_.Trim() -ne '' }
-  return $parts | ForEach-Object { $_.Trim() }
+  if ($parts) {
+    return @($parts | ForEach-Object { $_.Trim() })
+  }
+  return @()
 }
 
 function Resolve-Principal {
