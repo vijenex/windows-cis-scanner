@@ -159,7 +159,9 @@ function Compare-StringSets {
   param([System.Collections.Generic.HashSet[string]]$Current,
         [System.Collections.Generic.HashSet[string]]$Expected,
         [ValidateSet('Exact','Superset')] [string]$Mode = 'Exact')
-  if (-not $Current -or -not $Expected) { return $false }
+  # Null check - but allow empty sets (Count=0)
+  if ($null -eq $Current -or $null -eq $Expected) { return $false }
+  
   switch ($Mode) {
     'Exact' {
       if ($Current.Count -ne $Expected.Count) { return $false }
