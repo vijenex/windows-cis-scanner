@@ -422,44 +422,57 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       
       'PrivRight' {
         try {
-          # Use LSA API to get EFFECTIVE user rights instead of secedit
-          $effectiveAccounts = @()
-          if (Get-Command Get-EffectiveUserRight -ErrorAction SilentlyContinue) {
-            $effectiveAccounts = @(Get-EffectiveUserRight -Right $Rule.Key)
-          } else {
-            # Fallback to secedit if LSA API not available
-            $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
-            $effectiveAccounts = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
-          }
-          
+          $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
-          # Normalize effective accounts
-          $curSet = Normalize-PrincipalSet -Tokens $effectiveAccounts
-          $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-          $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
-          
-          # Resolve for display
-          $resolvedCurrent = @()
-          if ($effectiveAccounts.Count -gt 0) {
-            foreach ($acc in $effectiveAccounts) {
-              if ($acc) {
-                $resolvedCurrent += Resolve-Principal $acc
+          # If privilege doesn't exist and DefaultValue is defined, use DefaultValue
+          if ($null -eq $raw -and $null -ne $defaultValue) {
+            $curTokens = @($defaultValue)
+            $curSet = Normalize-PrincipalSet -Tokens $curTokens
+            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+            
+            # For display, show that we're using default
+            if ($defaultValue.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
+              $result.Current = '<default: none>'
+              $result.Expected = ''
+            } else {
+              $result.Current = "<default: $(if ($defaultValue.Count -gt 0) { ($defaultValue -join ', ') } else { 'none' })>"
+              $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+            }
+            
+            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+            $result.Evidence = "[Privilege Rights] $($Rule.Key) (using default)"
+          } else {
+            # Normal evaluation when privilege exists or no default defined
+            $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
+            $curSet = Normalize-PrincipalSet -Tokens $curTokens
+            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+
+            # Resolve current tokens for display
+            $resolvedCurrent = @()
+            if ($curTokens.Count -gt 0) {
+              foreach ($tok in $curTokens) {
+                if ($tok) {
+                  $resolvedCurrent += Resolve-Principal $tok
+                }
               }
             }
+            $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
+            
+            # Handle display: show empty string for both if both are empty ("No One" case)
+            if ($resolvedCurrent.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
+              $result.Current = ''
+              $result.Expected = ''
+            } else {
+              $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
+              $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
+            }
+            
+            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+            $result.Evidence = "[Privilege Rights] $($Rule.Key)"
           }
-          
-          # Handle display
-          if ($resolvedCurrent.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
-            $result.Current = ''
-            $result.Expected = ''
-          } else {
-            $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
-            $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-          }
-          
-          $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-          $result.Evidence = "[Effective Rights] $($Rule.Key)"
         } catch {
           $result.Current = "<error: $($_.Exception.Message)>"
           $result.Expected = ($Rule.ExpectedPrincipals -join ', ')

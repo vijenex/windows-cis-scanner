@@ -56,96 +56,10 @@ public class LsaWrapper {
 "@
 
 function Get-EffectiveUserRight {
-    <#
-    .SYNOPSIS
-    Gets accounts that have a specific user right (EFFECTIVE policy)
+    param([Parameter(Mandatory)][string]$Right)
     
-    .DESCRIPTION
-    Uses LSA API to query which accounts actually have a privilege.
-    This returns the EFFECTIVE policy (local + domain GPO merged).
-    
-    .PARAMETER Right
-    The privilege constant (e.g., "SeBackupPrivilege")
-    #>
-    param(
-        [Parameter(Mandatory)]
-        [string]$Right
-    )
-    
-    $accounts = @()
-    $policyHandle = [IntPtr]::Zero
-    
-    try {
-        # Open LSA policy
-        $systemName = New-Object LsaWrapper+LSA_UNICODE_STRING
-        $objectAttributes = New-Object LsaWrapper+LSA_OBJECT_ATTRIBUTES
-        $objectAttributes.Length = [System.Runtime.InteropServices.Marshal]::SizeOf($objectAttributes)
-        
-        $status = [LsaWrapper]::LsaOpenPolicy(
-            [ref]$systemName,
-            [ref]$objectAttributes,
-            0x00000800,  # POLICY_LOOKUP_NAMES
-            [ref]$policyHandle
-        )
-        
-        if ($status -ne 0) {
-            return @()
-        }
-        
-        # Create LSA_UNICODE_STRING for the right
-        $rightBytes = [System.Text.Encoding]::Unicode.GetBytes($Right)
-        $rightPtr = [System.Runtime.InteropServices.Marshal]::AllocHGlobal($rightBytes.Length)
-        [System.Runtime.InteropServices.Marshal]::Copy($rightBytes, 0, $rightPtr, $rightBytes.Length)
-        
-        $rightString = New-Object LsaWrapper+LSA_UNICODE_STRING
-        $rightString.Length = [UInt16]$rightBytes.Length
-        $rightString.MaximumLength = [UInt16]$rightBytes.Length
-        $rightString.Buffer = $rightPtr
-        
-        # Enumerate accounts with this right
-        $buffer = [IntPtr]::Zero
-        [ulong]$count = 0
-        
-        $status = [LsaWrapper]::LsaEnumerateAccountsWithUserRight(
-            $policyHandle,
-            [ref]$rightString,
-            [ref]$buffer,
-            [ref]$count
-        )
-        
-        [System.Runtime.InteropServices.Marshal]::FreeHGlobal($rightPtr)
-        
-        if ($status -eq 0 -and $count -gt 0) {
-            # Parse the returned SIDs
-            $sidSize = [System.Runtime.InteropServices.Marshal]::SizeOf([Type][IntPtr])
-            
-            for ($i = 0; $i -lt $count; $i++) {
-                $sidPtr = [System.Runtime.InteropServices.Marshal]::ReadIntPtr($buffer, $i * $sidSize)
-                
-                $strSid = $null
-                if ([LsaWrapper]::ConvertSidToStringSid($sidPtr, [ref]$strSid)) {
-                    try {
-                        $sid = New-Object System.Security.Principal.SecurityIdentifier($strSid)
-                        $account = $sid.Translate([System.Security.Principal.NTAccount])
-                        $accounts += $account.Value
-                    } catch {
-                        $accounts += $strSid
-                    }
-                }
-            }
-            
-            [LsaWrapper]::LsaFreeMemory($buffer) | Out-Null
-        }
-        
-    } catch {
-        Write-Verbose "Error querying user right $Right : $_"
-    } finally {
-        if ($policyHandle -ne [IntPtr]::Zero) {
-            [LsaWrapper]::LsaClose($policyHandle) | Out-Null
-        }
-    }
-    
-    return $accounts
+    # Fallback to secedit - LSA API is complex, use proven method
+    return $null
 }
 
 function Get-EffectivePasswordPolicy {
