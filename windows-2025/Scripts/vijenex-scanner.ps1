@@ -312,7 +312,18 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         
         $result.Current = if ($null -eq $val){'<unset>'} else { $val }
         $result.Expected = $Rule.Expected
-        $result.Passed = ($val -ieq $Rule.Expected)
+        
+        # Handle "include" semantics: if Expected is "Success" or "Failure", 
+        # "Success and Failure" should also pass
+        if ($val -ieq $Rule.Expected) {
+          $result.Passed = $true
+        } elseif ($val -ieq 'Success and Failure') {
+          # "Success and Failure" includes both "Success" and "Failure"
+          $result.Passed = ($Rule.Expected -ieq 'Success' -or $Rule.Expected -ieq 'Failure')
+        } else {
+          $result.Passed = $false
+        }
+        
         $result.Evidence = "auditpol:$sub"
       }
       
