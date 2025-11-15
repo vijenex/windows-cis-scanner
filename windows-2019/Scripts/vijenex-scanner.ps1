@@ -376,6 +376,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
               }
             }
           }
+          $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
           
           $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
           $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
