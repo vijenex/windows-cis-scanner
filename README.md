@@ -126,18 +126,16 @@ cd windows-cis-scanner\windows-2025  # or windows-2019
 
 #### Basic Scan (All Controls)
 ```powershell
-# Navigate to your Windows version folder (e.g., windows-2025)
-cd windows-2025
+# Navigate to your Windows version folder (e.g., windows-2019)
+cd windows-2019
 
 # Step 1: Run comprehensive CIS audit (HTML + CSV by default)
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1
 
 # Step 2: Collect evidence for failed controls (NEW in v1.8.0)
-cd ..
-powershell -NoProfile -ExecutionPolicy Bypass -File .\Collect-FailureEvidence.ps1 -CSVPath ".\windows-2025\reports\vijenex-cis-results.csv"
+powershell -NoProfile -ExecutionPolicy Bypass -File ..\Collect-FailureEvidence.ps1 -CSVPath ".\reports\vijenex-cis-results.csv"
 
-# Generate all formats (HTML, CSV, PDF, Word)
-cd windows-2025
+# Or generate all formats at once (HTML, CSV, PDF, Word)
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
@@ -294,8 +292,8 @@ The scanner generates simplified CSV reports with the following columns:
 For failed controls, use the automated evidence collection tool:
 
 ```powershell
-# After running the scanner
-.\Collect-FailureEvidence.ps1 -CSVPath ".\reports\vijenex-cis-results.csv"
+# From within windows-2019 or windows-2025 folder, after running the scanner
+powershell -NoProfile -ExecutionPolicy Bypass -File ..\Collect-FailureEvidence.ps1 -CSVPath ".\reports\vijenex-cis-results.csv"
 ```
 
 This generates a professional HTML evidence report showing actual system values for all failed controls. No manual screenshots needed!

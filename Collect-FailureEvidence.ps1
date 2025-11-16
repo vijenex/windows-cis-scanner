@@ -258,7 +258,7 @@ $htmlContent = @"
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="UTF-8"/>
   <title>CIS Scanner - Evidence Report</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
@@ -277,7 +277,7 @@ $htmlContent = @"
   </style>
 </head>
 <body>
-  <h1>🔍 CIS Scanner - Evidence Collection Report</h1>
+  <h1>CIS Scanner - Evidence Collection Report</h1>
   
   <div class="info-box">
     <h2>System Information</h2>
@@ -287,7 +287,7 @@ $htmlContent = @"
   </div>
   
   <div class="warning">
-    <strong>⚠️ Purpose:</strong> This report provides automated evidence collection for all failed CIS controls. 
+    <strong>Purpose:</strong> This report provides automated evidence collection for all failed CIS controls. 
     The "Actual Value" column shows what the scanner detected on the system at scan time. 
     Use the "Verification Command" to manually verify these values if needed.
   </div>
