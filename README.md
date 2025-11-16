@@ -94,13 +94,13 @@ This platform provides automated security compliance auditing for Windows system
 
 **Latest Release (Stable):**
 ```powershell
-# Download latest release (v1.7.0)
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.7.0.zip" -OutFile "vijenex-windows-cis-v1.7.0.zip"
-Expand-Archive -Path "vijenex-windows-cis-v1.7.0.zip" -DestinationPath "C:\Tools\"
-cd "C:\Tools\Windows-Server-CIS-Audit-1.7.0\windows-2025"
+# Download latest release (v1.8.0)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.8.0.zip" -OutFile "vijenex-windows-cis-v1.8.0.zip"
+Expand-Archive -Path "vijenex-windows-cis-v1.8.0.zip" -DestinationPath "C:\Tools\"
+cd "C:\Tools\Windows-Server-CIS-Audit-1.8.0\windows-2025"
 
 # Or for Windows Server 2019
-cd "C:\Tools\Windows-Server-CIS-Audit-1.7.0\windows-2019"
+cd "C:\Tools\Windows-Server-CIS-Audit-1.8.0\windows-2019"
 ```
 
 **Development Version:**
@@ -117,8 +117,8 @@ cd windows-2019  # For Windows Server 2019
 
 **Specific Version:**
 ```powershell
-# Install specific version (replace v1.7.0 with desired version)
-git clone --branch v1.7.0 https://github.com/vijenex/windows-cis-scanner.git
+# Install specific version (replace v1.8.0 with desired version)
+git clone --branch v1.8.0 https://github.com/vijenex/windows-cis-scanner.git
 cd windows-cis-scanner\windows-2025  # or windows-2019
 ```
 
@@ -129,10 +129,15 @@ cd windows-cis-scanner\windows-2025  # or windows-2019
 # Navigate to your Windows version folder (e.g., windows-2025)
 cd windows-2025
 
-# Run comprehensive CIS audit (HTML + CSV by default)
+# Step 1: Run comprehensive CIS audit (HTML + CSV by default)
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1
 
+# Step 2: Collect evidence for failed controls (NEW in v1.8.0)
+cd ..
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Collect-FailureEvidence.ps1 -CSVPath ".\windows-2025\reports\vijenex-cis-results.csv"
+
 # Generate all formats (HTML, CSV, PDF, Word)
+cd windows-2025
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
@@ -273,7 +278,7 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 - ⚠️ **Manual**: Requires human verification (not a failure)
 
 ### CSV Report Columns
-The scanner generates detailed CSV reports with the following columns:
+The scanner generates simplified CSV reports with the following columns:
 
 | Column | Description |
 |--------|-------------|
@@ -281,12 +286,19 @@ The scanner generates detailed CSV reports with the following columns:
 | **Title** | Control name/description |
 | **Section** | CIS section name |
 | **Status** | PASS or FAIL |
-| **Current** | Current value on your system |
-| **Expected** | Expected value per CIS benchmark |
-| **Evidence** | How the scanner verified this control |
 | **CISReference** | Link to official CIS documentation |
 | **Remediation** | Detailed step-by-step fix instructions |
 | **Description** | Important notes about the control |
+
+### Evidence Collection (NEW in v1.8.0)
+For failed controls, use the automated evidence collection tool:
+
+```powershell
+# After running the scanner
+.\Collect-FailureEvidence.ps1 -CSVPath ".\reports\vijenex-cis-results.csv"
+```
+
+This generates a professional HTML evidence report showing actual system values for all failed controls. No manual screenshots needed!
 
 ### ⚠️ IMPORTANT: Audit Policy Controls (GUI vs Command Line)
 
@@ -463,30 +475,30 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 ## 🏷️ Releases
 
 ### Current Stable Release
-- **v1.7.0** - Windows Server 2025 & 2019 CIS Scanner
+- **v1.8.0** - Windows Server 2025 & 2019 CIS Scanner
   - **Windows Server 2025**: 203 controls evaluated (164 unique definitions)
   - **Windows Server 2019**: 533 controls evaluated (431 unique definitions, 57% CIS coverage)
-  - Enhanced CSV output with 10 detailed columns
-  - Comprehensive remediation guidance for all controls
-  - Audit policy GUI vs CLI explanation to prevent false positive perception
+  - Simplified CSV output (7 columns: Id, Title, Section, Status, CISReference, Remediation, Description)
+  - Automated evidence collection tool (no manual screenshots needed)
+  - Professional HTML evidence reports for failed controls
   - Multiple report formats (HTML, CSV, PDF, Word)
   - Real-time scan progress display with pass/fail summary
 
 ### Download Options
 ```powershell
-# Latest stable release (v1.7.0)
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.7.0.zip" -OutFile "vijenex-windows-cis-v1.7.0.zip"
+# Latest stable release (v1.8.0)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.8.0.zip" -OutFile "vijenex-windows-cis-v1.8.0.zip"
 
 # All releases
 # Visit: https://github.com/vijenex/windows-cis-scanner/releases
 ```
 
 ### Version Information
-- **Current Version**: v1.7.0
+- **Current Version**: v1.8.0
 - **Supported OS**: Windows Server 2025, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
-- **Release Date**: November 2024
-- **New Features**: Enhanced CSV output with detailed remediation steps, audit policy GUI vs CLI explanation
+- **Release Date**: November 2025
+- **New Features**: Simplified CSV output (removed verbose fields), automated evidence collection tool
 
 ---
 
