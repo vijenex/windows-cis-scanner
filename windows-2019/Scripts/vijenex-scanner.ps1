@@ -342,16 +342,9 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
         
         if ($null -eq $val -and $null -ne $defaultValue) {
-          $result.Current = "<default: $defaultValue>"
-          $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
           $result.Passed = Test-Compare -Current $defaultValue -Expected $Rule.Expected -Operator $Rule.Operator
-          $result.Evidence = "[$($Rule.SectionName)] $($Rule.Key) (using default)"
         } else {
-          $result.Current = if ($null -eq $val){'<unset>'} else { $val }
-          $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
           $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
-          $evidenceSource = if ($fromRegistry) { 'Registry (Effective)' } else { 'SecEdit' }
-          $result.Evidence = "[$evidenceSource] $($Rule.Key)"
         }
         
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure via Local Security Policy or Group Policy' }
@@ -363,8 +356,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $sub=$Rule.Subcategory
         $val = if ($ap.ContainsKey($sub)) { $ap[$sub] } else { $null }
         
-        $result.Current = if ($null -eq $val){'<unset>'} else { $val }
-        $result.Expected = $Rule.Expected
+
         
         $includeMatch = $Rule.Expected -match '^include\s+(.+)$'
         if ($includeMatch) {
@@ -386,7 +378,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           }
         }
         
-        $result.Evidence = "auditpol:$sub"
+
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { "Configure via Advanced Audit Policy Configuration" }
         $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
           "If you check through Local Security Policy GUI (secpol.msc → Local Policies → Audit Policy), it may show 'Not Configured' or different values. " +
@@ -421,9 +413,6 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         }
         
         $result.Passed=$ok
-        $result.Expected=($parts -join '; ')
-        $result.Current=''
-        $result.Evidence=($ev|Select-Object -Unique) -join ', '
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure multiple related settings' }
         $result.Description = "Composite check verifying multiple related security settings."
       }
@@ -441,16 +430,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
             $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
             
             # For display, show that we're using default
-            if ($defaultValue.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
-              $result.Current = '<default: none>'
-              $result.Expected = ''
-            } else {
-              $result.Current = "<default: $(if ($defaultValue.Count -gt 0) { ($defaultValue -join ', ') } else { 'none' })>"
-              $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-            }
-            
             $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-            $result.Evidence = "[Privilege Rights] $($Rule.Key) (using default)"
           } else {
             # Normal evaluation when privilege exists or no default defined
             $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
@@ -470,16 +450,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
             $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
             
             # Handle display: show empty string for both if both are empty ("No One" case)
-            if ($resolvedCurrent.Count -eq 0 -and $Rule.ExpectedPrincipals.Count -eq 0) {
-              $result.Current = ''
-              $result.Expected = ''
-            } else {
-              $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
-              $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-            }
-            
             $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-            $result.Evidence = "[Privilege Rights] $($Rule.Key)"
           }
           
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
@@ -487,10 +458,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           }
           $result.Description = "User rights assignment verified via secedit export. Principals are resolved to account names."
         } catch {
-          $result.Current = "<error: $($_.Exception.Message)>"
-          $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
           $result.Passed = $false
-          $result.Evidence = "[Privilege Rights] $($Rule.Key)"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading privilege' }
           $result.Description = "Error occurred while checking user rights assignment."
         }
@@ -506,62 +474,46 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           if (Test-Path $regPath) {
             $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
             if ($null -ne $currentValue) {
-              $result.Current = $currentValue
               $result.Passed = ($currentValue -eq $expectedValue)
             } else {
               if ($null -ne $defaultValue) {
-                $result.Current = "<default: $defaultValue>"
                 $result.Passed = ($defaultValue -eq $expectedValue)
               } else {
-                $result.Current = '<not set>'
                 $result.Passed = $false
               }
             }
           } else {
             if ($null -ne $defaultValue) {
-              $result.Current = "<default: $defaultValue>"
               $result.Passed = ($defaultValue -eq $expectedValue)
             } else {
-              $result.Current = '<key not found>'
               $result.Passed = $false
             }
           }
-          
-          $result.Expected = $expectedValue
-          $result.Evidence = "$regPath\$valueName"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Set registry value: $regPath\$valueName = $expectedValue" 
           }
           $result.Description = "Registry setting verified directly. Value shown is the current registry value."
         } catch {
-          $result.Current = "<error: $($_.Exception.Message)>"
           $result.Passed = $false
-          $result.Evidence = 'registry-error'
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading registry' }
           $result.Description = "Error occurred while reading registry value."
         }
       }
       
       'Manual' { 
-        $result.Current='<manual-review>'
-        $result.Expected=$Rule.Expected
         $result.Passed=$false
-        $result.Evidence=$Rule.Evidence
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Manual review required - see CIS Benchmark' }
         $result.Description = "This control requires manual verification and cannot be automated."
       }
       
       default { 
-        $result.Current='<unsupported>'
         $result.Passed=$false
         $result.Remediation = 'Unsupported control type'
         $result.Description = 'This control type is not supported by the scanner.'
       }
     }
   } catch { 
-    $result.Current="<error: $($_.Exception.Message)>"
     $result.Passed=$false
-    $result.Evidence='exception'
     $result.Remediation = 'Error occurred during evaluation'
     $result.Description = "Exception: $($_.Exception.Message)"
   }

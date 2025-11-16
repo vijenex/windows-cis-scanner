@@ -24,6 +24,13 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $Global:Rules = @()
 
+# Import effective policy module
+$effectivePolicyModule = Join-Path $PSScriptRoot "Get-EffectivePolicy.ps1"
+if (Test-Path $effectivePolicyModule) {
+  . $effectivePolicyModule
+  Write-Verbose "Loaded effective policy module"
+}
+
 # ===== ALL FUNCTIONS DEFINED FIRST =====
 function Assert-Admin {
   $id = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -132,6 +139,14 @@ function Resolve-Principal {
   param([string]$Tok)
   try {
     $t = $Tok.Trim().TrimStart('*')
+    $wellKnown = @{
+      'S-1-5-32-544'='BUILTIN\Administrators';'S-1-5-32-545'='BUILTIN\Users'
+      'S-1-5-32-546'='BUILTIN\Guests';'S-1-5-19'='NT AUTHORITY\LOCAL SERVICE'
+      'S-1-5-20'='NT AUTHORITY\NETWORK SERVICE';'S-1-5-6'='NT AUTHORITY\SERVICE'
+      'S-1-5-11'='NT AUTHORITY\Authenticated Users';'S-1-5-83-0'='NT VIRTUAL MACHINE\Virtual Machines'
+      'S-1-5-90-0'='Window Manager\Window Manager Group'
+    }
+    if($wellKnown.ContainsKey($t)){return $wellKnown[$t].ToUpperInvariant()}
     if ($t -match '^S-\d-\d+-.+$') {
       $sid = New-Object System.Security.Principal.SecurityIdentifier($t)
       $acc = $sid.Translate([System.Security.Principal.NTAccount])
@@ -292,19 +307,46 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
   try{
     switch ($Rule.Type){
       'SecEdit' {
-        $secpol=$Context.SecEdit
-        $section=$Rule.SectionName
-        $key=$Rule.Key
-        $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
-          $secpol[$section][$key] 
-        } else { 
-          $null 
+        # Try to get effective value from registry first (more accurate)
+        $val = $null
+        $fromRegistry = $false
+        
+        # Map common SecEdit settings to registry paths
+        $registryMap = @{
+          'LimitBlankPasswordUse' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'; Name='LimitBlankPasswordUse'}
+          'ForceLogoffWhenHourExpire' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters'; Name='EnableForcedLogoff'}
+          'ClearTextPassword' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'; Name='ClearTextPassword'}
+          'NoLMHash' = @{Path='HKLM:\SYSTEM\CurrentControlSet\Control\Lsa'; Name='NoLMHash'}
         }
         
-        $result.Current = if ($null -eq $val){'<unset>'} else { $val }
-        $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
-        $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
-        $result.Evidence = "[$section] $key"
+        if ($registryMap.ContainsKey($Rule.Key) -and (Get-Command Get-EffectiveSecurityOption -ErrorAction SilentlyContinue)) {
+          $regInfo = $registryMap[$Rule.Key]
+          $val = Get-EffectiveSecurityOption -Path $regInfo.Path -Name $regInfo.Name
+          if ($null -ne $val) {
+            $fromRegistry = $true
+          }
+        }
+        
+        # Fallback to secedit if registry not available
+        if (-not $fromRegistry) {
+          $secpol=$Context.SecEdit
+          $section=$Rule.SectionName
+          $key=$Rule.Key
+          $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
+            $secpol[$section][$key] 
+          } else { 
+            $null 
+          }
+        }
+        
+        $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
+        
+        if ($null -eq $val -and $null -ne $defaultValue) {
+          $result.Passed = Test-Compare -Current $defaultValue -Expected $Rule.Expected -Operator $Rule.Operator
+        } else {
+          $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
+        }
+        
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure via Local Security Policy or Group Policy' }
         $result.Description = "Security policy setting verified via secedit export. Value shown is the effective policy."
       }
@@ -314,21 +356,29 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $sub=$Rule.Subcategory
         $val = if ($ap.ContainsKey($sub)) { $ap[$sub] } else { $null }
         
-        $result.Current = if ($null -eq $val){'<unset>'} else { $val }
-        $result.Expected = $Rule.Expected
+
         
-        # Handle "include" semantics: if Expected is "Success" or "Failure", 
-        # "Success and Failure" should also pass
-        if ($val -ieq $Rule.Expected) {
-          $result.Passed = $true
-        } elseif ($val -ieq 'Success and Failure') {
-          # "Success and Failure" includes both "Success" and "Failure"
-          $result.Passed = ($Rule.Expected -ieq 'Success' -or $Rule.Expected -ieq 'Failure')
+        $includeMatch = $Rule.Expected -match '^include\s+(.+)$'
+        if ($includeMatch) {
+          $requiredSetting = $Matches[1].Trim()
+          if ($val -ieq 'Success and Failure') {
+            $result.Passed = $true
+          } elseif ($val -ieq $requiredSetting) {
+            $result.Passed = $true
+          } else {
+            $result.Passed = $false
+          }
         } else {
-          $result.Passed = $false
+          if ($val -ieq $Rule.Expected) {
+            $result.Passed = $true
+          } elseif ($val -ieq 'Success and Failure') {
+            $result.Passed = ($Rule.Expected -ieq 'Success' -or $Rule.Expected -ieq 'Failure')
+          } else {
+            $result.Passed = $false
+          }
         }
         
-        $result.Evidence = "auditpol:$sub"
+
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { "Configure via Advanced Audit Policy Configuration" }
         $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
           "If you check through Local Security Policy GUI (secpol.msc → Local Policies → Audit Policy), it may show 'Not Configured' or different values. " +
@@ -343,15 +393,18 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $ev=@()
         $ok=$true
         $secpol=$Context.SecEdit
+        $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
         
         foreach($sub in $Rule.AllOf){
           $section=$sub.SectionName
           $key=$sub.Key
+          $subDefault = if ($sub.ContainsKey('DefaultValue')) { $sub.DefaultValue } else { $defaultValue }
           $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
             $secpol[$section][$key] 
           } else { 
             $null 
           }
+          if ($null -eq $val -and $null -ne $subDefault) { $val = $subDefault }
           
           $pass = Test-Compare -Current $val -Expected $sub.Expected -Operator $sub.Operator
           $ok = $ok -and $pass
@@ -360,9 +413,6 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         }
         
         $result.Passed=$ok
-        $result.Expected=($parts -join '; ')
-        $result.Current=''
-        $result.Evidence=($ev|Select-Object -Unique) -join ', '
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure multiple related settings' }
         $result.Description = "Composite check verifying multiple related security settings."
       }
@@ -370,35 +420,45 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       'PrivRight' {
         try {
           $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
-          $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
-          $curSet = Normalize-PrincipalSet -Tokens $curTokens
-          $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-          $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+          $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
+          
+          # If privilege doesn't exist and DefaultValue is defined, use DefaultValue
+          if ($null -eq $raw -and $null -ne $defaultValue) {
+            $curTokens = @($defaultValue)
+            $curSet = Normalize-PrincipalSet -Tokens $curTokens
+            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+            
+            # For display, show that we're using default
+            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+          } else {
+            # Normal evaluation when privilege exists or no default defined
+            $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
+            $curSet = Normalize-PrincipalSet -Tokens $curTokens
+            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
 
-          # Resolve current tokens for display
-          $resolvedCurrent = @()
-          if ($curTokens.Count -gt 0) {
-            foreach ($tok in $curTokens) {
-              if ($tok) {
-                $resolvedCurrent += Resolve-Principal $tok
+            # Resolve current tokens for display
+            $resolvedCurrent = @()
+            if ($curTokens.Count -gt 0) {
+              foreach ($tok in $curTokens) {
+                if ($tok) {
+                  $resolvedCurrent += Resolve-Principal $tok
+                }
               }
             }
+            $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
+            
+            # Handle display: show empty string for both if both are empty ("No One" case)
+            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           }
-          $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
           
-          $result.Current = if ($resolvedCurrent.Count -gt 0) { ($resolvedCurrent -join ', ') } else { '<none>' }
-          $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
-          $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-          $result.Evidence = "[Privilege Rights] $($Rule.Key)"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Navigate to: Local Security Policy → Local Policies → User Rights Assignment → $($Rule.Key)" 
           }
           $result.Description = "User rights assignment verified via secedit export. Principals are resolved to account names."
         } catch {
-          $result.Current = "<error: $($_.Exception.Message)>"
-          $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
           $result.Passed = $false
-          $result.Evidence = "[Privilege Rights] $($Rule.Key)"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading privilege' }
           $result.Description = "Error occurred while checking user rights assignment."
         }
@@ -409,56 +469,51 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $regPath = $Rule.Key
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
+          $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
           if (Test-Path $regPath) {
             $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
             if ($null -ne $currentValue) {
-              $result.Current = $currentValue
               $result.Passed = ($currentValue -eq $expectedValue)
             } else {
-              $result.Current = '<not set>'
-              $result.Passed = $false
+              if ($null -ne $defaultValue) {
+                $result.Passed = ($defaultValue -eq $expectedValue)
+              } else {
+                $result.Passed = $false
+              }
             }
           } else {
-            $result.Current = '<key not found>'
-            $result.Passed = $false
+            if ($null -ne $defaultValue) {
+              $result.Passed = ($defaultValue -eq $expectedValue)
+            } else {
+              $result.Passed = $false
+            }
           }
-          
-          $result.Expected = $expectedValue
-          $result.Evidence = "$regPath\$valueName"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Set registry value: $regPath\$valueName = $expectedValue" 
           }
           $result.Description = "Registry setting verified directly. Value shown is the current registry value."
         } catch {
-          $result.Current = "<error: $($_.Exception.Message)>"
           $result.Passed = $false
-          $result.Evidence = 'registry-error'
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading registry' }
           $result.Description = "Error occurred while reading registry value."
         }
       }
       
       'Manual' { 
-        $result.Current='<manual-review>'
-        $result.Expected=$Rule.Expected
         $result.Passed=$false
-        $result.Evidence=$Rule.Evidence
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Manual review required - see CIS Benchmark' }
         $result.Description = "This control requires manual verification and cannot be automated."
       }
       
       default { 
-        $result.Current='<unsupported>'
         $result.Passed=$false
         $result.Remediation = 'Unsupported control type'
         $result.Description = 'This control type is not supported by the scanner.'
       }
     }
   } catch { 
-    $result.Current="<error: $($_.Exception.Message)>"
     $result.Passed=$false
-    $result.Evidence='exception'
     $result.Remediation = 'Error occurred during evaluation'
     $result.Description = "Exception: $($_.Exception.Message)"
   }
@@ -514,7 +569,7 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
     $htmlContent = @"
 <!doctype html>
 <html><head><meta charset="utf-8"/><title>CIS Scan Report - $($SystemInfo.Caption)</title>
-<style>body{font-family:Arial,sans-serif;margin:20px}h1{margin-bottom:0}.system-info{background:#f8f9fa;padding:15px;border-radius:5px;margin:15px 0}.system-info h3{margin-top:0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:6px;text-align:left;font-size:12px}th{background:#f0f0f0}tr.fail-row{background:#ffe6e6}tr.pass-row{background:#e6ffe6}.desc,.impact{max-width:300px;word-wrap:break-word}</style>
+<style>body{font-family:Arial,sans-serif;margin:20px}h1{margin-bottom:0}.system-info{background:#f8f9fa;padding:15px;border-radius:5px;margin:15px 0}.system-info h3{margin-top:0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:6px;text-align:left;font-size:12px}th{background:#f0f0f0}tr.fail-row{background:#ffe6e6}tr.pass-row{background:#e6ffe6}.desc{max-width:300px;word-wrap:break-word}</style>
 </head><body>
 <h1>CIS Compliance Audit Report</h1>
 <div class="system-info">
@@ -667,7 +722,7 @@ Report generated on $($SystemInfo.ScanDate) for $($SystemInfo.ComputerName)
 Assert-Admin
 New-Dir $OutputDir
 
-# Display Verityx CLI signature
+# Display Vijenex CLI signature
 Write-Host "`n" -ForegroundColor White
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host "                        VIJENEX                              " -ForegroundColor Cyan
@@ -687,7 +742,7 @@ if ($systemInfo.BuildNumber -lt ($expectedBuild - 1000) -or $systemInfo.BuildNum
   Write-Host "=============================================================" -ForegroundColor Red
   Write-Host "                VERSION MISMATCH WARNING                     " -ForegroundColor Yellow
   Write-Host "=============================================================" -ForegroundColor Red
-  Write-Host "Expected: Windows Server 2025 (Build ~$expectedBuild)" -ForegroundColor Yellow
+  Write-Host "Expected: Windows Server 2019 (Build ~$expectedBuild)" -ForegroundColor Yellow
   Write-Host "Detected: Build $($systemInfo.BuildNumber)" -ForegroundColor Yellow
   Write-Host "`nYou may be running the wrong scanner version!" -ForegroundColor Red
   Write-Host "Please use the correct folder for your Windows version." -ForegroundColor Yellow
@@ -719,7 +774,7 @@ if (-not $Milestones -or $Milestones.Count -eq 0) {
 
 foreach ($m in $Milestones) {
   # Validate milestone filename to prevent path traversal
-  if ($m -match '[\\/\.]\.' -or $m -notmatch '^[a-zA-Z0-9_-]+\.ps1$') {
+  if ($m -match '[\\\/\.]\.' -or $m -notmatch '^[a-zA-Z0-9_-]+\.ps1$') {
     Write-Warning "Invalid milestone filename: $m"
     continue
   }
