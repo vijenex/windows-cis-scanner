@@ -387,16 +387,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         }
         
         $result.Evidence = "auditpol:$sub"
-        $result.Remediation = "IMPORTANT - GUI vs Command Line Difference:\n" +
-          "Method 1 (Recommended): Use Advanced Audit Policy Configuration\n" +
-          "  - Navigate to: Computer Configuration → Windows Settings → Security Settings → Advanced Audit Policy Configuration → System Audit Policies → $sub\n" +
-          "  - Set to: $($Rule.Expected)\n" +
-          "  - Or use command: auditpol /set /subcategory:\"$sub\" /success:enable /failure:enable\n\n" +
-          "Method 2 (Legacy - May Not Work): Local Security Policy GUI\n" +
-          "  - Navigate to: Local Policies → Audit Policy\n" +
-          "  - Note: This configures Legacy Audit Policy which may be overridden by Advanced Audit Policy\n\n" +
-          "Verification: Run 'auditpol /get /subcategory:\"$sub\"' to see effective setting\n\n" +
-          "Original CIS Remediation: $($Rule.Remediation)"
+        $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { "Configure via Advanced Audit Policy Configuration" }
         $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
           "If you check through Local Security Policy GUI (secpol.msc → Local Policies → Audit Policy), it may show 'Not Configured' or different values. " +
           "This is NORMAL because Windows has TWO audit systems: Legacy (shown in GUI) and Advanced (effective policy). " +
