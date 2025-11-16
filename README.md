@@ -353,103 +353,45 @@ Process Creation         No Auditing
 - Your scanner correctly identifies these as FAIL
 - This is expected on non-hardened servers
 
-**How to Remediate Audit Policy Controls:**
+**How to Remediate Failed Controls:**
 
-**Method 1 (GUI - If Available): Use Group Policy Editor**
+For detailed remediation steps for each control, refer to the **official CIS Benchmark documentation**:
 
-⚠️ **Note**: `gpedit.msc` is NOT available on Windows Server Core editions. If you get "Windows cannot find gpedit.msc", use Method 2 (Command Line) instead.
+📚 **Official CIS Benchmark Documentation:**
+- **Windows Server 2019**: CIS Microsoft Windows Server 2019 Benchmark v3.0.1
+- **Windows Server 2022**: CIS Microsoft Windows Server 2022 Benchmark v3.0.0
+- **Windows Server 2025**: CIS Microsoft Windows Server 2025 Benchmark (when released)
+- **Download**: https://www.cisecurity.org/cis-benchmarks (Free with CIS account)
 
-```
-1. Press Win+R, type: gpedit.msc
-2. Navigate to:
-   Computer Configuration 
-     → Windows Settings 
-       → Security Settings 
-         → Advanced Audit Policy Configuration 
-           → System Audit Policies 
-             → [Select category, e.g., Logon/Logoff]
-3. Double-click the subcategory (e.g., "Logon")
-4. Check "Configure the following audit events"
-5. Select Success and/or Failure as required
-6. Click Apply → OK
-7. Verify: auditpol /get /subcategory:"Logon"
-```
+Each control in the CIS Benchmark PDF includes:
+- ✅ Detailed remediation procedures
+- ✅ GUI-based configuration steps
+- ✅ Command-line alternatives
+- ✅ Group Policy settings
+- ✅ Impact assessment
+- ✅ Default values
 
-**Method 2 (Command Line - Works on ALL Editions including Server Core):**
+🛠️ **Additional Official Resources:**
 
-✅ **Recommended for Server Core and automated deployments**
+1. **Microsoft Security Compliance Toolkit** (Free)
+   - Pre-configured GPO templates for CIS compliance
+   - Download: https://www.microsoft.com/en-us/download/details.aspx?id=55319
 
-```powershell
-# Enable specific audit policy
-auditpol /set /subcategory:"Credential Validation" /success:enable /failure:enable
-auditpol /set /subcategory:"Logon" /success:enable /failure:enable
-auditpol /set /subcategory:"Process Creation" /success:enable
+2. **CIS-CAT Pro Tool** (Paid)
+   - Official CIS assessment and remediation tool
+   - Automated remediation scripts
+   - Info: https://www.cisecurity.org/cybersecurity-tools/cis-cat-pro
 
-# Verify it was applied
-auditpol /get /subcategory:"Credential Validation"
+3. **Microsoft Security Baselines**
+   - Windows Server security baselines
+   - Download: https://learn.microsoft.com/en-us/windows/security/operating-system-security/device-management/windows-security-configuration-framework/windows-security-baselines
 
-# Enable multiple subcategories at once
-auditpol /set /subcategory:"Logon","Logoff","Account Lockout" /success:enable /failure:enable
-
-# View all current settings
-auditpol /get /category:*
-```
-
-**Method 3 (Domain GPO - For Domain-Joined Servers):**
-
-⚠️ **Note**: Requires `gpmc.msc` on a management workstation (not available on Server Core)
-
-```
-1. From a management workstation, open: gpmc.msc
-2. Edit the GPO applied to your servers
-3. Navigate to:
-   Computer Configuration 
-     → Policies 
-       → Windows Settings 
-         → Security Settings 
-           → Advanced Audit Policy Configuration
-4. Configure required subcategories
-5. Run on target server: gpupdate /force
-6. Verify: auditpol /get /category:*
-```
-
-**Method 4 (Legacy GUI - NOT Recommended):**
-```
-Navigate to: secpol.msc → Local Policies → Audit Policy
-⚠️ WARNING: This configures Legacy Audit Policy (9 categories only)
-⚠️ If Advanced Audit Policy is active, these settings are IGNORED
-⚠️ Use Methods 1-3 instead
-```
-
-**Quick CIS Compliance Script (Copy & Paste):**
-
-```powershell
-# Enable all CIS-required audit policies for Windows Server 2019
-auditpol /set /subcategory:"Credential Validation" /success:enable /failure:enable
-auditpol /set /subcategory:"Application Group Management" /success:enable /failure:enable
-auditpol /set /subcategory:"Security Group Management" /success:enable /failure:enable
-auditpol /set /subcategory:"User Account Management" /success:enable /failure:enable
-auditpol /set /subcategory:"PNP Activity" /success:enable
-auditpol /set /subcategory:"Process Creation" /success:enable
-auditpol /set /subcategory:"Account Lockout" /success:enable /failure:enable
-auditpol /set /subcategory:"Logoff" /success:enable
-auditpol /set /subcategory:"Logon" /success:enable /failure:enable
-auditpol /set /subcategory:"Special Logon" /success:enable
-auditpol /set /subcategory:"Detailed File Share" /failure:enable
-auditpol /set /subcategory:"File Share" /success:enable /failure:enable
-auditpol /set /subcategory:"Other Object Access Events" /success:enable /failure:enable
-auditpol /set /subcategory:"Removable Storage" /success:enable /failure:enable
-auditpol /set /subcategory:"Audit Policy Change" /success:enable /failure:enable
-auditpol /set /subcategory:"Authentication Policy Change" /success:enable
-auditpol /set /subcategory:"Authorization Policy Change" /success:enable
-auditpol /set /subcategory:"Sensitive Privilege Use" /success:enable /failure:enable
-auditpol /set /subcategory:"IPsec Driver" /success:enable /failure:enable
-auditpol /set /subcategory:"Security System Extension" /success:enable /failure:enable
-auditpol /set /subcategory:"System Integrity" /success:enable /failure:enable
-
-# Verify all settings
-auditpol /get /category:*
-```
+⚠️ **Important Notes:**
+- Always test remediation steps in a non-production environment first
+- Review impact assessment in CIS Benchmark before applying changes
+- Some controls may affect application compatibility
+- Document all changes for audit purposes
+- Schedule maintenance windows for production remediation
 
 **Key Takeaways:**
 
