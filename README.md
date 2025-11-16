@@ -94,13 +94,13 @@ This platform provides automated security compliance auditing for Windows system
 
 **Latest Release (Stable):**
 ```powershell
-# Download latest release (v2.1.2)
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v2.1.2.zip" -OutFile "vijenex-windows-cis-v2.1.2.zip"
-Expand-Archive -Path "vijenex-windows-cis-v2.1.2.zip" -DestinationPath "C:\Tools\"
-cd "C:\Tools\Windows-Server-CIS-Audit-2.1.2\windows-2025"
+# Download latest release (v1.7.0)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.7.0.zip" -OutFile "vijenex-windows-cis-v1.7.0.zip"
+Expand-Archive -Path "vijenex-windows-cis-v1.7.0.zip" -DestinationPath "C:\Tools\"
+cd "C:\Tools\Windows-Server-CIS-Audit-1.7.0\windows-2025"
 
 # Or for Windows Server 2019
-cd "C:\Tools\Windows-Server-CIS-Audit-2.1.2\windows-2019"
+cd "C:\Tools\Windows-Server-CIS-Audit-1.7.0\windows-2019"
 ```
 
 **Development Version:**
@@ -117,8 +117,8 @@ cd windows-2019  # For Windows Server 2019
 
 **Specific Version:**
 ```powershell
-# Install specific version (replace v2.1.2 with desired version)
-git clone --branch v2.1.2 https://github.com/vijenex/windows-cis-scanner.git
+# Install specific version (replace v1.7.0 with desired version)
+git clone --branch v1.7.0 https://github.com/vijenex/windows-cis-scanner.git
 cd windows-cis-scanner\windows-2025  # or windows-2019
 ```
 
@@ -272,11 +272,83 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 - ❌ **Fail**: Control needs attention or manual verification
 - ⚠️ **Manual**: Requires human verification (not a failure)
 
+### CSV Report Columns
+The scanner generates detailed CSV reports with the following columns:
+
+| Column | Description |
+|--------|-------------|
+| **Id** | CIS control ID (e.g., 17.1.1) |
+| **Title** | Control name/description |
+| **Section** | CIS section name |
+| **Status** | PASS or FAIL |
+| **Current** | Current value on your system |
+| **Expected** | Expected value per CIS benchmark |
+| **Evidence** | How the scanner verified this control |
+| **CISReference** | Link to official CIS documentation |
+| **Remediation** | Detailed step-by-step fix instructions |
+| **Description** | Important notes about the control |
+
+### ⚠️ IMPORTANT: Audit Policy Controls (GUI vs Command Line)
+
+**Why GUI Shows Different Results:**
+
+Windows has **TWO separate audit policy systems**:
+1. **Legacy Audit Policy** (9 categories) - Shown in Local Security Policy GUI under "Local Policies → Audit Policy"
+2. **Advanced Audit Policy** (53 subcategories) - Shown under "Advanced Audit Policy Configuration"
+
+When **both** are configured, **Advanced Audit Policy OVERRIDES Legacy**.
+
+**What This Means for You:**
+- ✅ **Scanner reads**: `auditpol` command (Advanced Audit Policy - the EFFECTIVE policy)
+- ❌ **GUI shows**: Legacy Audit Policy (may show "Not Configured" even when Advanced is active)
+- 🎯 **Result**: Scanner shows FAIL, but GUI shows "Not Configured" - **THIS IS NORMAL**
+
+**How to Verify Scanner Results:**
+```powershell
+# Check effective audit policy (what scanner reads)
+auditpol /get /category:*
+
+# Check specific subcategory
+auditpol /get /subcategory:"Credential Validation"
+```
+
+**How to Remediate Audit Policy Controls:**
+
+**Method 1 (Recommended): Use Advanced Audit Policy**
+```
+Navigate to: Computer Configuration → Windows Settings → Security Settings 
+             → Advanced Audit Policy Configuration → System Audit Policies 
+             → [specific subcategory]
+Set to: Success and Failure (or as required)
+```
+
+**Method 2 (Command Line):**
+```powershell
+# Enable audit policy via command
+auditpol /set /subcategory:"Credential Validation" /success:enable /failure:enable
+
+# Verify it was applied
+auditpol /get /subcategory:"Credential Validation"
+```
+
+**Method 3 (Legacy GUI - May Not Work):**
+```
+Navigate to: Local Security Policy → Local Policies → Audit Policy
+Note: This configures Legacy Audit Policy which may be overridden by Advanced Audit Policy
+```
+
+**Key Takeaway:**
+- If scanner reports FAIL for audit policies, use `auditpol` command to verify
+- Don't rely on Local Security Policy GUI for audit policy verification
+- Always remediate using Advanced Audit Policy Configuration or `auditpol` command
+- The scanner reports the ACTUAL effective policy, not the GUI display
+
 ### Common "Fail" Reasons
 1. **Default Windows Settings**: Fresh installations lack security hardening
 2. **Manual Verification Required**: Firewall, services, UI settings need human check
 3. **Missing Group Policy**: Administrative Templates require GP configuration
 4. **Audit Policy Disabled**: Windows default has minimal audit logging
+5. **GUI vs Effective Policy**: Audit policies may show differently in GUI vs actual enforcement
 
 ## 🛠️ Troubleshooting
 
@@ -366,30 +438,30 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 ## 🏷️ Releases
 
 ### Current Stable Release
-- **v2.1.2** - Windows Server 2025 & 2019 CIS Scanner
+- **v1.7.0** - Windows Server 2025 & 2019 CIS Scanner
   - **Windows Server 2025**: 203 controls evaluated (164 unique definitions)
   - **Windows Server 2019**: 533 controls evaluated (431 unique definitions, 57% CIS coverage)
-  - Real-time scan progress display with pass/fail summary
+  - Enhanced CSV output with 10 detailed columns
+  - Comprehensive remediation guidance for all controls
+  - Audit policy GUI vs CLI explanation to prevent false positive perception
   - Multiple report formats (HTML, CSV, PDF, Word)
-  - Standardized format across both versions
-  - Enhanced security with path validation
-  - Comprehensive audit logging
+  - Real-time scan progress display with pass/fail summary
 
 ### Download Options
 ```powershell
-# Latest stable release (v2.1.2)
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v2.1.2.zip" -OutFile "vijenex-windows-cis-v2.1.2.zip"
+# Latest stable release (v1.7.0)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.7.0.zip" -OutFile "vijenex-windows-cis-v1.7.0.zip"
 
 # All releases
 # Visit: https://github.com/vijenex/windows-cis-scanner/releases
 ```
 
 ### Version Information
-- **Current Version**: v2.1.2
+- **Current Version**: v1.7.0
 - **Supported OS**: Windows Server 2025, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
-- **Release Date**: November 2024
-- **New Features**: Scan summary display, standardized format, improved reporting
+- **Release Date**: January 2025
+- **New Features**: Enhanced CSV output with detailed remediation steps, audit policy GUI vs CLI explanation
 
 ---
 

@@ -280,17 +280,16 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
     Id=$Rule.Id
     Title=$Rule.Title
     Section=$Rule.Section
+    Status=''
     Profile=$Rule.Profile
-
     Type=$Rule.Type
     Expected=''
     Current=''
     Passed=$false
     Evidence=''
-    Remediation=$Rule.Remediation
-    CISReference=if($Rule.ContainsKey('CISReference')){$Rule.CISReference}else{$null}
-    CISControlID=if($Rule.ContainsKey('CISControlID')){$Rule.CISControlID}else{$null}
-    ReferenceNote=if($Rule.ContainsKey('ReferenceNote')){$Rule.ReferenceNote}else{$null}
+    CISReference=if($Rule.ContainsKey('CISReference')){$Rule.CISReference}else{'Refer to CIS Benchmark documentation'}
+    Remediation=''
+    Description=''
   }
   
   try{
@@ -309,6 +308,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $result.Expected = "$($Rule.Operator) $($Rule.Expected)"
         $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
         $result.Evidence = "[$section] $key"
+        $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure via Local Security Policy or Group Policy' }
+        $result.Description = "Security policy setting verified via secedit export. Value shown is the effective policy."
       }
       
       'AuditPolicy' {
@@ -330,7 +331,23 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Passed = $false
         }
         
-        $result.Evidence = "auditpol:$sub (Note: Uses auditpol to read effective audit policy. Local Security Policy GUI may show 'Not Configured' but effective policy is enforced via Advanced Audit Policy or GPO)"
+        $result.Evidence = "auditpol:$sub"
+        $result.Remediation = "IMPORTANT - GUI vs Command Line Difference:\n" +
+          "Method 1 (Recommended): Use Advanced Audit Policy Configuration\n" +
+          "  - Navigate to: Computer Configuration → Windows Settings → Security Settings → Advanced Audit Policy Configuration → System Audit Policies → $sub\n" +
+          "  - Set to: $($Rule.Expected)\n" +
+          "  - Or use command: auditpol /set /subcategory:\"$sub\" /success:enable /failure:enable\n\n" +
+          "Method 2 (Legacy - May Not Work): Local Security Policy GUI\n" +
+          "  - Navigate to: Local Policies → Audit Policy\n" +
+          "  - Note: This configures Legacy Audit Policy which may be overridden by Advanced Audit Policy\n\n" +
+          "Verification: Run 'auditpol /get /subcategory:\"$sub\"' to see effective setting\n\n" +
+          "Original CIS Remediation: $($Rule.Remediation)"
+        $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
+          "If you check through Local Security Policy GUI (secpol.msc → Local Policies → Audit Policy), it may show 'Not Configured' or different values. " +
+          "This is NORMAL because Windows has TWO audit systems: Legacy (shown in GUI) and Advanced (effective policy). " +
+          "When Advanced Audit Policy is configured (via GPO or auditpol command), it OVERRIDES the Legacy policy shown in GUI. " +
+          "Always verify using 'auditpol /get /category:*' command to see what's actually enforced. " +
+          "The scanner reports the ACTUAL effective policy, not the GUI display."
       }
       
       'Composite' {
@@ -358,6 +375,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $result.Expected=($parts -join '; ')
         $result.Current=''
         $result.Evidence=($ev|Select-Object -Unique) -join ', '
+        $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure multiple related settings' }
+        $result.Description = "Composite check verifying multiple related security settings."
       }
       
       'PrivRight' {
@@ -383,11 +402,17 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
           $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           $result.Evidence = "[Privilege Rights] $($Rule.Key)"
+          $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
+            "Navigate to: Local Security Policy → Local Policies → User Rights Assignment → $($Rule.Key)" 
+          }
+          $result.Description = "User rights assignment verified via secedit export. Principals are resolved to account names."
         } catch {
           $result.Current = "<error: $($_.Exception.Message)>"
           $result.Expected = ($Rule.ExpectedPrincipals -join ', ')
           $result.Passed = $false
           $result.Evidence = "[Privilege Rights] $($Rule.Key)"
+          $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading privilege' }
+          $result.Description = "Error occurred while checking user rights assignment."
         }
       }
       
@@ -413,10 +438,16 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           
           $result.Expected = $expectedValue
           $result.Evidence = "$regPath\$valueName"
+          $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
+            "Set registry value: $regPath\$valueName = $expectedValue" 
+          }
+          $result.Description = "Registry setting verified directly. Value shown is the current registry value."
         } catch {
           $result.Current = "<error: $($_.Exception.Message)>"
           $result.Passed = $false
           $result.Evidence = 'registry-error'
+          $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading registry' }
+          $result.Description = "Error occurred while reading registry value."
         }
       }
       
@@ -424,19 +455,28 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         $result.Current='<manual-review>'
         $result.Expected=$Rule.Expected
         $result.Passed=$false
-        $result.Evidence=$Rule.Evidence 
+        $result.Evidence=$Rule.Evidence
+        $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Manual review required - see CIS Benchmark' }
+        $result.Description = "This control requires manual verification and cannot be automated."
       }
       
       default { 
         $result.Current='<unsupported>'
-        $result.Passed=$false 
+        $result.Passed=$false
+        $result.Remediation = 'Unsupported control type'
+        $result.Description = 'This control type is not supported by the scanner.'
       }
     }
   } catch { 
     $result.Current="<error: $($_.Exception.Message)>"
     $result.Passed=$false
-    $result.Evidence='exception' 
+    $result.Evidence='exception'
+    $result.Remediation = 'Error occurred during evaluation'
+    $result.Description = "Exception: $($_.Exception.Message)"
   }
+  
+  # Set Status field based on Passed
+  $result.Status = if ($result.Passed) { 'PASS' } else { 'FAIL' }
   
   $result
 }
@@ -462,9 +502,9 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   
   # Generate CSV if requested
   if ($Formats -contains 'All' -or $Formats -contains 'CSV') {
-    # Generate CSV with required columns including Passed status, Current and Expected values
-  $csvData = $Results | Select-Object Id, Title, Section, @{Name='Status';Expression={if($_.Passed){'Pass'}else{'Fail'}}}, Passed, Current, Expected, Evidence, CISReference, ReferenceNote, Remediation
-  $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
+    # Generate CSV with all required columns
+    $csvData = $Results | Select-Object Id, Title, Section, Status, Current, Expected, Evidence, CISReference, Remediation, Description
+    $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
     $outputs['CSV'] = $csv
     Write-Host "CSV:  $csv" -ForegroundColor Green
   }
