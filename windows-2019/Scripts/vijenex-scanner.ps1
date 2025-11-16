@@ -298,10 +298,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
     Status=''
     Profile=$Rule.Profile
     Type=$Rule.Type
-    Expected=''
-    Current=''
     Passed=$false
-    Evidence=''
     CISReference=if($Rule.ContainsKey('CISReference')){$Rule.CISReference}else{'Refer to CIS Benchmark documentation'}
     Remediation=''
     Description=''
@@ -605,8 +602,8 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   
   # Generate CSV if requested
   if ($Formats -contains 'All' -or $Formats -contains 'CSV') {
-    # Generate CSV with all required columns
-    $csvData = $Results | Select-Object Id, Title, Section, Status, Current, Expected, Evidence, CISReference, Remediation, Description
+    # Generate CSV with essential columns only
+    $csvData = $Results | Select-Object Id, Title, Section, Status, CISReference, Remediation, Description
     $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
     $outputs['CSV'] = $csv
     Write-Host "CSV:  $csv" -ForegroundColor Green
@@ -902,7 +899,6 @@ foreach($rule in $rules){
   Write-Host "[$($result.Id)] $($result.Title)$manualNote" -ForegroundColor White
   Write-Host "    Status: " -NoNewline -ForegroundColor Gray
   Write-Host $status -ForegroundColor $statusColor
-  if($result.Evidence){ Write-Host "    Evidence: $($result.Evidence)" -ForegroundColor Gray }
   Write-Host ""
 }
 
