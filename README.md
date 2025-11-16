@@ -303,55 +303,13 @@ When **both** are configured, **Advanced Audit Policy OVERRIDES Legacy**.
 - ❌ **GUI shows**: Legacy Audit Policy (may show "Not Configured" even when Advanced is active)
 - 🎯 **Result**: Scanner shows FAIL, but GUI shows "Not Configured" - **THIS IS NORMAL**
 
-**How to Verify Scanner Results (Works on ALL Windows Editions including Server Core):**
+**How to Verify Scanner Results:**
 
-```powershell
-# Method 1: Check ALL effective audit policies (what scanner reads)
-auditpol /get /category:*
-
-# Method 2: Check specific subcategory
-auditpol /get /subcategory:"Credential Validation"
-auditpol /get /subcategory:"Logon"
-auditpol /get /subcategory:"Process Creation"
-
-# Method 3: Export to CSV for analysis
-auditpol /get /category:* /r > audit-policy.csv
-
-# Method 4: Check if GPO is overriding local settings
-gpresult /r
-# Or generate detailed HTML report
-gpresult /h gp-report.html
-
-# Method 5: Check Legacy Audit Policy (usually all zeros)
-secedit /export /cfg C:\secpol.cfg
-notepad C:\secpol.cfg
-# Look at [Event Audit] section - will show 0 if Advanced Audit is active
-```
-
-**Understanding Your Output:**
-
-When you run `auditpol /get /category:*`, you'll see output like:
-```
-Credential Validation    Success
-Logon                    Success and Failure
-Process Creation         No Auditing
-```
-
-- **Success** = Only successful events are logged
-- **Success and Failure** = Both success and failure events are logged (most secure)
-- **Failure** = Only failed events are logged
-- **No Auditing** = Nothing is logged (CIS FAIL)
-
-**What This Proves:**
-1. If `auditpol` shows values (not all "No Auditing") → Advanced Audit Policy is active
-2. If `secedit` export shows `[Event Audit]` all zeros → Legacy policy is disabled
-3. If GUI shows "Not Configured" but `auditpol` shows values → **Scanner is correct, GUI is misleading**
-
-**Why Many Show "No Auditing":**
-- Windows does NOT enable all audit subcategories by default
-- CIS benchmarks require many more to be enabled
-- Your scanner correctly identifies these as FAIL
-- This is expected on non-hardened servers
+For detailed verification procedures and understanding audit policy output, refer to the **official CIS Benchmark documentation** which includes:
+- Step-by-step verification commands
+- Expected output interpretation
+- Troubleshooting guidance
+- Download: https://www.cisecurity.org/cis-benchmarks
 
 **How to Remediate Failed Controls:**
 
@@ -393,79 +351,19 @@ Each control in the CIS Benchmark PDF includes:
 - Document all changes for audit purposes
 - Schedule maintenance windows for production remediation
 
-**Key Takeaways:**
+**Key Takeaway:**
 
-✅ **Scanner is Accurate - Not False Positives:**
-- Scanner uses `auditpol` command (same as Method 2 above)
-- This reads the ACTUAL effective policy enforced by Windows
-- If scanner shows FAIL, run `auditpol /get /category:*` yourself to confirm
-- You'll see the same values the scanner sees
-
-❌ **Don't Trust These for Audit Policies:**
-- Local Security Policy GUI (`secpol.msc` → Local Policies → Audit Policy) - Shows Legacy policy
-- Group Policy Editor Legacy section - Shows 9 categories instead of 53 subcategories
-- `secedit` export `[Event Audit]` section - Shows Legacy policy (usually all zeros)
-
-✅ **Trust These for Audit Policies:**
-- `auditpol /get /category:*` command - Shows effective Advanced Audit Policy
-- Group Policy Editor → Advanced Audit Policy Configuration (if available)
-- Scanner CSV output - Reads from `auditpol`
-
-🎯 **Bottom Line:**
-- **Scanner reads**: `auditpol` (correct)
-- **GUI shows**: Legacy policy (misleading)
-- **You should verify using**: `auditpol` (same as scanner)
-- **Result**: Scanner and your manual verification will match - proving scanner accuracy
+✅ **Scanner Accuracy:**
+- Scanner reads effective security policies using Windows APIs (`secedit`, `auditpol`, registry)
+- Results are based on actual enforced policies, not GUI display values
+- For verification procedures, refer to official CIS Benchmark documentation
 
 ### Common "Fail" Reasons
 1. **Default Windows Settings**: Fresh installations lack security hardening
 2. **Manual Verification Required**: Firewall, services, UI settings need human check
 3. **Missing Group Policy**: Administrative Templates require GP configuration
-4. **Audit Policy Disabled**: Windows default has minimal audit logging (most subcategories show "No Auditing")
-5. **GUI vs Effective Policy**: Audit policies may show differently in GUI vs actual enforcement
-
-### 🔍 How to Independently Verify Scanner Accuracy
-
-Don't just trust the scanner - verify it yourself! Run these commands to confirm scanner results:
-
-**For Audit Policies:**
-```powershell
-# See exactly what scanner sees
-auditpol /get /category:*
-
-# Compare with scanner CSV output - values will match
-```
-
-**For Password Policies:**
-```powershell
-# Check password settings
-net accounts
-
-# Or export full policy
-secedit /export /cfg C:\secpol.cfg
-Get-Content C:\secpol.cfg | Select-String "Password"
-```
-
-**For User Rights:**
-```powershell
-# Export and check user rights
-secedit /export /cfg C:\secpol.cfg
-Get-Content C:\secpol.cfg | Select-String "SeNetworkLogonRight"
-Get-Content C:\secpol.cfg | Select-String "SeInteractiveLogonRight"
-```
-
-**For Registry Settings:**
-```powershell
-# Check specific registry values
-Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name RestrictAnonymousSAM
-Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name DisableCAD
-Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -Name RequireSignOrSeal
-```
-
-**Expected Results:**
-- Your manual verification will show the **same values** as scanner CSV output
-- This proves scanner accuracy
-- If GUI shows different values (especially for audit policies), GUI is wrong, not scanner
+4. **Audit Policy Disabled**: Windows default has minimal audit logging
+5. **GUI vs Effective Policy**: Some policies may display differently in GUI vs actual enforcement (see CIS documentation)
 
 ## 🛠️ Troubleshooting
 
@@ -512,10 +410,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ### After Running  
 1. **Review HTML report** for executive summary
 2. **Analyze CSV data** for detailed findings
-3. **Verify scanner accuracy** (optional but recommended):
-   - Run `auditpol /get /category:*` to confirm audit policy results
-   - Run `net accounts` to confirm password policy results
-   - Compare with scanner CSV output - values will match
+3. **Refer to CIS Benchmark documentation** for remediation steps
 4. **Prioritize fixes** based on risk and impact
 5. **Document exceptions** for accepted risks
 6. **Schedule regular scans** for compliance monitoring
@@ -590,7 +485,7 @@ Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/r
 - **Current Version**: v1.7.0
 - **Supported OS**: Windows Server 2025, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
-- **Release Date**: January 2025
+- **Release Date**: November 2024
 - **New Features**: Enhanced CSV output with detailed remediation steps, audit policy GUI vs CLI explanation
 
 ---
