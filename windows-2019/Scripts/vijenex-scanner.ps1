@@ -387,7 +387,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           }
         }
         
-        $result.Evidence = "auditpol:$sub"
+        $result.Evidence = "auditpol:$sub (Note: Uses auditpol to read effective audit policy. Local Security Policy GUI may show 'Not Configured' but effective policy is enforced via Advanced Audit Policy or GPO)"
       }
       
       'Composite' {
