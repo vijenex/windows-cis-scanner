@@ -1,5 +1,5 @@
 <#
-  Windows Server 2022 CIS-style Scanner (Audit-only)
+  Windows Server 2019 CIS-style Scanner (Audit-only)
   - Loads all *.ps1 rule packs from ../milestones (unless -Milestones passed)
   - Reads live settings via `secedit` and `auditpol`
   - Writes HTML + CSV to -OutputDir (defaults ../reports)
@@ -744,7 +744,7 @@ New-Dir $OutputDir
 Write-Host "`n" -ForegroundColor White
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host "                        VIJENEX                              " -ForegroundColor Cyan
-Write-Host "      Windows Server 2022 CIS Compliance Scanner           " -ForegroundColor White
+Write-Host "      Windows Server 2019 CIS Compliance Scanner           " -ForegroundColor White
 Write-Host "                 (Standalone/Workgroup)                     " -ForegroundColor White
 Write-Host "           Powered by Vijenex Security Platform             " -ForegroundColor Yellow
 Write-Host "        https://github.com/vijenex/windows-cis-scanner       " -ForegroundColor Gray
