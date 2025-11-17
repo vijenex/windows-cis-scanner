@@ -428,36 +428,18 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
+          # Normal evaluation
+          $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
+          
           # If privilege doesn't exist and DefaultValue is defined, use DefaultValue
           if ($null -eq $raw -and $null -ne $defaultValue) {
             $curTokens = @($defaultValue)
-            $curSet = Normalize-PrincipalSet -Tokens $curTokens
-            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
-            
-            # For display, show that we're using default
-            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
-          } else {
-            # Normal evaluation when privilege exists or no default defined
-            $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
-            $curSet = Normalize-PrincipalSet -Tokens $curTokens
-            $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-            $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
-
-            # Resolve current tokens for display
-            $resolvedCurrent = @()
-            if ($curTokens.Count -gt 0) {
-              foreach ($tok in $curTokens) {
-                if ($tok) {
-                  $resolvedCurrent += Resolve-Principal $tok
-                }
-              }
-            }
-            $resolvedCurrent = @($resolvedCurrent)  # Ensure it's always an array
-            
-            # Handle display: show empty string for both if both are empty ("No One" case)
-            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           }
+          
+          $curSet = Normalize-PrincipalSet -Tokens $curTokens
+          $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
+          $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+          $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           
           $result.ActualValue = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { "<no one>" }
           $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
