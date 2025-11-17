@@ -449,8 +449,10 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Description = "User rights assignment verified via secedit export. Principals are resolved to account names."
         } catch {
           $result.Passed = $false
+          $result.ActualValue = "<error>"
+          $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading privilege' }
-          $result.Description = "Error occurred while checking user rights assignment."
+          $result.Description = "Error occurred while checking user rights assignment: $($_.Exception.Message)"
         }
       }
       
@@ -488,8 +490,10 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Description = "Registry setting verified directly. Value shown is the current registry value."
         } catch {
           $result.Passed = $false
+          $result.ActualValue = "<error>"
+          $result.EvidenceCommand = "Get-ItemProperty -Path '$($Rule.Key)' -Name '$($Rule.ValueName)'"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading registry' }
-          $result.Description = "Error occurred while reading registry value."
+          $result.Description = "Error occurred while reading registry value: $($_.Exception.Message)"
         }
       }
       
