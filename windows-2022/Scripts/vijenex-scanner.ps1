@@ -460,6 +460,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
+          $currentValue = $null
           
           if (Test-Path $regPath) {
             $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue

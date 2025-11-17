@@ -460,6 +460,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
+          $currentValue = $null
           
           if (Test-Path $regPath) {
             $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
@@ -729,13 +730,13 @@ Write-Host "`n" -ForegroundColor White
 $systemInfo=Get-OSInfo
 
 # Validate Windows version
-$expectedBuild = 17763  # Windows Server 2019
+$expectedBuild = 26100  # Windows Server 2025
 if ($systemInfo.BuildNumber -lt ($expectedBuild - 1000) -or $systemInfo.BuildNumber -gt ($expectedBuild + 1000)) {
   Write-Host "`n" -ForegroundColor Red
   Write-Host "=============================================================" -ForegroundColor Red
   Write-Host "                VERSION MISMATCH WARNING                     " -ForegroundColor Yellow
   Write-Host "=============================================================" -ForegroundColor Red
-  Write-Host "Expected: Windows Server 2019 (Build ~$expectedBuild)" -ForegroundColor Yellow
+  Write-Host "Expected: Windows Server 2025 (Build ~$expectedBuild)" -ForegroundColor Yellow
   Write-Host "Detected: Build $($systemInfo.BuildNumber)" -ForegroundColor Yellow
   Write-Host "`nYou may be running the wrong scanner version!" -ForegroundColor Red
   Write-Host "Please use the correct folder for your Windows version." -ForegroundColor Yellow
