@@ -747,13 +747,13 @@ Write-Host "`n" -ForegroundColor White
 $systemInfo=Get-OSInfo
 
 # Validate Windows version
-$expectedBuild = 20348  # Windows Server 2022
+$expectedBuild = 17763  # Windows Server 2019
 if ($systemInfo.BuildNumber -lt ($expectedBuild - 1000) -or $systemInfo.BuildNumber -gt ($expectedBuild + 1000)) {
   Write-Host "`n" -ForegroundColor Red
   Write-Host "=============================================================" -ForegroundColor Red
   Write-Host "                VERSION MISMATCH WARNING                     " -ForegroundColor Yellow
   Write-Host "=============================================================" -ForegroundColor Red
-  Write-Host "Expected: Windows Server 2022 (Build ~$expectedBuild)" -ForegroundColor Yellow
+  Write-Host "Expected: Windows Server 2019 (Build ~$expectedBuild)" -ForegroundColor Yellow
   Write-Host "Detected: Build $($systemInfo.BuildNumber)" -ForegroundColor Yellow
   Write-Host "`nYou may be running the wrong scanner version!" -ForegroundColor Red
   Write-Host "Please use the correct folder for your Windows version." -ForegroundColor Yellow
