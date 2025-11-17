@@ -506,7 +506,6 @@ Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/r
 - **Current Version**: v1.9.1
 - **Supported OS**: Windows Server 2025, Windows Server 2022, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
-- **Release Date**: December 2024
 - **New Features**: Integrated evidence collection in all reports (ActualValue + EvidenceCommand columns)
 
 ---
