@@ -146,40 +146,30 @@ foreach ($control in $failedControls) {
   
   # Determine control type and collect evidence
   if ($control.Title -match 'password history|password age|password length|password complexity|reversible encryption') {
-    # Password policies
     if ($control.Title -match 'password history') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "PasswordHistorySize"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'password history'"
     } elseif ($control.Title -match 'Maximum password age') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "MaximumPasswordAge"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'Maximum password age'"
     } elseif ($control.Title -match 'Minimum password age') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "MinimumPasswordAge"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'Minimum password age'"
     } elseif ($control.Title -match 'Minimum password length') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "MinimumPasswordLength"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'Minimum password length'"
     } elseif ($control.Title -match 'password complexity') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "PasswordComplexity"
-      $evidence.VerificationCommand = "secedit /export /cfg temp.cfg && findstr PasswordComplexity temp.cfg"
     } elseif ($control.Title -match 'reversible encryption') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "ClearTextPassword"
-      $evidence.VerificationCommand = "secedit /export /cfg temp.cfg && findstr ClearTextPassword temp.cfg"
     }
+    $evidence.VerificationCommand = "secedit /export /cfg temp.cfg"
   } elseif ($control.Title -match 'lockout duration|lockout threshold|lockout observation') {
-    # Account lockout policies
     if ($control.Title -match 'lockout duration') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "LockoutDuration"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'Lockout duration'"
     } elseif ($control.Title -match 'lockout threshold') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "LockoutBadCount"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'Lockout threshold'"
     } elseif ($control.Title -match 'lockout observation|Reset account lockout') {
       $evidence.ActualValue = Get-SecEditValue -Section "System Access" -Name "ResetLockoutCount"
-      $evidence.VerificationCommand = "net accounts | findstr /i 'Lockout observation'"
     }
+    $evidence.VerificationCommand = "net accounts"
   } elseif ($control.Title -match 'Audit') {
-    # Audit policies - extract subcategory name
     if ($control.Title -match "'([^']+)'") {
       $subcategory = $Matches[1]
       $evidence.ActualValue = Get-AuditPolValue -Subcategory $subcategory
@@ -189,7 +179,6 @@ foreach ($control in $failedControls) {
       $evidence.VerificationCommand = "auditpol /get /category:*"
     }
   } elseif ($control.Id -match '^2\.2\.') {
-    # User rights assignments
     $rightName = ""
     if ($control.Title -match 'Access Credential Manager') { $rightName = "SeTrustedCredManAccessPrivilege" }
     elseif ($control.Title -match 'Access this computer from') { $rightName = "SeNetworkLogonRight" }
@@ -213,18 +202,18 @@ foreach ($control in $failedControls) {
     
     if ($rightName) {
       $evidence.ActualValue = Get-SecEditValue -Section "Privilege Rights" -Name $rightName
-      $evidence.VerificationCommand = "secedit /export /cfg temp.cfg && findstr $rightName temp.cfg"
+      $evidence.VerificationCommand = "secedit /export /cfg temp.cfg"
     } else {
       $evidence.ActualValue = "<unable to determine privilege right>"
       $evidence.VerificationCommand = "secedit /export /cfg temp.cfg"
     }
-  } elseif ($control.Id -match '^2\.3\.') {
-    # Security options - registry based
-    $evidence.ActualValue = "<registry check required - see remediation>"
-    $evidence.VerificationCommand = "See CIS Benchmark for specific registry path"
+  } elseif ($control.Id -match '^(2\.3\.|18\.|19\.)') {
+    # Registry-based controls - extract registry path from CSV if available
+    $evidence.ActualValue = "<check registry or Group Policy>"
+    $evidence.VerificationCommand = "gpedit.msc or regedit"
   } else {
     $evidence.ActualValue = "<manual verification required>"
-    $evidence.VerificationCommand = "See CIS Benchmark documentation"
+    $evidence.VerificationCommand = "See CIS Benchmark"
   }
   
   $evidenceData += $evidence

@@ -302,6 +302,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
     CISReference=if($Rule.ContainsKey('CISReference')){$Rule.CISReference}else{'Refer to CIS Benchmark documentation'}
     Remediation=''
     Description=''
+    EvidenceCommand=''
+    ActualValue=''
   }
   
   try{
@@ -347,6 +349,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
         }
         
+        $result.ActualValue = if ($null -ne $val) { $val } else { "<not configured>" }
+        $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure via Local Security Policy or Group Policy' }
         $result.Description = "Security policy setting verified via secedit export. Value shown is the effective policy."
       }
@@ -379,6 +383,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         }
         
 
+        $result.ActualValue = if ($null -ne $val) { $val } else { "<not configured>" }
+        $result.EvidenceCommand = "auditpol /get /subcategory:`"$sub`""
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { "Configure via Advanced Audit Policy Configuration" }
         $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
           "If you check through Local Security Policy GUI (secpol.msc → Local Policies → Audit Policy), it may show 'Not Configured' or different values. " +
@@ -453,6 +459,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
             $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           }
           
+          $result.ActualValue = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { "<no one>" }
+          $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Navigate to: Local Security Policy → Local Policies → User Rights Assignment → $($Rule.Key)" 
           }
@@ -489,6 +497,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
               $result.Passed = $false
             }
           }
+          $result.ActualValue = if ($null -ne $currentValue) { $currentValue } else { "<not set>" }
+          $result.EvidenceCommand = "Get-ItemProperty -Path '$regPath' -Name '$valueName'"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Set registry value: $regPath\$valueName = $expectedValue" 
           }
@@ -545,8 +555,8 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   
   # Generate CSV if requested
   if ($Formats -contains 'All' -or $Formats -contains 'CSV') {
-    # Generate CSV with essential columns only
-    $csvData = $Results | Select-Object Id, Title, Section, Status, CISReference, Remediation, Description
+    # Generate CSV with evidence columns
+    $csvData = $Results | Select-Object Id, Title, Section, Status, ActualValue, EvidenceCommand, CISReference, Remediation, Description
     $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
     $outputs['CSV'] = $csv
     Write-Host "CSV:  $csv" -ForegroundColor Green
@@ -560,7 +570,9 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
     $status = if($_.Passed){'[PASS]'}else{'[FAIL]'}
     $cls = if($_.Passed){'pass-row'}else{'fail-row'}
     $cisLink = if($_.CISReference){"<a href='$($_.CISReference)' target='_blank'>CIS Benchmark</a>"}else{'N/A'}
-    "<tr class='$cls'><td><code>$($_.Id)</code></td><td>$($_.Title)</td><td>$($_.Section)</td><td><b>$status</b></td><td>$cisLink</td></tr>"
+    $actualVal = if($_.ActualValue){$_.ActualValue}else{'N/A'}
+    $evidCmd = if($_.EvidenceCommand){"<code style='font-size:10px'>$($_.EvidenceCommand)</code>"}else{'N/A'}
+    "<tr class='$cls'><td><code>$($_.Id)</code></td><td>$($_.Title)</td><td>$($_.Section)</td><td><b>$status</b></td><td>$actualVal</td><td>$evidCmd</td><td>$cisLink</td></tr>"
   }
   
   # Generate HTML if requested
@@ -581,7 +593,7 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
 <p><strong>Scan Date:</strong> $($SystemInfo.ScanDate)</p>
 </div>
 <div class="summary"><div>Total checks: <b>$total</b></div><div>Passed: <span class="pass">$passed</span> | Failed: <span class="fail">$failed</span></div></div>
-<table><thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>CIS Reference</th></tr></thead><tbody>
+<table><thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Actual Value</th><th>Evidence Command</th><th>CIS Reference</th></tr></thead><tbody>
 $($rows -join "`n")
 </tbody></table>
 <p style='margin-top:24px;color:#666;font-size:12px;'>Audit-only; no changes made. Generated by Vijenex Security Platform.</p></body></html>
@@ -687,14 +699,16 @@ $($rows -join "`n")
 </table>
 <h2>Detailed Results</h2>
 <table>
-<thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Description</th><th>Impact</th><th>Remediation</th></tr></thead>
+<thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Actual Value</th><th>Evidence Command</th><th>Remediation</th></tr></thead>
 <tbody>
 "@
       
       foreach ($result in $Results) {
         $statusClass = if($result.Passed){"pass"}else{"fail"}
         $status = if($result.Passed){"Pass"}else{"Fail"}
-        $wordHtml += "<tr class='$statusClass'><td>$($result.Id)</td><td>$($result.Title)</td><td>$($result.Section)</td><td>$status</td><td>$($result.Description)</td><td>$($result.Remediation)</td></tr>`n"
+        $actualVal = if($result.ActualValue){$result.ActualValue}else{'N/A'}
+        $evidCmd = if($result.EvidenceCommand){$result.EvidenceCommand}else{'N/A'}
+        $wordHtml += "<tr class='$statusClass'><td>$($result.Id)</td><td>$($result.Title)</td><td>$($result.Section)</td><td>$status</td><td>$actualVal</td><td style='font-size:10px'>$evidCmd</td><td>$($result.Remediation)</td></tr>`n"
       }
       
       $wordHtml += @"
