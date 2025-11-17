@@ -1,147 +1,147 @@
-# 18.1-18.4 Administrative Templates - Control Panel & MS Security Guide (Windows Server 2022)
+# New Windows Server 2022 Controls (9 controls)
 $Global:Rules += @(
-  # 18.1.1 Personalization
+  # 18.6.7.1 Lanman Server
   @{
-    Id='18.1.1.1'
-    Title='(L1) Ensure ''Prevent enabling lock screen camera'' is set to ''Enabled'' (Automated)'
-    Section='18.1.1 Personalization'
+    Id='18.6.7.1'
+    Title='(L1) Ensure ''Mandate the minimum version of SMB'' is set to ''Enabled: 3.1.1'' (Automated)'
+    Section='18.6.7 Lanman Server'
     Profile='Level1'
     Type='Registry'
-    Key='HKLM:\Software\Policies\Microsoft\Windows\Personalization'
-    ValueName='NoLockScreenCamera'
-    Expected=1
+    Key='HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters'
+    ValueName='SMBServerMinProtocol'
+    Expected=0x0311
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.1.1.2'
-    Title='(L1) Ensure ''Prevent enabling lock screen slide show'' is set to ''Enabled'' (Automated)'
-    Section='18.1.1 Personalization'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM:\Software\Policies\Microsoft\Windows\Personalization'
-    ValueName='NoLockScreenSlideshow'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.1.2'
+    CISControlID='18.6.7.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
 
-  # 18.1.2.2 Regional and Language Options
+  # 18.6.8.2 Lanman Workstation
   @{
-    Id='18.1.2.2'
-    Title='(L1) Ensure ''Allow users to enable online speech recognition services'' is set to ''Disabled'' (Automated)'
-    Section='18.1.2 Regional and Language Options'
+    Id='18.6.8.2'
+    Title='(L1) Ensure ''Require Encryption'' is set to ''Enabled'' (Automated)'
+    Section='18.6.8 Lanman Workstation'
     Profile='Level1'
     Type='Registry'
-    Key='HKLM:\Software\Policies\Microsoft\Speech'
-    ValueName='AllowSpeechModelUpdate'
-    Expected=0
+    Key='HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters'
+    ValueName='RequireEncryption'
+    Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.2.2'
+    CISControlID='18.6.8.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
 
-  # 18.4 MS Security Guide
+  # 18.9.26.1 Local Security Authority
   @{
-    Id='18.4.1'
-    Title='(L1) Ensure ''Apply UAC restrictions to local accounts on network logons'' is set to ''Enabled'' (MS only) (Automated)'
-    Section='18.4 MS Security Guide'
+    Id='18.9.26.1'
+    Title='(L1) Ensure ''Allow Custom SSPs and APs to be loaded into LSASS'' is set to ''Disabled'' (Automated)'
+    Section='18.9.26 Local Security Authority'
     Profile='Level1'
     Type='Registry'
-    Key='HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System'
-    ValueName='LocalAccountTokenFilterPolicy'
+    Key='HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System'
+    ValueName='AllowCustomSSPsAPs'
     Expected=0
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.1'
+    CISControlID='18.9.26.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
+
+  # 18.9.39.1 Security Account Manager
   @{
-    Id='18.4.2'
-    Title='(L1) Ensure ''Configure SMB v1 client driver'' is set to ''Enabled: Disable driver (recommended)'' (Automated)'
-    Section='18.4 MS Security Guide'
+    Id='18.9.39.1'
+    Title='(L1) Ensure ''Configure validation of ROCA-vulnerable WHfB keys during authentication'' is set to ''Enabled: Audit'' or higher (DC only) (Automated)'
+    Section='18.9.39 Security Account Manager'
     Profile='Level1'
     Type='Registry'
-    Key='HKLM:\System\CurrentControlSet\Services\mrxsmb10'
-    ValueName='Start'
-    Expected=4
+    Key='HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\SAM'
+    ValueName='ValidateROCAVulnerableWHfBKeys'
+    Operator='GreaterOrEqual'
+    Expected=1
+    AppliesTo='DC'
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.2'
+    CISControlID='18.9.39.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
+
+  # 18.10.13.3 Cloud Content
   @{
-    Id='18.4.3'
-    Title='(L1) Ensure ''Configure SMB v1 server'' is set to ''Disabled'' (Automated)'
-    Section='18.4 MS Security Guide'
+    Id='18.10.13.3'
+    Title='(L1) Ensure ''Turn off Microsoft consumer experiences'' is set to ''Enabled'' (Automated)'
+    Section='18.10.13 Cloud Content'
     Profile='Level1'
     Type='Registry'
-    Key='HKLM:\System\CurrentControlSet\Services\LanmanServer\Parameters'
-    ValueName='SMB1'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.4'
-    Title='(L1) Ensure ''Enable Certificate Padding'' is set to ''Enabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM:\Software\Microsoft\Cryptography\Wintrust\Config'
-    ValueName='EnableCertPaddingCheck'
+    Key='HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent'
+    ValueName='DisableWindowsConsumerFeatures'
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.4'
+    CISControlID='18.10.13.3'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
+
+  # 18.10.57.3.3.5 Remote Desktop Services - Device and Resource Redirection
   @{
-    Id='18.4.5'
-    Title='(L1) Ensure ''Enable Structured Exception Handling Overwrite Protection (SEHOP)'' is set to ''Enabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
+    Id='18.10.57.3.3.5'
+    Title='(L2) Ensure ''Do not allow LPT port redirection'' is set to ''Enabled'' (Automated)'
+    Section='18.10.57 Remote Desktop Services'
+    Profile='Level2'
     Type='Registry'
-    Key='HKLM:\System\CurrentControlSet\Control\Session Manager\kernel'
-    ValueName='DisableExceptionChainValidation'
-    Expected=0
+    Key='HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services'
+    ValueName='fDisableLPT'
+    Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.5'
+    CISControlID='18.10.57.3.3.5'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
+
+  # 18.10.57.3.3.6 Remote Desktop Services - Device and Resource Redirection
   @{
-    Id='18.4.6'
-    Title='(L1) Ensure ''NetBT NodeType configuration'' is set to ''Enabled: P-node (recommended)'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
+    Id='18.10.57.3.3.6'
+    Title='(L2) Ensure ''Do not allow supported Plug and Play device redirection'' is set to ''Enabled'' (Automated)'
+    Section='18.10.57 Remote Desktop Services'
+    Profile='Level2'
     Type='Registry'
-    Key='HKLM:\System\CurrentControlSet\Services\NetBT\Parameters'
-    ValueName='NodeType'
-    Expected=2
+    Key='HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services'
+    ValueName='fDisablePNPRedir'
+    Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.6'
+    CISControlID='18.10.57.3.3.6'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
+
+  # 18.10.57.3.3.7 Remote Desktop Services - Device and Resource Redirection
   @{
-    Id='18.4.7'
-    Title='(L1) Ensure ''WDigest Authentication'' is set to ''Disabled'' (Automated)'
-    Section='18.4 MS Security Guide'
+    Id='18.10.57.3.3.7'
+    Title='(L2) Ensure ''Do not allow WebAuthn redirection'' is set to ''Enabled'' (Automated)'
+    Section='18.10.57 Remote Desktop Services'
+    Profile='Level2'
+    Type='Registry'
+    Key='HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services'
+    ValueName='fDisableWebAuthn'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='18.10.57.3.3.7'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
+  },
+
+  # 18.10.82.2 Windows Logon Options
+  @{
+    Id='18.10.82.2'
+    Title='(L1) Ensure ''Sign-in and lock last interactive user automatically after a restart'' is set to ''Disabled'' (Automated)'
+    Section='18.10.82 Windows Logon Options'
     Profile='Level1'
     Type='Registry'
-    Key='HKLM:\System\CurrentControlSet\Control\SecurityProviders\WDigest'
-    ValueName='UseLogonCredential'
-    Expected=0
+    Key='HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System'
+    ValueName='DisableAutomaticRestartSignOn'
+    Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.7'
+    CISControlID='18.10.82.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   }
