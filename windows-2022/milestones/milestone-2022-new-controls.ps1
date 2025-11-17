@@ -1,4 +1,4 @@
-# New Windows Server 2022 Controls (9 controls)
+# New Windows Server 2022 Controls (8 controls)
 $Global:Rules += @(
   # 18.6.7.1 Lanman Server
   @{
@@ -62,22 +62,6 @@ $Global:Rules += @(
     AppliesTo='DC'
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='18.9.39.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
-  },
-
-  # 18.10.13.3 Cloud Content
-  @{
-    Id='18.10.13.3'
-    Title='(L1) Ensure ''Turn off Microsoft consumer experiences'' is set to ''Enabled'' (Automated)'
-    Section='18.10.13 Cloud Content'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent'
-    ValueName='DisableWindowsConsumerFeatures'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.13.3'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
