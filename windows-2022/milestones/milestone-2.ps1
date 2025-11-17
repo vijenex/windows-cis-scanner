@@ -1605,6 +1605,21 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
+  @{
+    Id='2.3.11.14'
+    Title='(L1) Ensure ''Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers'' is set to ''Audit all'' or higher (Automated)'
+    Section='2.3.11 Network security'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0'
+    ValueName='RestrictSendingNTLMTraffic'
+    Operator='GreaterOrEqual'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='2.3.11.14'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
+  },
 
   # 2.3.13 Shutdown
   @{

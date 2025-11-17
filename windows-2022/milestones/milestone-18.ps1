@@ -161,21 +161,6 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.4.8'
-    Title='(L1) Ensure ''WDigest Authentication'' is set to ''Disabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest'
-    ValueName='UseLogonCredential'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.8'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2022 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2022 Benchmark documentation for detailed remediation steps.'
-  },
-
   # 18.5 MSS (Legacy)
   @{
     Id='18.5.1'
