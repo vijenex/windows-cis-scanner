@@ -47,7 +47,7 @@ This platform provides automated security compliance auditing for Windows system
 ## 🗂️ Repository Structure
 
 ```
-├── windows-2025/           # Windows Server 2025 CIS audit tools (COMPLETE)
+├── windows-2025/           # Windows Server 2025 CIS audit tools (✅ COMPLETE)
 │   ├── Scripts/
 │   │   └── vijenex-scanner.ps1    # Main scanner engine
 │   ├── milestones/               # CIS control definitions
@@ -61,7 +61,13 @@ This platform provides automated security compliance auditing for Windows system
 │   │   └── ...                   # Additional milestones
 │   ├── documentation/            # Official CIS benchmark PDF
 │   └── reports/                  # Generated audit reports
-├── windows-2019/           # Windows Server 2019 CIS audit tools (COMPLETE)
+├── windows-2022/           # Windows Server 2022 CIS audit tools (🚧 IN PROGRESS)
+│   ├── Scripts/
+│   │   └── vijenex-scanner.ps1    # Main scanner engine
+│   ├── milestones/               # CIS control definitions (add your controls here)
+│   ├── documentation/            # Official CIS benchmark PDF
+│   └── reports/                  # Generated audit reports
+├── windows-2019/           # Windows Server 2019 CIS audit tools (✅ COMPLETE)
 │   ├── Scripts/
 │   │   └── vijenex-scanner.ps1    # Main scanner engine
 │   ├── milestones/               # CIS control definitions (431 controls)
@@ -232,7 +238,7 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 
 ### Currently Supported Versions
 
-#### Windows Server 2025 Standalone/Workgroup
+#### Windows Server 2025 Standalone/Workgroup ✅
 
 | Section | Controls | Coverage |
 |---------|----------|----------|
@@ -245,7 +251,15 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 
 **Total: 212 Security Controls Evaluated** (164 unique control definitions)
 
-#### Windows Server 2019 Standalone/Workgroup ✅ **NEW**
+#### Windows Server 2022 Standalone/Workgroup 🚧 **IN PROGRESS**
+
+| Section | Controls | Coverage |
+|---------|----------|----------|
+| **Status** | In Development | Skeleton ready, awaiting control definitions |
+
+**Total: TBD** (Controls being added)
+
+#### Windows Server 2019 Standalone/Workgroup ✅
 
 | Section | Controls | Coverage |
 |---------|----------|----------|
@@ -262,7 +276,6 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 
 ### Planned Versions
 
-- **Windows Server 2022** - Coming soon
 - **Windows 11** - Planned
 - **Windows 10** - Planned
 
