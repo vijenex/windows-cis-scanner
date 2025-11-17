@@ -349,7 +349,17 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
         }
         
-        $result.ActualValue = if ($null -ne $val) { $val } else { "<not configured>" }
+        # Format ActualValue with human-readable explanation
+        if ($null -ne $val) {
+          if ($val -match '^\d+$' -and ([int]$val -eq 0 -or [int]$val -eq 1)) {
+            $result.ActualValue = "$val (" + $(if([int]$val -eq 1){"Enabled"}else{"Disabled"}) + ")"
+          } else {
+            $result.ActualValue = $val
+          }
+        } else {
+          $result.ActualValue = "Not configured (policy not set)"
+        }
+        
         $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Configure via Local Security Policy or Group Policy' }
         $result.Description = "Security policy setting verified via secedit export. Value shown is the effective policy."
@@ -383,7 +393,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         }
         
 
-        $result.ActualValue = if ($null -ne $val) { $val } else { "<not configured>" }
+        $result.ActualValue = if ($null -ne $val) { $val } else { "Not configured (No Auditing)" }
         $result.EvidenceCommand = "auditpol /get /subcategory:`"$sub`""
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { "Configure via Advanced Audit Policy Configuration" }
         $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
@@ -441,7 +451,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
           $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           
-          $result.ActualValue = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { "<no one>" }
+          $result.ActualValue = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { "Not configured (No principals assigned)" }
           $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Navigate to: Local Security Policy → Local Policies → User Rights Assignment → $($Rule.Key)" 
@@ -482,7 +492,17 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
               $result.Passed = $false
             }
           }
-          $result.ActualValue = if ($null -ne $currentValue) { $currentValue } else { "<not set>" }
+          # Format ActualValue with human-readable explanation
+          if ($null -ne $currentValue) {
+            if ($currentValue -is [int] -and ($currentValue -eq 0 -or $currentValue -eq 1)) {
+              $result.ActualValue = "$currentValue (" + $(if($currentValue -eq 1){"Enabled"}else{"Disabled"}) + ")"
+            } else {
+              $result.ActualValue = $currentValue
+            }
+          } else {
+            $result.ActualValue = "Not configured (registry key or value does not exist)"
+          }
+          
           $result.EvidenceCommand = "Get-ItemProperty -Path '$regPath' -Name '$valueName'"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Set registry value: $regPath\$valueName = $expectedValue" 
@@ -490,7 +510,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Description = "Registry setting verified directly. Value shown is the current registry value."
         } catch {
           $result.Passed = $false
-          $result.ActualValue = "<error>"
+          $result.ActualValue = "Error reading registry: $($_.Exception.Message)"
           $result.EvidenceCommand = "Get-ItemProperty -Path '$($Rule.Key)' -Name '$($Rule.ValueName)'"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading registry' }
           $result.Description = "Error occurred while reading registry value: $($_.Exception.Message)"
