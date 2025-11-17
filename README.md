@@ -135,13 +135,10 @@ cd windows-cis-scanner\windows-2025  # or windows-2019
 # Navigate to your Windows version folder (e.g., windows-2019)
 cd windows-2019
 
-# Step 1: Run comprehensive CIS audit (HTML + CSV by default)
+# Run comprehensive CIS audit (HTML + CSV with evidence by default)
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1
 
-# Step 2: Collect evidence for failed controls (NEW in v1.8.0)
-powershell -NoProfile -ExecutionPolicy Bypass -File ..\Collect-FailureEvidence.ps1 -CSVPath ".\reports\vijenex-cis-results.csv"
-
-# Or generate all formats at once (HTML, CSV, PDF, Word)
+# Generate all formats at once (HTML, CSV, PDF, Word - all include evidence)
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
 ```
 
@@ -289,7 +286,7 @@ The tool generates comprehensive reports in multiple formats with detailed syste
 - ⚠️ **Manual**: Requires human verification (not a failure)
 
 ### CSV Report Columns
-The scanner generates simplified CSV reports with the following columns:
+The scanner automatically includes evidence in all reports:
 
 | Column | Description |
 |--------|-------------|
@@ -297,19 +294,21 @@ The scanner generates simplified CSV reports with the following columns:
 | **Title** | Control name/description |
 | **Section** | CIS section name |
 | **Status** | PASS or FAIL |
+| **ActualValue** | Current system value (NEW in v1.9.1) |
+| **EvidenceCommand** | Command to verify the value (NEW in v1.9.1) |
 | **CISReference** | Link to official CIS documentation |
 | **Remediation** | Detailed step-by-step fix instructions |
 | **Description** | Important notes about the control |
 
-### Evidence Collection (NEW in v1.8.0)
-For failed controls, use the automated evidence collection tool:
+### Automatic Evidence Collection (NEW in v1.9.1)
+Evidence is now automatically collected during the scan - no separate script needed!
 
-```powershell
-# From within windows-2019 or windows-2025 folder, after running the scanner
-powershell -NoProfile -ExecutionPolicy Bypass -File ..\Collect-FailureEvidence.ps1 -CSVPath ".\reports\vijenex-cis-results.csv"
-```
+**What's Included:**
+- **Actual Value**: Current system configuration for each control
+- **Evidence Command**: PowerShell command to manually verify the value
+- **Available in**: CSV, HTML, Word, and PDF reports
 
-This generates a professional HTML evidence report showing actual system values for all failed controls. No manual screenshots needed!
+No manual screenshots or separate evidence collection required!
 
 ### ⚠️ IMPORTANT: Audit Policy Controls (GUI vs Command Line)
 
@@ -486,30 +485,29 @@ This tool implements controls from CIS (Center for Internet Security) benchmarks
 ## 🏷️ Releases
 
 ### Current Stable Release
-- **v1.8.0** - Windows Server 2025 & 2019 CIS Scanner
+- **v1.9.1** - Windows Server 2025, 2022 & 2019 CIS Scanner
+  - **Windows Server 2022**: 432 controls evaluated (432 unique definitions)
   - **Windows Server 2025**: 203 controls evaluated (164 unique definitions)
   - **Windows Server 2019**: 533 controls evaluated (431 unique definitions, 57% CIS coverage)
-  - Simplified CSV output (7 columns: Id, Title, Section, Status, CISReference, Remediation, Description)
-  - Automated evidence collection tool (no manual screenshots needed)
-  - Professional HTML evidence reports for failed controls
+  - Integrated evidence collection (ActualValue + EvidenceCommand in all reports)
   - Multiple report formats (HTML, CSV, PDF, Word)
   - Real-time scan progress display with pass/fail summary
 
 ### Download Options
 ```powershell
-# Latest stable release (v1.8.0)
-Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.8.0.zip" -OutFile "vijenex-windows-cis-v1.8.0.zip"
+# Latest stable release (v1.9.1)
+Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/refs/tags/v1.9.1.zip" -OutFile "vijenex-windows-cis-v1.9.1.zip"
 
 # All releases
 # Visit: https://github.com/vijenex/windows-cis-scanner/releases
 ```
 
 ### Version Information
-- **Current Version**: v1.8.0
-- **Supported OS**: Windows Server 2025, Windows Server 2019
+- **Current Version**: v1.9.1
+- **Supported OS**: Windows Server 2025, Windows Server 2022, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
-- **Release Date**: November 2025
-- **New Features**: Simplified CSV output (removed verbose fields), automated evidence collection tool
+- **Release Date**: December 2024
+- **New Features**: Integrated evidence collection in all reports (ActualValue + EvidenceCommand columns)
 
 ---
 
