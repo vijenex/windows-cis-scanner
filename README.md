@@ -403,6 +403,38 @@ Each control in the CIS Benchmark PDF includes:
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ```
 
+#### Security Warning: "Do you want to run this script?"
+**Cause**: Files downloaded from the internet are marked as blocked by Windows.
+
+**Solution**: Unblock all PowerShell files (one-time setup):
+```powershell
+# Navigate to your Windows version folder first
+cd windows-2019  # or windows-2022, windows-2025
+
+# Unblock all PowerShell files
+Get-ChildItem -Path . -Recurse -Filter *.ps1 | Unblock-File
+
+# Then run scanner normally
+.\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
+```
+
+#### "powershell is not recognized" Error
+**Cause**: PowerShell is not in your system PATH.
+
+**Solution**: Use full path to PowerShell:
+```cmd
+# From Command Prompt (cmd.exe)
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
+
+# Or use environment variable
+%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
+```
+
+**Note**: If you're already in PowerShell, don't type `powershell` again - just run:
+```powershell
+.\Scripts\vijenex-scanner.ps1 -OutputDir .\reports -Profile Level1 -OutputFormat All
+```
+
 #### "No Rules Loaded" 
 - Verify milestone files exist in `milestones/` folder
 - Check file permissions and paths
@@ -503,7 +535,7 @@ Invoke-WebRequest -Uri "https://github.com/vijenex/windows-cis-scanner/archive/r
 ```
 
 ### Version Information
-- **Current Version**: v1.9.1
+- **Current Version**: v1.9.7
 - **Supported OS**: Windows Server 2025, Windows Server 2022, Windows Server 2019
 - **CIS Compliance**: Based on official CIS benchmark documentation
 - **New Features**: Integrated evidence collection in all reports (ActualValue + EvidenceCommand columns)
