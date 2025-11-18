@@ -622,6 +622,7 @@ $($rows -join "`n")
 }
 body{font-family:Arial,sans-serif;margin:20px;font-size:12px;line-height:1.4}
 h1{margin-bottom:10px;color:#333}
+h2{color:#2E75B6;margin-top:25px;font-size:16px}
 .system-info{background:#f8f9fa;padding:15px;border:1px solid #ddd;margin:15px 0;border-radius:5px}
 .system-info h3{margin-top:0;font-size:14px;color:#333}
 .system-info p{margin:5px 0}
@@ -632,6 +633,8 @@ tr.fail-row{background:#ffe6e6}
 tr.pass-row{background:#e6ffe6}
 .desc,.impact{max-width:250px;word-wrap:break-word}
 .summary{margin:20px 0;padding:15px;background:#f8f9fa;border-radius:5px}
+.note-box{background:#fff3cd;border-left:4px solid #ffc107;padding:15px;margin:20px 0;page-break-inside:avoid}
+.code-box{background:#f4f4f4;border:1px solid #ddd;padding:10px;font-family:Consolas,monospace;margin:10px 0}
 .print-btn{margin:20px 0;padding:10px 20px;background:#007bff;color:white;border:none;border-radius:5px;cursor:pointer;font-size:14px}
 .print-btn:hover{background:#0056b3}
 </style>
@@ -646,8 +649,41 @@ function printToPDF() {
 <p><strong>Instructions:</strong> Click the button above or press Ctrl+P, then select "Save as PDF" as your printer.</p>
 </div>
 <h1>CIS Compliance Audit Report</h1>
+<h2>About This Report</h2>
+<p><strong>Scanning Methodology:</strong> This system was scanned using the Vijenex CIS Scanner, which is based on official CIS Benchmark documentation. The scanner performs 100% read-only audits without making any system changes.</p>
+<p><strong>CIS Benchmark Reference:</strong> This audit follows the official CIS Microsoft Windows Server 2019 Benchmark. Download the official documentation at: <a href="https://www.cisecurity.org/cis-benchmarks" target="_blank">https://www.cisecurity.org/cis-benchmarks</a></p>
+<div class="note-box">
+<p><strong>⚠️ IMPORTANT: Remediation Best Practices</strong></p>
+<ol>
+<li><strong>Test First:</strong> Always perform remediation on Non-Production systems first</li>
+<li><strong>Validate:</strong> Ensure all applications and services work correctly after remediation</li>
+<li><strong>Production Rollout:</strong> Only apply changes to Production after successful Non-Prod validation</li>
+<li><strong>Golden Image:</strong> Once remediation is complete and validated, create a hardened golden image for future deployments to save time and ensure consistency</li>
+<li><strong>Documentation:</strong> Document all changes and maintain an audit trail</li>
+</ol>
+</div>
+<div class="note-box">
+<p><strong>⚠️ IMPORTANT: Audit Policy Verification</strong></p>
+<p><strong>Why GUI Shows Different Results:</strong><br>
+Windows has TWO separate audit policy systems:</p>
+<ol>
+<li>Legacy Audit Policy (9 categories) - Shown in Local Security Policy GUI</li>
+<li>Advanced Audit Policy (53 subcategories) - The EFFECTIVE policy</li>
+</ol>
+<p><strong>When both are configured, Advanced Audit Policy OVERRIDES Legacy.</strong></p>
+<p><strong>What This Means:</strong></p>
+<ul>
+<li>Scanner reads: auditpol command (Advanced Audit Policy - EFFECTIVE)</li>
+<li>GUI shows: Legacy Audit Policy (may show "Not Configured")</li>
+<li>Result: Scanner shows FAIL, but GUI shows "Not Configured" - THIS IS NORMAL</li>
+</ul>
+<p><strong>How to Verify Scanner Results:</strong><br>
+Run this command in PowerShell (as Administrator):</p>
+<div class="code-box">auditpol /get /category:*</div>
+<p>This shows the ACTUAL enforced policy (what the scanner reads).</p>
+</div>
+<h2>System Information</h2>
 <div class="system-info">
-<h3>System Information</h3>
 <p><strong>Operating System:</strong> $($SystemInfo.Caption)</p>
 <p><strong>Version:</strong> $($SystemInfo.Version) (Build $($SystemInfo.BuildNumber))</p>
 <p><strong>Computer Name:</strong> $($SystemInfo.ComputerName)</p>
@@ -655,16 +691,16 @@ function printToPDF() {
 <p><strong>IP Address:</strong> $($SystemInfo.IPAddress)</p>
 <p><strong>Scan Date:</strong> $($SystemInfo.ScanDate)</p>
 </div>
+<h2>Summary</h2>
 <div class="summary">
-<h3>Summary</h3>
 <p><strong>Total Checks:</strong> $total</p>
 <p><strong>Passed:</strong> $passed</p>
 <p><strong>Failed:</strong> $failed</p>
 <p><strong>Success Rate:</strong> $([math]::Round(($passed/$total)*100,1))%</p>
 </div>
-<h3>Detailed Results</h3>
+<h2>Detailed Results</h2>
 <table>
-<thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Description</th><th>Impact</th><th>Remediation</th></tr></thead>
+<thead><tr><th>ID</th><th>Control</th><th>Section</th><th>Status</th><th>Actual Value</th><th>Evidence Command</th><th>Remediation</th></tr></thead>
 <tbody>
 $($rows -join "`n")
 </tbody></table>
@@ -685,9 +721,42 @@ $($rows -join "`n")
       $wordHtml = @"
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"/><title>CIS Compliance Audit Report</title>
-<style>body{font-family:Calibri,Arial,sans-serif;margin:40px;line-height:1.4}h1{color:#2E75B6;border-bottom:2px solid #2E75B6;padding-bottom:10px}h2{color:#2E75B6;margin-top:30px}.info-table{border-collapse:collapse;margin:20px 0}.info-table td{padding:8px;border:1px solid #ddd}.info-table td:first-child{background:#f0f0f0;font-weight:bold;width:150px}table{border-collapse:collapse;width:100%;margin-top:20px;font-size:11px}th,td{border:1px solid #333;padding:6px;text-align:left;vertical-align:top}th{background:#2E75B6;color:white;font-weight:bold}.pass{background:#d4edda;color:#155724}.fail{background:#f8d7da;color:#721c24}</style>
+<style>body{font-family:Calibri,Arial,sans-serif;margin:40px;line-height:1.4}h1{color:#2E75B6;border-bottom:2px solid #2E75B6;padding-bottom:10px}h2{color:#2E75B6;margin-top:30px}.info-table{border-collapse:collapse;margin:20px 0}.info-table td{padding:8px;border:1px solid #ddd}.info-table td:first-child{background:#f0f0f0;font-weight:bold;width:150px}table{border-collapse:collapse;width:100%;margin-top:20px;font-size:11px}th,td{border:1px solid #333;padding:6px;text-align:left;vertical-align:top}th{background:#2E75B6;color:white;font-weight:bold}.pass{background:#d4edda;color:#155724}.fail{background:#f8d7da;color:#721c24}.note-box{background:#fff3cd;border-left:4px solid #ffc107;padding:15px;margin:20px 0}.code-box{background:#f4f4f4;border:1px solid #ddd;padding:10px;font-family:Consolas,monospace;margin:10px 0}</style>
 </head><body>
 <h1>CIS Compliance Audit Report</h1>
+<h2>About This Report</h2>
+<p><strong>Scanning Methodology:</strong> This system was scanned using the Vijenex CIS Scanner, which is based on official CIS Benchmark documentation. The scanner performs 100% read-only audits without making any system changes.</p>
+<p><strong>CIS Benchmark Reference:</strong> This audit follows the official CIS Microsoft Windows Server 2019 Benchmark. Download the official documentation at: <a href="https://www.cisecurity.org/cis-benchmarks" target="_blank">https://www.cisecurity.org/cis-benchmarks</a></p>
+<div class="note-box">
+<p><strong>⚠️ IMPORTANT: Remediation Best Practices</strong></p>
+<ol>
+<li><strong>Test First:</strong> Always perform remediation on Non-Production systems first</li>
+<li><strong>Validate:</strong> Ensure all applications and services work correctly after remediation</li>
+<li><strong>Production Rollout:</strong> Only apply changes to Production after successful Non-Prod validation</li>
+<li><strong>Golden Image:</strong> Once remediation is complete and validated, create a hardened golden image for future deployments to save time and ensure consistency</li>
+<li><strong>Documentation:</strong> Document all changes and maintain an audit trail</li>
+</ol>
+</div>
+<div class="note-box">
+<p><strong>⚠️ IMPORTANT: Audit Policy Verification</strong></p>
+<p><strong>Why GUI Shows Different Results:</strong><br>
+Windows has TWO separate audit policy systems:</p>
+<ol>
+<li>Legacy Audit Policy (9 categories) - Shown in Local Security Policy GUI</li>
+<li>Advanced Audit Policy (53 subcategories) - The EFFECTIVE policy</li>
+</ol>
+<p><strong>When both are configured, Advanced Audit Policy OVERRIDES Legacy.</strong></p>
+<p><strong>What This Means:</strong></p>
+<ul>
+<li>Scanner reads: auditpol command (Advanced Audit Policy - EFFECTIVE)</li>
+<li>GUI shows: Legacy Audit Policy (may show "Not Configured")</li>
+<li>Result: Scanner shows FAIL, but GUI shows "Not Configured" - THIS IS NORMAL</li>
+</ul>
+<p><strong>How to Verify Scanner Results:</strong><br>
+Run this command in PowerShell (as Administrator):</p>
+<div class="code-box">auditpol /get /category:*</div>
+<p>This shows the ACTUAL enforced policy (what the scanner reads).</p>
+</div>
 <h2>System Information</h2>
 <table class="info-table">
 <tr><td>Operating System</td><td>$($SystemInfo.Caption)</td></tr>
