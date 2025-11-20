@@ -415,8 +415,15 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
           $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
           
-          # Use the Compare-StringSets function which properly handles HashSet comparison
-          $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+          # Special case: If expected is empty (No One) and current is empty, that's a PASS
+          $curSetArray = @($curSet)
+          $expSetArray = @($expSet)
+          if ($curSetArray.Count -eq 0 -and $expSetArray.Count -eq 0) {
+            $result.Passed = $true
+          } else {
+            # Use the Compare-StringSets function which properly handles HashSet comparison
+            $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
+          }
           
           # Show resolved names in ActualValue for better readability
           $curSetArray = @($curSet)
