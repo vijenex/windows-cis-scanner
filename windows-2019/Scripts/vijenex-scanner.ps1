@@ -446,7 +446,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $profileName = $Rule.ProfileName  # Domain, Private, or Public
           $propertyName = $Rule.PropertyName
           $expectedValue = $Rule.Expected
-          $operator = if ($Rule.Operator) { $Rule.Operator } else { 'Equals' }
+          $operator = if ($Rule.ContainsKey('Operator')) { $Rule.Operator } else { 'Equals' }
           
           $fw = Get-NetFirewallProfile -Name $profileName -ErrorAction Stop
           $currentValue = $fw.$propertyName
@@ -483,7 +483,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $regPath = $Rule.Key
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
-          $operator = if ($Rule.Operator) { $Rule.Operator } else { 'Equals' }
+          $operator = if ($Rule.ContainsKey('Operator')) { $Rule.Operator } else { 'Equals' }
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           $currentValue = $null
           
