@@ -419,8 +419,9 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           
           # Show resolved names in ActualValue for better readability
-          if ($curSet.Count -gt 0) {
-            $resolvedNames = @($curSet | Sort-Object)
+          $curSetArray = @($curSet)
+          if ($curSetArray.Count -gt 0) {
+            $resolvedNames = @($curSetArray | Sort-Object)
             $result.ActualValue = $resolvedNames -join ', '
           } else {
             $result.ActualValue = "Not configured (No principals assigned)"
