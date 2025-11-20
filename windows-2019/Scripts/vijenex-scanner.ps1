@@ -199,75 +199,27 @@ function Get-PrivilegeRaw {
 function Get-AuditPolicies {
   $map = @{}
   try {
-    $auditpolPath = Get-Command "auditpol.exe" -ErrorAction SilentlyContinue
-    if (-not $auditpolPath) {
-      Write-Warning "auditpol.exe not found in system PATH"
-      return $map
-    }
+    # Use auditpol /get /category:* to get all policies at once (more reliable)
+    $auditOutput = auditpol /get /category:* 2>$null | Out-String
     
-    # GUID to subcategory name mapping from CIS benchmark
-    $guidMap = @{
-      '0cce923f-69ae-11d9-bed3-505054503030' = 'Credential Validation'
-      '0cce9242-69ae-11d9-bed3-505054503030' = 'Kerberos Authentication Service'
-      '0cce9240-69ae-11d9-bed3-505054503030' = 'Kerberos Service Ticket Operations'
-      '0cce9239-69ae-11d9-bed3-505054503030' = 'Application Group Management'
-      '0cce9236-69ae-11d9-bed3-505054503030' = 'Computer Account Management'
-      '0cce9238-69ae-11d9-bed3-505054503030' = 'Distribution Group Management'
-      '0cce923a-69ae-11d9-bed3-505054503030' = 'Other Account Management Events'
-      '0cce9237-69ae-11d9-bed3-505054503030' = 'Security Group Management'
-      '0cce9235-69ae-11d9-bed3-505054503030' = 'User Account Management'
-      '0cce9248-69ae-11d9-bed3-505054503030' = 'PNP Activity'
-      '0cce922b-69ae-11d9-bed3-505054503030' = 'Process Creation'
-      '0cce923b-69ae-11d9-bed3-505054503030' = 'Directory Service Access'
-      '0cce923c-69ae-11d9-bed3-505054503030' = 'Directory Service Changes'
-      '0cce9217-69ae-11d9-bed3-505054503030' = 'Account Lockout'
-      '0cce9249-69ae-11d9-bed3-505054503030' = 'Group Membership'
-      '0cce9216-69ae-11d9-bed3-505054503030' = 'Logoff'
-      '0cce9215-69ae-11d9-bed3-505054503030' = 'Logon'
-      '0cce921c-69ae-11d9-bed3-505054503030' = 'Other Logon/Logoff Events'
-      '0cce921b-69ae-11d9-bed3-505054503030' = 'Special Logon'
-      '0cce9244-69ae-11d9-bed3-505054503030' = 'Detailed File Share'
-      '0cce9224-69ae-11d9-bed3-505054503030' = 'File Share'
-      '0cce9227-69ae-11d9-bed3-505054503030' = 'Other Object Access Events'
-      '0cce9245-69ae-11d9-bed3-505054503030' = 'Removable Storage'
-      '0cce922f-69ae-11d9-bed3-505054503030' = 'Audit Policy Change'
-      '0cce9230-69ae-11d9-bed3-505054503030' = 'Authentication Policy Change'
-      '0cce9231-69ae-11d9-bed3-505054503030' = 'Authorization Policy Change'
-      '0cce9232-69ae-11d9-bed3-505054503030' = 'MPSSVC Rule-Level Policy Change'
-      '0cce9234-69ae-11d9-bed3-505054503030' = 'Other Policy Change Events'
-      '0cce9228-69ae-11d9-bed3-505054503030' = 'Sensitive Privilege Use'
-      '0cce9213-69ae-11d9-bed3-505054503030' = 'IPsec Driver'
-      '0cce9214-69ae-11d9-bed3-505054503030' = 'Other System Events'
-      '0cce9210-69ae-11d9-bed3-505054503030' = 'Security State Change'
-      '0cce9211-69ae-11d9-bed3-505054503030' = 'Security System Extension'
-      '0cce9212-69ae-11d9-bed3-505054503030' = 'System Integrity'
-    }
-    
-    # Query each GUID
-    foreach ($guid in $guidMap.Keys) {
-      $subcatName = $guidMap[$guid]
-      $result = Start-Process -FilePath $auditpolPath.Source -ArgumentList "/get", "/subcategory:{$guid}" -Wait -PassThru -NoNewWindow -RedirectStandardOutput "temp_audit_$guid.txt" -RedirectStandardError "temp_audit_err.txt" 2>$null
-      
-      if ($result.ExitCode -eq 0 -and (Test-Path "temp_audit_$guid.txt")) {
-        $raw = Get-Content "temp_audit_$guid.txt" -Raw
+    # Parse line by line to extract subcategory and setting
+    $lines = $auditOutput -split "`n"
+    foreach ($line in $lines) {
+      # Match lines with subcategory name followed by setting (2+ spaces separator)
+      # Example: "  Credential Validation                    Success and Failure"
+      if ($line -match '^\s+(.+?)\s{2,}(.+)$') {
+        $subcatName = $Matches[1].Trim()
+        $setting = $Matches[2].Trim()
         
-        # Extract setting value
-        if ($raw -match 'Success and Failure') {
-          $map[$subcatName] = 'Success and Failure'
-        } elseif ($raw -match '\s+Success\s*$') {
-          $map[$subcatName] = 'Success'
-        } elseif ($raw -match '\s+Failure\s*$') {
-          $map[$subcatName] = 'Failure'
-        } elseif ($raw -match 'No Auditing') {
-          $map[$subcatName] = 'No Auditing'
+        # Only add if setting is valid (not empty and not a category header)
+        if ($setting -and $setting -notmatch '^(Security|Account|Detailed|DS|Logon|Object|Policy|Privilege|System)') {
+          $map[$subcatName] = $setting
         }
-        
-        Remove-Item "temp_audit_$guid.txt" -Force -ErrorAction SilentlyContinue
       }
     }
-    
-    Remove-Item "temp_audit_err.txt" -Force -ErrorAction SilentlyContinue
-  } catch { }
+  } catch {
+    Write-Warning "Failed to get audit policies: $($_.Exception.Message)"
+  }
   return $map
 }
 
@@ -335,7 +287,13 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $section=$Rule.SectionName
           $key=$Rule.Key
           $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
-            $secpol[$section][$key] 
+            $rawVal = $secpol[$section][$key]
+            # Handle empty strings and whitespace
+            if ([string]::IsNullOrWhiteSpace($rawVal)) {
+              $null
+            } else {
+              $rawVal.Trim()
+            }
           } else { 
             $null 
           }
@@ -343,10 +301,14 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         
         $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
         
-        if ($null -eq $val -and $null -ne $defaultValue) {
-          $result.Passed = Test-Compare -Current $defaultValue -Expected $Rule.Expected -Operator $Rule.Operator
+        # Use default value if actual value is null
+        $compareValue = if ($null -eq $val -and $null -ne $defaultValue) { $defaultValue } else { $val }
+        
+        # Perform comparison
+        if ($null -ne $compareValue) {
+          $result.Passed = Test-Compare -Current $compareValue -Expected $Rule.Expected -Operator $Rule.Operator
         } else {
-          $result.Passed = Test-Compare -Current $val -Expected $Rule.Expected -Operator $Rule.Operator
+          $result.Passed = $false
         }
         
         # Format ActualValue with human-readable explanation
@@ -356,6 +318,8 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           } else {
             $result.ActualValue = $val
           }
+        } elseif ($null -ne $defaultValue) {
+          $result.ActualValue = "Not configured (using default: $defaultValue)"
         } else {
           $result.ActualValue = "Not configured (policy not set)"
         }
@@ -368,10 +332,9 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       'AuditPolicy' {
         $ap=$Context.AuditPolicies
         $sub=$Rule.Subcategory
-        $val = if ($ap.ContainsKey($sub)) { $ap[$sub] } else { $null }
+        $val = if ($ap.ContainsKey($sub)) { $ap[$sub] } else { 'No Auditing' }
         
-
-        
+        # Handle 'include' syntax (e.g., "include Success" means Success OR Success and Failure)
         $includeMatch = $Rule.Expected -match '^include\s+(.+)$'
         if ($includeMatch) {
           $requiredSetting = $Matches[1].Trim()
@@ -383,6 +346,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
             $result.Passed = $false
           }
         } else {
+          # Exact match or "Success and Failure" satisfies Success/Failure requirement
           if ($val -ieq $Rule.Expected) {
             $result.Passed = $true
           } elseif ($val -ieq 'Success and Failure') {
@@ -392,8 +356,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           }
         }
         
-
-        $result.ActualValue = if ($null -ne $val) { $val } else { "Not configured (No Auditing)" }
+        $result.ActualValue = $val
         $result.EvidenceCommand = "auditpol /get /subcategory:`"$sub`""
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { "Configure via Advanced Audit Policy Configuration" }
         $result.Description = "⚠️ IMPORTANT NOTE: This scanner uses 'auditpol' command to read the EFFECTIVE audit policy (Advanced Audit Policy). " +
@@ -438,31 +401,79 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $raw = Get-PrivilegeRaw -SecEditMap $Context.SecEdit -Key $Rule.Key
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
-          # Normal evaluation
-          $curTokens = @(if ($raw) { Split-PrivilegeValue -Raw $raw } else { @() })
-          
-          # If privilege doesn't exist and DefaultValue is defined, use DefaultValue
-          if ($null -eq $raw -and $null -ne $defaultValue) {
+          # Get current tokens from secedit
+          $curTokens = @()
+          if ($raw) {
+            $curTokens = @(Split-PrivilegeValue -Raw $raw)
+          } elseif ($null -ne $defaultValue) {
+            # If privilege doesn't exist and DefaultValue is defined, use DefaultValue
             $curTokens = @($defaultValue)
           }
           
+          # Normalize both current and expected principals to resolved names
           $curSet = Normalize-PrincipalSet -Tokens $curTokens
           $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
           $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+          
+          # Use the Compare-StringSets function which properly handles HashSet comparison
           $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           
-          $result.ActualValue = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { "Not configured (No principals assigned)" }
+          # Show resolved names in ActualValue for better readability
+          if ($curSet.Count -gt 0) {
+            $resolvedNames = @($curSet | Sort-Object)
+            $result.ActualValue = $resolvedNames -join ', '
+          } else {
+            $result.ActualValue = "Not configured (No principals assigned)"
+          }
+          
           $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Navigate to: Local Security Policy → Local Policies → User Rights Assignment → $($Rule.Key)" 
           }
-          $result.Description = "User rights assignment verified via secedit export. Principals are resolved to account names."
+          $result.Description = "User rights assignment verified via secedit export. Principals are resolved to account names for accurate comparison."
         } catch {
           $result.Passed = $false
-          $result.ActualValue = "<error>"
+          $result.ActualValue = "Error: $($_.Exception.Message)"
           $result.EvidenceCommand = "secedit /export /cfg temp.cfg"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading privilege' }
           $result.Description = "Error occurred while checking user rights assignment: $($_.Exception.Message)"
+        }
+      }
+      
+      'Firewall' {
+        try {
+          $profileName = $Rule.ProfileName  # Domain, Private, or Public
+          $propertyName = $Rule.PropertyName
+          $expectedValue = $Rule.Expected
+          $operator = if ($Rule.Operator) { $Rule.Operator } else { 'Equals' }
+          
+          $fw = Get-NetFirewallProfile -Name $profileName -ErrorAction Stop
+          $currentValue = $fw.$propertyName
+          
+          $result.Passed = Test-Compare -Current $currentValue -Expected $expectedValue -Operator $operator
+          
+          # Format ActualValue
+          if ($null -ne $currentValue) {
+            if ($currentValue -is [bool]) {
+              $result.ActualValue = "$currentValue (" + $(if($currentValue){"Enabled"}else{"Disabled"}) + ")"
+            } else {
+              $result.ActualValue = $currentValue.ToString()
+            }
+          } else {
+            $result.ActualValue = "Not configured"
+          }
+          
+          $result.EvidenceCommand = "Get-NetFirewallProfile -Name $profileName | Select-Object $propertyName"
+          $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
+            "Set-NetFirewallProfile -Name $profileName -$propertyName $expectedValue" 
+          }
+          $result.Description = "Firewall profile setting verified via Get-NetFirewallProfile cmdlet."
+        } catch {
+          $result.Passed = $false
+          $result.ActualValue = "Error: $($_.Exception.Message)"
+          $result.EvidenceCommand = "Get-NetFirewallProfile -Name $($Rule.ProfileName)"
+          $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading firewall profile' }
+          $result.Description = "Error occurred while reading firewall profile: $($_.Exception.Message)"
         }
       }
       
@@ -471,34 +482,35 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $regPath = $Rule.Key
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
+          $operator = if ($Rule.Operator) { $Rule.Operator } else { 'Equals' }
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           $currentValue = $null
           
           if (Test-Path $regPath) {
-            $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
-            if ($null -ne $currentValue) {
-              $result.Passed = ($currentValue -eq $expectedValue)
-            } else {
-              if ($null -ne $defaultValue) {
-                $result.Passed = ($defaultValue -eq $expectedValue)
-              } else {
-                $result.Passed = $false
-              }
-            }
-          } else {
-            if ($null -ne $defaultValue) {
-              $result.Passed = ($defaultValue -eq $expectedValue)
-            } else {
-              $result.Passed = $false
+            $regItem = Get-ItemProperty -Path $regPath -ErrorAction SilentlyContinue
+            if ($regItem -and $regItem.PSObject.Properties.Name -contains $valueName) {
+              $currentValue = $regItem.$valueName
             }
           }
+          
+          # Use default if current is null
+          $compareValue = if ($null -eq $currentValue -and $null -ne $defaultValue) { $defaultValue } else { $currentValue }
+          
+          if ($null -ne $compareValue) {
+            $result.Passed = Test-Compare -Current $compareValue -Expected $expectedValue -Operator $operator
+          } else {
+            $result.Passed = $false
+          }
+          
           # Format ActualValue with human-readable explanation
           if ($null -ne $currentValue) {
             if ($currentValue -is [int] -and ($currentValue -eq 0 -or $currentValue -eq 1)) {
               $result.ActualValue = "$currentValue (" + $(if($currentValue -eq 1){"Enabled"}else{"Disabled"}) + ")"
             } else {
-              $result.ActualValue = $currentValue
+              $result.ActualValue = $currentValue.ToString()
             }
+          } elseif ($null -ne $defaultValue) {
+            $result.ActualValue = "Not configured (using default: $defaultValue)"
           } else {
             $result.ActualValue = "Not configured (registry key or value does not exist)"
           }
@@ -510,7 +522,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Description = "Registry setting verified directly. Value shown is the current registry value."
         } catch {
           $result.Passed = $false
-          $result.ActualValue = "Error reading registry: $($_.Exception.Message)"
+          $result.ActualValue = "Error: $($_.Exception.Message)"
           $result.EvidenceCommand = "Get-ItemProperty -Path '$($Rule.Key)' -Name '$($Rule.ValueName)'"
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Error reading registry' }
           $result.Description = "Error occurred while reading registry value: $($_.Exception.Message)"
