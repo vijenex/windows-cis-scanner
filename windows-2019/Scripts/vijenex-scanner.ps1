@@ -286,16 +286,16 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $secpol=$Context.SecEdit
           $section=$Rule.SectionName
           $key=$Rule.Key
-          $val = if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)){ 
+          if ($secpol.ContainsKey($section) -and $secpol[$section].ContainsKey($key)) {
             $rawVal = $secpol[$section][$key]
-            # Handle empty strings and whitespace
-            if ([string]::IsNullOrWhiteSpace($rawVal)) {
-              $null
+            # Handle empty strings and whitespace - treat as null
+            if ([string]::IsNullOrWhiteSpace($rawVal) -or $rawVal -eq '') {
+              $val = $null
             } else {
-              $rawVal.Trim()
+              $val = $rawVal.Trim()
             }
-          } else { 
-            $null 
+          } else {
+            $val = $null
           }
         }
         
