@@ -822,6 +822,20 @@ Write-Host "`n" -ForegroundColor White
 
 $systemInfo=Get-OSInfo
 
+# Detect if this is a Domain Controller
+$cs=Get-CimInstance Win32_ComputerSystem
+$isDomainController = $cs.DomainRole -in @(4,5)
+# 4 = Backup Domain Controller, 5 = Primary Domain Controller
+
+if ($isDomainController) {
+  Write-Host "⚠️  DETECTED: Domain Controller" -ForegroundColor Yellow
+  Write-Host "    DC-only controls will be evaluated" -ForegroundColor Gray
+} else {
+  Write-Host "✓  DETECTED: Member Server" -ForegroundColor Green
+  Write-Host "    DC-only controls will be skipped (marked as N/A)" -ForegroundColor Gray
+}
+Write-Host ""
+
 # Validate Windows version
 $expectedBuild = 20348  # Windows Server 2022
 if ($systemInfo.BuildNumber -lt ($expectedBuild - 1000) -or $systemInfo.BuildNumber -gt ($expectedBuild + 1000)) {
@@ -899,6 +913,16 @@ $ctx = @{ SecEdit=$secMap; AuditPolicies=$auditMap }
 
 # Filter rules
 $rules = $Global:Rules
+
+# Filter DC-only controls if this is a Member Server
+if (-not $isDomainController) {
+  $dcOnlyCount = @($rules | Where-Object { $_.Title -match '\(DC [Oo]nly\)' }).Count
+  $rules = $rules | Where-Object { $_.Title -notmatch '\(DC [Oo]nly\)' }
+  if ($dcOnlyCount -gt 0) {
+    Write-Host "Filtered out $dcOnlyCount DC-only controls (not applicable to Member Server)" -ForegroundColor Yellow
+  }
+}
+
 if ($Profile){ 
   $rules = $rules | Where-Object { $_.Profile -eq $Profile } 
 }
