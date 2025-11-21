@@ -77,7 +77,7 @@ $Global:Rules += @(
     Section='18.10.76 Windows Defender SmartScreen'
     Profile='Level1'
     Type='Manual'
-    Remediation='Configure via Group Policy: Computer Configuration → Administrative Templates → Windows Components → Windows Defender SmartScreen → Explorer → Configure Windows Defender SmartScreen'
+    Remediation='Configure via Group Policy: Computer Configuration > Administrative Templates > Windows Components > Windows Defender SmartScreen > Explorer > Configure Windows Defender SmartScreen'
   },
 
   # 18.10.92 Windows Security
@@ -144,7 +144,7 @@ $Global:Rules += @(
     Section='18.10.93 Windows Update'
     Profile='Level1'
     Type='Manual'
-    Remediation='Configure via Group Policy: Computer Configuration → Administrative Templates → Windows Components → Windows Update → Windows Update for Business → Select when Preview Builds and Feature Updates are received'
+    Remediation='Configure via Group Policy: Computer Configuration > Administrative Templates > Windows Components > Windows Update > Windows Update for Business > Select when Preview Builds and Feature Updates are received'
   },
   @{
     Id='18.10.93.4.3'
@@ -152,6 +152,6 @@ $Global:Rules += @(
     Section='18.10.93 Windows Update'
     Profile='Level1'
     Type='Manual'
-    Remediation='Configure via Group Policy: Computer Configuration → Administrative Templates → Windows Components → Windows Update → Windows Update for Business → Select when Quality Updates are received'
+    Remediation='Configure via Group Policy: Computer Configuration > Administrative Templates > Windows Components > Windows Update > Windows Update for Business > Select when Quality Updates are received'
   }
 )
