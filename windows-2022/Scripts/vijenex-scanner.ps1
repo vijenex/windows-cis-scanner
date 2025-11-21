@@ -828,11 +828,11 @@ $isDomainController = $cs.DomainRole -in @(4,5)
 # 4 = Backup Domain Controller, 5 = Primary Domain Controller
 
 if ($isDomainController) {
-  Write-Host "⚠️  DETECTED: Domain Controller" -ForegroundColor Yellow
+  Write-Host "DETECTED: Domain Controller" -ForegroundColor Yellow
   Write-Host "    DC-only controls will be evaluated" -ForegroundColor Gray
 } else {
-  Write-Host "✓  DETECTED: Member Server" -ForegroundColor Green
-  Write-Host "    DC-only controls will be skipped (marked as N/A)" -ForegroundColor Gray
+  Write-Host "DETECTED: Member Server" -ForegroundColor Green
+  Write-Host "    DC-only controls will be skipped" -ForegroundColor Gray
 }
 Write-Host ""
 
