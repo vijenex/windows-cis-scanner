@@ -1,5 +1,5 @@
-# milestone-7.ps1 — File System (Windows Server 2025)
-# According to CIS documentation, section 7 is just a header
+# milestone-14.ps1 — Network Access Protection NAP Client Configuration (Windows Server 2025)
+# According to CIS documentation, section 14 is just a header
 # No rules in this section per CIS Windows Server 2025 Benchmark structure
 $Global:Rules += @(
   # No rules in this section per CIS documentation structure

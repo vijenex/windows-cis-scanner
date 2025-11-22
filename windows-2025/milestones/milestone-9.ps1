@@ -1,634 +1,333 @@
-# Milestone 9 - CIS Windows Server 2025 Benchmark
-# Auto-generated from CIS Benchmark v1.0.0
-# Total controls: 45
+# 9 Windows Defender Firewall with Advanced Security (Windows Server 2025) — Audit-only
+$Global:Rules += @(
+  # 9.1 Domain Profile
+  @{
+    Id='9.1.1'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Firewall state'' is set to ''On (recommended)'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile'
+    ValueName='EnableFirewall'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.1.2'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Inbound connections'' is set to ''Block (default)'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile'
+    ValueName='DefaultInboundAction'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.1.3'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Settings: Display a notification'' is set to ''No'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile'
+    ValueName='DisableNotifications'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.1.4'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Logging: Name'' is set to ''%SystemRoot%\System32\logfiles\firewall\domainfw.log'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging'
+    ValueName='LogFilePath'
+    Expected='%SystemRoot%\System32\logfiles\firewall\domainfw.log'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.1.5'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Logging: Size limit (KB)'' is set to ''16,384 KB or greater'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging'
+    ValueName='LogFileSize'
+    Operator='GreaterOrEqual'
+    Expected=16384
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.1.6'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Logging: Log dropped packets'' is set to ''Yes'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging'
+    ValueName='LogDroppedPackets'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.6'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.1.7'
+    Title='(L1) Ensure ''Windows Firewall: Domain: Logging: Log successful connections'' is set to ''Yes'' (Automated)'
+    Section='9.1 Domain Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging'
+    ValueName='LogSuccessfulConnections'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.1.7'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
+  # 9.2 Private Profile
+  @{
+    Id='9.2.1'
+    Title='(L1) Ensure ''Windows Firewall: Private: Firewall state'' is set to ''On (recommended)'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+    ValueName='EnableFirewall'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.2.2'
+    Title='(L1) Ensure ''Windows Firewall: Private: Inbound connections'' is set to ''Block (default)'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+    ValueName='DefaultInboundAction'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.2.3'
+    Title='(L1) Ensure ''Windows Firewall: Private: Settings: Display a notification'' is set to ''No'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile'
+    ValueName='DisableNotifications'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.2.4'
+    Title='(L1) Ensure ''Windows Firewall: Private: Logging: Name'' is set to ''%SystemRoot%\System32\logfiles\firewall\privatefw.log'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging'
+    ValueName='LogFilePath'
+    Expected='%SystemRoot%\System32\logfiles\firewall\privatefw.log'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.2.5'
+    Title='(L1) Ensure ''Windows Firewall: Private: Logging: Size limit (KB)'' is set to ''16,384 KB or greater'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging'
+    ValueName='LogFileSize'
+    Operator='GreaterOrEqual'
+    Expected=16384
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.2.6'
+    Title='(L1) Ensure ''Windows Firewall: Private: Logging: Log dropped packets'' is set to ''Yes'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging'
+    ValueName='LogDroppedPackets'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.6'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.2.7'
+    Title='(L1) Ensure ''Windows Firewall: Private: Logging: Log successful connections'' is set to ''Yes'' (Automated)'
+    Section='9.2 Private Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging'
+    ValueName='LogSuccessfulConnections'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.2.7'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "9.1.1"
-  Title = "Ensure 'Windows Firewall: Domain: Firewall state' is set"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.1.2"
-  Title = "Ensure 'Windows Firewall: Domain: Inbound"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.1.3"
-  Title = "Ensure 'Windows Firewall: Domain: Settings: Display a"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.1.4"
-  Title = "Ensure 'Windows Firewall: Domain: Logging: Name' is"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.1.5"
-  Title = "Ensure 'Windows Firewall: Domain: Logging: Size limit"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.1.6"
-  Title = "Ensure 'Windows Firewall: Domain: Logging: Log"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.1.7"
-  Title = "Ensure 'Windows Firewall: Domain: Logging: Log"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.1"
-  Title = "Ensure 'Windows Firewall: Private: Firewall state' is set"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.2"
-  Title = "Ensure 'Windows Firewall: Private: Inbound"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.3"
-  Title = "Ensure 'Windows Firewall: Private: Settings: Display a"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.4"
-  Title = "Ensure 'Windows Firewall: Private: Logging: Name' is"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.5"
-  Title = "Ensure 'Windows Firewall: Private: Logging: Size limit"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.6"
-  Title = "Ensure 'Windows Firewall: Private: Logging: Log"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.2.7"
-  Title = "Ensure 'Windows Firewall: Private: Logging: Log"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.1"
-  Title = "Ensure 'Turn off downloading of print drivers over"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.10"
-  Title = "Ensure 'Turn off the 'Publish to Web' task for"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.11"
-  Title = "Ensure 'Turn off the Windows Messenger"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.12"
-  Title = "Ensure 'Turn off Windows Customer Experience"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.13"
-  Title = "Ensure 'Turn off Windows Error Reporting' is set"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.2"
-  Title = "Ensure 'Turn off handwriting personalization data"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.3"
-  Title = "Ensure 'Turn off handwriting recognition error"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.4"
-  Title = "Ensure 'Turn off Internet Connection Wizard if"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.5"
-  Title = "Ensure 'Turn off Internet download for Web"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.6"
-  Title = "Ensure 'Turn off printing over HTTP' is set to"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.7"
-  Title = "Ensure 'Turn off Registration if URL connection is"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.8"
-  Title = "Ensure 'Turn off Search Companion content file"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.20.1.9"
-  Title = "Ensure 'Turn off the 'Order Prints' picture task' is"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.1"
-  Title = "Ensure 'Windows Firewall: Public: Firewall state' is set"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.2"
-  Title = "Ensure 'Windows Firewall: Public: Inbound connections'"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.3"
-  Title = "Ensure 'Windows Firewall: Public: Settings: Display a"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.4"
-  Title = "Ensure 'Windows Firewall: Public: Settings: Apply local"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.5"
-  Title = "Ensure 'Windows Firewall: Public: Settings: Apply local"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.6"
-  Title = "Ensure 'Windows Firewall: Public: Logging: Name' is"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.7"
-  Title = "Ensure 'Windows Firewall: Public: Logging: Size limit"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.8"
-  Title = "Ensure 'Windows Firewall: Public: Logging: Log"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.3.9"
-  Title = "Ensure 'Windows Firewall: Public: Logging: Log"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.30.1.1"
-  Title = "Ensure 'Block NetBIOS-based discovery for"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.33.6.1"
-  Title = "Ensure 'Allow network connectivity during"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.33.6.2"
-  Title = "Ensure 'Allow network connectivity during"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.33.6.3"
-  Title = "Ensure 'Require a password when a computer"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.33.6.4"
-  Title = "Ensure 'Require a password when a computer"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.47.11.1"
-  Title = "Ensure 'Enable/Disable PerfTrack' is set to"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.47.5.1"
-  Title = "Ensure 'Microsoft Support Diagnostic Tool: Turn"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.51.1.1"
-  Title = "Ensure 'Enable Windows NTP Client' is set to"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "9.51.1.2"
-  Title = "Ensure 'Enable Windows NTP Server' is set to"
-  Section = "Section 9"
-  Profile = "Level1"
-  Type = "Registry"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # MS-only
-}
+  # 9.3 Public Profile
+  @{
+    Id='9.3.1'
+    Title='(L1) Ensure ''Windows Firewall: Public: Firewall state'' is set to ''On (recommended)'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile'
+    ValueName='EnableFirewall'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.2'
+    Title='(L1) Ensure ''Windows Firewall: Public: Inbound connections'' is set to ''Block (default)'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile'
+    ValueName='DefaultInboundAction'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.3'
+    Title='(L1) Ensure ''Windows Firewall: Public: Settings: Display a notification'' is set to ''No'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile'
+    ValueName='DisableNotifications'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.4'
+    Title='(L1) Ensure ''Windows Firewall: Public: Settings: Apply local firewall rules'' is set to ''No'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile'
+    ValueName='AllowLocalPolicyMerge'
+    Expected=0
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.5'
+    Title='(L1) Ensure ''Windows Firewall: Public: Settings: Apply local connection security rules'' is set to ''No'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile'
+    ValueName='AllowLocalIPsecPolicyMerge'
+    Expected=0
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.6'
+    Title='(L1) Ensure ''Windows Firewall: Public: Logging: Name'' is set to ''%SystemRoot%\System32\logfiles\firewall\publicfw.log'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging'
+    ValueName='LogFilePath'
+    Expected='%SystemRoot%\System32\logfiles\firewall\publicfw.log'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.6'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.7'
+    Title='(L1) Ensure ''Windows Firewall: Public: Logging: Size limit (KB)'' is set to ''16,384 KB or greater'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging'
+    ValueName='LogFileSize'
+    Operator='GreaterOrEqual'
+    Expected=16384
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.7'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.8'
+    Title='(L1) Ensure ''Windows Firewall: Public: Logging: Log dropped packets'' is set to ''Yes'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging'
+    ValueName='LogDroppedPackets'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.8'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='9.3.9'
+    Title='(L1) Ensure ''Windows Firewall: Public: Logging: Log successful connections'' is set to ''Yes'' (Automated)'
+    Section='9.3 Public Profile'
+    Profile='Level1'
+    Type='Registry'
+    Key='HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging'
+    ValueName='LogSuccessfulConnections'
+    Expected=1
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='9.3.9'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  }
+)

@@ -1,480 +1,469 @@
-# Milestone 17 - CIS Windows Server 2025 Benchmark
-# Auto-generated from CIS Benchmark v1.0.0
-# Total controls: 34
+# 17 Advanced Audit Policy Configuration (Windows Server 2025) — Audit-only
+$Global:Rules += @(
+  # 17.1 Account Logon
+  @{
+    Id='17.1.1'
+    Title='(L1) Ensure ''Audit Credential Validation'' is set to ''Success and Failure'' (Automated)'
+    Section='17.1 Account Logon'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Credential Validation'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.1.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.1.2'
+    Title='(L1) Ensure ''Audit Kerberos Authentication Service'' is set to ''Success and Failure'' (DC Only) (Automated)'
+    Section='17.1 Account Logon'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Kerberos Authentication Service'
+    Expected='Success and Failure'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.1.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.1.3'
+    Title='(L1) Ensure ''Audit Kerberos Service Ticket Operations'' is set to ''Success and Failure'' (DC Only) (Automated)'
+    Section='17.1 Account Logon'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Kerberos Service Ticket Operations'
+    Expected='Success and Failure'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.1.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
+  # 17.2 Account Management
+  @{
+    Id='17.2.1'
+    Title='(L1) Ensure ''Audit Application Group Management'' is set to ''Success and Failure'' (Automated)'
+    Section='17.2 Account Management'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Application Group Management'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.2.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.2.2'
+    Title='(L1) Ensure ''Audit Computer Account Management'' is set to include ''Success'' (DC only) (Automated)'
+    Section='17.2 Account Management'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Computer Account Management'
+    Expected='Success'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.2.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.2.3'
+    Title='(L1) Ensure ''Audit Distribution Group Management'' is set to include ''Success'' (DC only) (Automated)'
+    Section='17.2 Account Management'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Distribution Group Management'
+    Expected='Success'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.2.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.2.4'
+    Title='(L1) Ensure ''Audit Other Account Management Events'' is set to include ''Success'' (DC only) (Automated)'
+    Section='17.2 Account Management'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Other Account Management Events'
+    Expected='Success'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.2.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.2.5'
+    Title='(L1) Ensure ''Audit Security Group Management'' is set to include ''Success'' (Automated)'
+    Section='17.2 Account Management'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Security Group Management'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.2.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.2.6'
+    Title='(L1) Ensure ''Audit User Account Management'' is set to ''Success and Failure'' (Automated)'
+    Section='17.2 Account Management'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='User Account Management'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.2.6'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.1.1"
-  Title = "Ensure 'Audit Credential Validation' is set to 'Success"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
+  # 17.3 Detailed Tracking
+  @{
+    Id='17.3.1'
+    Title='(L1) Ensure ''Audit PNP Activity'' is set to include ''Success'' (Automated)'
+    Section='17.3 Detailed Tracking'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Plug and Play Events'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.3.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.3.2'
+    Title='(L1) Ensure ''Audit Process Creation'' is set to include ''Success'' (Automated)'
+    Section='17.3 Detailed Tracking'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Process Creation'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.3.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.1.2"
-  Title = "Ensure 'Audit Kerberos Authentication Service' is set"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
+  # 17.4 DS Access
+  @{
+    Id='17.4.1'
+    Title='(L1) Ensure ''Audit Directory Service Access'' is set to include ''Failure'' (DC only) (Automated)'
+    Section='17.4 DS Access'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Directory Service Access'
+    Expected='Failure'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.4.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.4.2'
+    Title='(L1) Ensure ''Audit Directory Service Changes'' is set to include ''Success'' (DC only) (Automated)'
+    Section='17.4 DS Access'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Directory Service Changes'
+    Expected='Success'
+    AppliesTo='DC'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.4.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.1.3"
-  Title = "Ensure 'Audit Kerberos Service Ticket Operations' is"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
+  # 17.5 Logon/Logoff
+  @{
+    Id='17.5.1'
+    Title='(L1) Ensure ''Audit Account Lockout'' is set to include ''Failure'' (Automated)'
+    Section='17.5 Logon/Logoff'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Account Lockout'
+    Expected='Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.5.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.5.2'
+    Title='(L1) Ensure ''Audit Group Membership'' is set to include ''Success'' (Automated)'
+    Section='17.5 Logon/Logoff'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Group Membership'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.5.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.5.3'
+    Title='(L1) Ensure ''Audit Logoff'' is set to include ''Success'' (Automated)'
+    Section='17.5 Logon/Logoff'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Logoff'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.5.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.5.4'
+    Title='(L1) Ensure ''Audit Logon'' is set to ''Success and Failure'' (Automated)'
+    Section='17.5 Logon/Logoff'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Logon'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.5.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.5.5'
+    Title='(L1) Ensure ''Audit Other Logon/Logoff Events'' is set to ''Success and Failure'' (Automated)'
+    Section='17.5 Logon/Logoff'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Other Logon/Logoff Events'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.5.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.5.6'
+    Title='(L1) Ensure ''Audit Special Logon'' is set to include ''Success'' (Automated)'
+    Section='17.5 Logon/Logoff'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Special Logon'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.5.6'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.2.1"
-  Title = "Ensure 'Audit Application Group Management' is set"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
+  # 17.6 Object Access
+  @{
+    Id='17.6.1'
+    Title='(L1) Ensure ''Audit Detailed File Share'' is set to include ''Failure'' (Automated)'
+    Section='17.6 Object Access'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Detailed File Share'
+    Expected='Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.6.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.6.2'
+    Title='(L1) Ensure ''Audit File Share'' is set to ''Success and Failure'' (Automated)'
+    Section='17.6 Object Access'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='File Share'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.6.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.6.3'
+    Title='(L1) Ensure ''Audit Other Object Access Events'' is set to ''Success and Failure'' (Automated)'
+    Section='17.6 Object Access'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Other Object Access Events'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.6.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.6.4'
+    Title='(L1) Ensure ''Audit Removable Storage'' is set to ''Success and Failure'' (Automated)'
+    Section='17.6 Object Access'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Removable Storage'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.6.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.2.2"
-  Title = "Ensure 'Audit Computer Account Management' is set"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
+  # 17.7 Policy Change
+  @{
+    Id='17.7.1'
+    Title='(L1) Ensure ''Audit Audit Policy Change'' is set to include ''Success'' (Automated)'
+    Section='17.7 Policy Change'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Audit Policy Change'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.7.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.7.2'
+    Title='(L1) Ensure ''Audit Authentication Policy Change'' is set to include ''Success'' (Automated)'
+    Section='17.7 Policy Change'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Authentication Policy Change'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.7.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.7.3'
+    Title='(L1) Ensure ''Audit Authorization Policy Change'' is set to include ''Success'' (Automated)'
+    Section='17.7 Policy Change'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Authorization Policy Change'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.7.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.7.4'
+    Title='(L1) Ensure ''Audit MPSSVC Rule-Level Policy Change'' is set to ''Success and Failure'' (Automated)'
+    Section='17.7 Policy Change'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='MPSSVC Rule-Level Policy Change'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.7.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.7.5'
+    Title='(L1) Ensure ''Audit Other Policy Change Events'' is set to include ''Failure'' (Automated)'
+    Section='17.7 Policy Change'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Other Policy Change Events'
+    Expected='Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.7.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.2.3"
-  Title = "Ensure 'Audit Distribution Group Management' is set"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
+  # 17.8 Privilege Use
+  @{
+    Id='17.8.1'
+    Title='(L1) Ensure ''Audit Sensitive Privilege Use'' is set to ''Success and Failure'' (Automated)'
+    Section='17.8 Privilege Use'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Sensitive Privilege Use'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.8.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
 
-$Global:Rules += @{
-  Id = "17.2.4"
-  Title = "Ensure 'Audit Other Account Management Events' is"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
-
-$Global:Rules += @{
-  Id = "17.2.5"
-  Title = "Ensure 'Audit Security Group Management' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.2.6"
-  Title = "Ensure 'Audit User Account Management' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.3.1"
-  Title = "Ensure 'Audit PNP Activity' is set to include 'Success'"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # Windows 10/11 - Not Applicable
-}
-
-$Global:Rules += @{
-  Id = "17.3.2"
-  Title = "Ensure 'Audit Process Creation' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.4.1"
-  Title = "Ensure 'Audit Directory Service Access' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
-
-$Global:Rules += @{
-  Id = "17.4.2"
-  Title = "Ensure 'Audit Directory Service Changes' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps." # DC-only
-}
-
-$Global:Rules += @{
-  Id = "17.5.1"
-  Title = "Ensure 'Audit Account Lockout' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.5.2"
-  Title = "Ensure 'Audit Group Membership' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.5.3"
-  Title = "Ensure 'Audit Logoff' is set to include 'Success'"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.5.4"
-  Title = "Ensure 'Audit Logon' is set to 'Success and Failure'"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.5.5"
-  Title = "Ensure 'Audit Other Logon/Logoff Events' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.5.6"
-  Title = "Ensure 'Audit Special Logon' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.6.1"
-  Title = "Ensure 'Audit Detailed File Share' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.6.2"
-  Title = "Ensure 'Audit File Share' is set to 'Success and"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.6.3"
-  Title = "Ensure 'Audit Other Object Access Events' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.6.4"
-  Title = "Ensure 'Audit Removable Storage' is set to 'Success"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.7.1"
-  Title = "Ensure 'Audit Audit Policy Change' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.7.2"
-  Title = "Ensure 'Audit Authentication Policy Change' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.7.3"
-  Title = "Ensure 'Audit Authorization Policy Change' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.7.4"
-  Title = "Ensure 'Audit MPSSVC Rule-Level Policy Change' is"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.7.5"
-  Title = "Ensure 'Audit Other Policy Change Events' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.8.1"
-  Title = "Ensure 'Audit Sensitive Privilege Use' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.9.1"
-  Title = "Ensure 'Audit IPsec Driver' is set to 'Success and"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.9.2"
-  Title = "Ensure 'Audit Other System Events' is set to 'Success"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.9.3"
-  Title = "Ensure 'Audit Security State Change' is set to include"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.9.4"
-  Title = "Ensure 'Audit Security System Extension' is set to"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
-
-$Global:Rules += @{
-  Id = "17.9.5"
-  Title = "Ensure 'Audit System Integrity' is set to 'Success and"
-  Section = "Section 17"
-  Profile = "Level1"
-  Type = "AuditPolicy"
-  # TODO: Add specific check parameters
-  # Key = ""
-  # Expected = ""
-  # Operator = "Equals"
-  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
-  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
+  # 17.9 System
+  @{
+    Id='17.9.1'
+    Title='(L1) Ensure ''Audit IPsec Driver'' is set to ''Success and Failure'' (Automated)'
+    Section='17.9 System'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='IPsec Driver'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.9.1'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.9.2'
+    Title='(L1) Ensure ''Audit Other System Events'' is set to ''Success and Failure'' (Automated)'
+    Section='17.9 System'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Other System Events'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.9.2'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.9.3'
+    Title='(L1) Ensure ''Audit Security State Change'' is set to include ''Success'' (Automated)'
+    Section='17.9 System'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Security State Change'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.9.3'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.9.4'
+    Title='(L1) Ensure ''Audit Security System Extension'' is set to include ''Success'' (Automated)'
+    Section='17.9 System'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='Security System Extension'
+    Expected='Success'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.9.4'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  },
+  @{
+    Id='17.9.5'
+    Title='(L1) Ensure ''Audit System Integrity'' is set to ''Success and Failure'' (Automated)'
+    Section='17.9 System'
+    Profile='Level1'
+    Type='AuditPolicy'
+    Subcategory='System Integrity'
+    Expected='Success and Failure'
+    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
+    CISControlID='17.9.5'
+    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
+    Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+  }
+)
