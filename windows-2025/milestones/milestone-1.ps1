@@ -1,7 +1,4 @@
-# Milestone 1: Account Policies
-# CIS Microsoft Windows Server 2025 Benchmark v1.0.0
-
-# 1.1 Password Policy
+# milestone-1 - CIS Windows Server 2025 Benchmark v1.0.0
 
 $Global:Rules += @{
     Id = '1.1.1'
@@ -17,6 +14,7 @@ $Global:Rules += @{
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
 
+
 $Global:Rules += @{
     Id = '1.1.2'
     Title = "(L1) Ensure 'Maximum password age' is set to '365 or fewer days, but not 0' (Automated)"
@@ -30,6 +28,7 @@ $Global:Rules += @{
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
+
 
 $Global:Rules += @{
     Id = '1.1.3'
@@ -45,6 +44,7 @@ $Global:Rules += @{
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
 
+
 $Global:Rules += @{
     Id = '1.1.4'
     Title = "(L1) Ensure 'Minimum password length' is set to '14 or more character(s)' (Automated)"
@@ -58,6 +58,7 @@ $Global:Rules += @{
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
+
 
 $Global:Rules += @{
     Id = '1.1.5'
@@ -73,6 +74,7 @@ $Global:Rules += @{
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
 
+
 $Global:Rules += @{
     Id = '1.1.6'
     Title = "(L1) Ensure 'Relax minimum password length limits' is set to 'Enabled' (Automated)"
@@ -85,6 +87,7 @@ $Global:Rules += @{
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Group Policy'
 }
+
 
 $Global:Rules += @{
     Id = '1.1.7'
@@ -102,6 +105,7 @@ $Global:Rules += @{
 
 # 1.2 Account Lockout Policy
 
+
 $Global:Rules += @{
     Id = '1.2.1'
     Title = "(L1) Ensure 'Account lockout duration' is set to '15 or more minute(s)' (Automated)"
@@ -115,6 +119,7 @@ $Global:Rules += @{
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
+
 
 $Global:Rules += @{
     Id = '1.2.2'
@@ -130,6 +135,7 @@ $Global:Rules += @{
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
 
+
 $Global:Rules += @{
     Id = '1.2.3'
     Title = "(L1) Ensure 'Allow Administrator account lockout' is set to 'Enabled' (MS only) (Manual)"
@@ -141,6 +147,7 @@ $Global:Rules += @{
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
 }
+
 
 $Global:Rules += @{
     Id = '1.2.4'
