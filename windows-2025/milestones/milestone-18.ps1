@@ -931,6 +931,7 @@ $Global:Rules += @{
   Id = "18.5.1"
   Title = "Ensure 'MSS: (AutoAdminLogon) Enable Automatic"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -945,6 +946,7 @@ $Global:Rules += @{
   Id = "18.5.10"
   Title = "Ensure 'MSS: (TcpMaxDataRetransmissions IPv6)"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -959,6 +961,7 @@ $Global:Rules += @{
   Id = "18.5.11"
   Title = "Ensure 'MSS: (TcpMaxDataRetransmissions) How"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -973,6 +976,7 @@ $Global:Rules += @{
   Id = "18.5.12"
   Title = "Ensure 'MSS: (WarningLevel) Percentage threshold"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -987,6 +991,7 @@ $Global:Rules += @{
   Id = "18.5.2"
   Title = "Ensure 'MSS: (DisableIPSourceRouting IPv6) IP"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1001,6 +1006,7 @@ $Global:Rules += @{
   Id = "18.5.3"
   Title = "Ensure 'MSS: (DisableIPSourceRouting) IP source"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1015,6 +1021,7 @@ $Global:Rules += @{
   Id = "18.5.4"
   Title = "Ensure 'MSS: (EnableICMPRedirect) Allow ICMP"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1029,6 +1036,7 @@ $Global:Rules += @{
   Id = "18.5.5"
   Title = "Ensure 'MSS: (KeepAliveTime) How often keep-alive"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1043,6 +1051,7 @@ $Global:Rules += @{
   Id = "18.5.6"
   Title = "Ensure 'MSS: (NoNameReleaseOnDemand) Allow the"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1057,6 +1066,7 @@ $Global:Rules += @{
   Id = "18.5.7"
   Title = "Ensure 'MSS: (PerformRouterDiscovery) Allow IRDP"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1071,6 +1081,7 @@ $Global:Rules += @{
   Id = "18.5.8"
   Title = "Ensure 'MSS: (SafeDllSearchMode) Enable Safe DLL"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters
@@ -1085,6 +1096,7 @@ $Global:Rules += @{
   Id = "18.5.9"
   Title = "Ensure 'MSS: (ScreenSaverGracePeriod) The time in"
   Section = "Section 18"
+  Tags = "MSS-Legacy"
   Profile = "Level1"
   Type = "Registry"
   # TODO: Add specific check parameters

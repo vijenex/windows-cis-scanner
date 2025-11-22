@@ -994,6 +994,31 @@ $ctx = @{
 
 # Filter rules
 $rules = $Global:Rules
+
+# Exclude MSS-Legacy, Windows 10/11, DC-only (if MS), MS-only (if DC) controls
+$rules = $rules | Where-Object {
+  $rule = $_
+  $tags = if ($rule.ContainsKey('Tags')) { $rule.Tags } else { '' }
+  
+  # Always exclude MSS-Legacy and Windows 10/11
+  if ($tags -match 'MSS-Legacy|Windows-10-11') {
+    return $false
+  }
+  
+  # Exclude DC-only if Member Server
+  $isDC = $systemInfo.Caption -match 'Domain Controller'
+  if (-not $isDC -and $tags -match 'DC-only') {
+    return $false
+  }
+  
+  # Exclude MS-only if Domain Controller
+  if ($isDC -and $tags -match 'MS-only') {
+    return $false
+  }
+  
+  return $true
+}
+
 if ($Profile){ 
   $rules = $rules | Where-Object { $_.Profile -eq $Profile } 
 }
