@@ -1,8 +1,18 @@
-# Section 7: File System (Windows Server 2025)
-$Global:Rules += @(
-  @{ Id='7.1'; Title='(L1) Ensure ''%SystemRoot%\System32'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Users: Read & Execute'; Evidence='Check folder permissions'; Description='Secures System32 folder'; Impact='Prevents system file tampering'; Remediation='Configure System32 permissions' },
-  @{ Id='7.2'; Title='(L1) Ensure ''%SystemRoot%\System32\config'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control'; Evidence='Check folder permissions'; Description='Secures registry hive files'; Impact='Prevents registry tampering'; Remediation='Configure config folder permissions' },
-  @{ Id='7.3'; Title='(L1) Ensure ''%SystemRoot%\System32\drivers'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Users: Read & Execute'; Evidence='Check folder permissions'; Description='Secures driver files'; Impact='Prevents driver tampering'; Remediation='Configure drivers folder permissions' },
-  @{ Id='7.4'; Title='(L1) Ensure ''%SystemRoot%\System32\spool'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Print Operators: Modify'; Evidence='Check folder permissions'; Description='Secures print spool folder'; Impact='Prevents print system tampering'; Remediation='Configure spool folder permissions' },
-  @{ Id='7.5'; Title='(L1) Ensure ''%SystemRoot%\Temp'' permissions are properly configured'; Section='7 File System'; Profile='Level1'; Type='Manual'; Expected='Administrators: Full Control, SYSTEM: Full Control, Users: Modify'; Evidence='Check folder permissions'; Description='Secures system temp folder'; Impact='Prevents temp file abuse'; Remediation='Configure Temp folder permissions' }
-)
+# Milestone 7 - CIS Windows Server 2025 Benchmark
+# Auto-generated from CIS Benchmark v1.0.0
+# Total controls: 1
+
+
+$Global:Rules += @{
+  Id = "7.46.2.1"
+  Title = "Ensure 'Prevent Codec Download' is set to"
+  Section = "Section 7"
+  Profile = "Level1"
+  Type = "Registry"
+  # TODO: Add specific check parameters
+  # Key = ""
+  # Expected = ""
+  # Operator = "Equals"
+  CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
+  Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
+}

@@ -196,6 +196,83 @@ function Get-PrivilegeRaw {
   return $null
 }
 
+function Export-AllRegistry {
+  try {
+    $tmp = Join-Path $env:TEMP ("registry-export-" + [guid]::NewGuid().Guid)
+    New-Item -ItemType Directory -Path $tmp -Force | Out-Null
+    
+    $exports = @(
+      @{Key='HKLM\SOFTWARE\Policies'; File='policies.reg'}
+      @{Key='HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies'; File='policies2.reg'}
+      @{Key='HKLM\SYSTEM\CurrentControlSet\Control'; File='control.reg'}
+      @{Key='HKLM\SYSTEM\CurrentControlSet\Services'; File='services.reg'}
+    )
+    
+    foreach ($exp in $exports) {
+      $outFile = Join-Path $tmp $exp.File
+      $null = Start-Process -FilePath "reg.exe" -ArgumentList "export", $exp.Key, "`"$outFile`"", "/y" -Wait -PassThru -NoNewWindow -WindowStyle Hidden
+    }
+    
+    return $tmp
+  } catch {
+    Write-Warning "Failed to export registry: $($_.Exception.Message)"
+    return $null
+  }
+}
+
+function Parse-RegistryExports {
+  param([string]$ExportDir)
+  
+  $map = @{}
+  if (-not $ExportDir -or -not (Test-Path $ExportDir)) { return $map }
+  
+  $regFiles = Get-ChildItem -Path $ExportDir -Filter *.reg -ErrorAction SilentlyContinue
+  
+  foreach ($file in $regFiles) {
+    try {
+      $content = Get-Content -Path $file.FullName -Raw -Encoding Unicode
+      
+      # Parse registry export format
+      $currentKey = ''
+      foreach ($line in ($content -split "`r?`n")) {
+        $line = $line.Trim()
+        
+        # Key line: [HKEY_LOCAL_MACHINE\...]
+        if ($line -match '^\[(.+)\]$') {
+          $currentKey = $Matches[1] -replace '^HKEY_LOCAL_MACHINE', 'HKLM:'
+          continue
+        }
+        
+        # Value line: "ValueName"=dword:00000001
+        if ($line -match '^"([^"]+)"=(.+)$' -and $currentKey) {
+          $valueName = $Matches[1]
+          $valueData = $Matches[2]
+          
+          # Parse value based on type
+          $parsedValue = $null
+          if ($valueData -match '^dword:([0-9a-fA-F]+)$') {
+            $parsedValue = [Convert]::ToInt32($Matches[1], 16)
+          } elseif ($valueData -match '^"(.*)"$') {
+            $parsedValue = $Matches[1]
+          } elseif ($valueData -match '^hex\(7\):(.+)$') {
+            # Multi-string - skip for now
+            $parsedValue = '<multi-string>'
+          }
+          
+          if ($null -ne $parsedValue) {
+            $lookupKey = "$currentKey\$valueName"
+            $map[$lookupKey] = $parsedValue
+          }
+        }
+      }
+    } catch {
+      Write-Warning "Failed to parse $($file.Name): $($_.Exception.Message)"
+    }
+  }
+  
+  return $map
+}
+
 function Get-AuditPolicies {
   $map = @{}
   try {
@@ -472,19 +549,22 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
-          $currentValue = $null
           
-          if (Test-Path $regPath) {
-            $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
-            if ($null -ne $currentValue) {
-              $result.Passed = ($currentValue -eq $expectedValue)
+          # Try to get from pre-parsed registry export first (faster)
+          $lookupKey = "$regPath\$valueName"
+          $currentValue = if ($Context.RegistryCache.ContainsKey($lookupKey)) {
+            $Context.RegistryCache[$lookupKey]
+          } else {
+            # Fallback to direct registry read if not in cache
+            if (Test-Path $regPath) {
+              Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
             } else {
-              if ($null -ne $defaultValue) {
-                $result.Passed = ($defaultValue -eq $expectedValue)
-              } else {
-                $result.Passed = $false
-              }
+              $null
             }
+          }
+          
+          if ($null -ne $currentValue) {
+            $result.Passed = ($currentValue -eq $expectedValue)
           } else {
             if ($null -ne $defaultValue) {
               $result.Passed = ($defaultValue -eq $expectedValue)
@@ -492,6 +572,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
               $result.Passed = $false
             }
           }
+          
           # Format ActualValue with human-readable explanation
           if ($null -ne $currentValue) {
             if ($currentValue -is [int] -and ($currentValue -eq 0 -or $currentValue -eq 1)) {
@@ -507,7 +588,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 
             "Set registry value: $regPath\$valueName = $expectedValue" 
           }
-          $result.Description = "Registry setting verified directly. Value shown is the current registry value."
+          $result.Description = "Registry setting verified from export. Value shown is the current registry value."
         } catch {
           $result.Passed = $false
           $result.ActualValue = "Error reading registry: $($_.Exception.Message)"
@@ -891,11 +972,25 @@ foreach ($m in $Milestones) {
 
 Write-Host "Loaded rules: $($Global:Rules.Count)" -ForegroundColor Yellow
 
-# Get system data
+# Export all data sources once
+Write-Host "Exporting security policies..." -ForegroundColor Cyan
 $seceditPath = Export-SecEdit
 $secMap = Parse-InfFile -Path $seceditPath
+
+Write-Host "Exporting audit policies..." -ForegroundColor Cyan
 $auditMap = Get-AuditPolicies
-$ctx = @{ SecEdit=$secMap; AuditPolicies=$auditMap }
+
+Write-Host "Exporting registry settings..." -ForegroundColor Cyan
+$regExportDir = Export-AllRegistry
+$regCache = Parse-RegistryExports -ExportDir $regExportDir
+
+Write-Host "Parsed $($regCache.Count) registry values from exports" -ForegroundColor Yellow
+
+$ctx = @{ 
+  SecEdit = $secMap
+  AuditPolicies = $auditMap
+  RegistryCache = $regCache
+}
 
 # Filter rules
 $rules = $Global:Rules
@@ -967,6 +1062,14 @@ if ($seceditPath -and (Test-Path $seceditPath)) {
     Remove-Item $seceditPath -Force -ErrorAction SilentlyContinue 
   } catch {
     Write-Warning "Failed to cleanup temporary file: $seceditPath"
+  }
+}
+
+if ($regExportDir -and (Test-Path $regExportDir)) {
+  try {
+    Remove-Item $regExportDir -Recurse -Force -ErrorAction SilentlyContinue
+  } catch {
+    Write-Warning "Failed to cleanup registry export directory: $regExportDir"
   }
 }
 
