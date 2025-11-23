@@ -209,6 +209,96 @@ function Write-CSV([System.Collections.Generic.List[object]]$Results,[string]$Ou
   Write-Host "CSV: $csv" -ForegroundColor Green
 }
 
+function Write-HTML([System.Collections.Generic.List[object]]$Results,[string]$OutDir,[object]$SystemInfo){
+  $html = Join-Path $OutDir 'vijenex-cis-results.html'
+  $passed = @($Results | Where-Object { $_.Passed }).Count
+  $failed = @($Results | Where-Object { $_.Status -eq 'FAIL' }).Count
+  $manual = @($Results | Where-Object { $_.Status -eq 'MANUAL' }).Count
+  
+  $htmlContent = @"
+<!DOCTYPE html>
+<html><head><meta charset='UTF-8'><title>CIS Audit Report</title>
+<style>
+body{font-family:Arial,sans-serif;margin:20px;background:#f5f5f5}
+.header{background:#232f3e;color:#fff;padding:20px;border-radius:5px}
+.summary{background:#fff;padding:15px;margin:20px 0;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:15px}
+.stat-box{text-align:center;padding:15px;border-radius:5px}
+.stat-box.total{background:#e3f2fd}
+.stat-box.pass{background:#e8f5e9}
+.stat-box.fail{background:#ffebee}
+.stat-box.manual{background:#fff3e0}
+.stat-number{font-size:32px;font-weight:bold;margin:10px 0}
+.stat-label{font-size:14px;color:#666}
+table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+th{background:#232f3e;color:#fff;padding:12px;text-align:left}
+td{padding:10px;border-bottom:1px solid #ddd}
+tr:hover{background:#f5f5f5}
+.PASS{color:#2e7d32;font-weight:bold}
+.FAIL{color:#c62828;font-weight:bold}
+.MANUAL{color:#f57c00;font-weight:bold}
+</style></head><body>
+<div class='header'>
+<h1>Windows Server 2016 CIS Audit Report</h1>
+<p><strong>Host:</strong> $($SystemInfo.Caption) | <strong>Computer:</strong> $($SystemInfo.ComputerName) | <strong>IP:</strong> $($SystemInfo.IPAddress)</p>
+<p><strong>Scan Date:</strong> $($SystemInfo.ScanDate) | <strong>DC Mode:</strong> $($SystemInfo.IsDC)</p>
+</div>
+<div class='summary'>
+<h2>Executive Summary</h2>
+<div class='summary-grid'>
+<div class='stat-box total'><div class='stat-number'>$($Results.Count)</div><div class='stat-label'>Total Controls</div></div>
+<div class='stat-box pass'><div class='stat-number'>$passed</div><div class='stat-label'>Passed</div></div>
+<div class='stat-box fail'><div class='stat-number'>$failed</div><div class='stat-label'>Failed</div></div>
+<div class='stat-box manual'><div class='stat-number'>$manual</div><div class='stat-label'>Manual</div></div>
+</div></div>
+<table><thead><tr><th>Control ID</th><th>Title</th><th>Status</th><th>Actual Value</th></tr></thead><tbody>
+"@
+  
+  foreach($r in $Results){
+    $htmlContent += "<tr><td>$($r.Id)</td><td>$($r.Title)</td><td class='$($r.Status)'>$($r.Status)</td><td>$($r.ActualValue)</td></tr>`n"
+  }
+  
+  $htmlContent += "</tbody></table></body></html>"
+  $htmlContent | Out-File -FilePath $html -Encoding UTF8
+  Write-Host "HTML: $html" -ForegroundColor Green
+}
+
+function Write-DOC([System.Collections.Generic.List[object]]$Results,[string]$OutDir,[object]$SystemInfo){
+  $doc = Join-Path $OutDir 'vijenex-cis-results.doc'
+  $passed = @($Results | Where-Object { $_.Passed }).Count
+  $failed = @($Results | Where-Object { $_.Status -eq 'FAIL' }).Count
+  $manual = @($Results | Where-Object { $_.Status -eq 'MANUAL' }).Count
+  
+  $docContent = @"
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head><meta charset='UTF-8'><title>CIS Audit Report</title></head><body>
+<h1>Windows Server 2016 CIS Audit Report</h1>
+<p><b>Host:</b> $($SystemInfo.Caption)</p>
+<p><b>Computer:</b> $($SystemInfo.ComputerName)</p>
+<p><b>IP Address:</b> $($SystemInfo.IPAddress)</p>
+<p><b>Scan Date:</b> $($SystemInfo.ScanDate)</p>
+<p><b>DC Mode:</b> $($SystemInfo.IsDC)</p>
+<h2>Executive Summary</h2>
+<table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse'>
+<tr><td><b>Total Controls</b></td><td>$($Results.Count)</td></tr>
+<tr><td><b>Passed</b></td><td>$passed</td></tr>
+<tr><td><b>Failed</b></td><td>$failed</td></tr>
+<tr><td><b>Manual</b></td><td>$manual</td></tr>
+</table>
+<h2>Detailed Results</h2>
+<table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse'>
+<tr><th>Control ID</th><th>Title</th><th>Status</th><th>Actual Value</th></tr>
+"@
+  
+  foreach($r in $Results){
+    $docContent += "<tr><td>$($r.Id)</td><td>$($r.Title)</td><td>$($r.Status)</td><td>$($r.ActualValue)</td></tr>`n"
+  }
+  
+  $docContent += "</table></body></html>"
+  $docContent | Out-File -FilePath $doc -Encoding UTF8
+  Write-Host "DOC: $doc" -ForegroundColor Green
+}
+
 # Main execution
 Assert-Admin
 $systemInfo = Get-OSInfo
@@ -283,20 +373,43 @@ foreach($rule in $rules){
   
   $result = Evaluate-Rule -Rule $rule -Context $ctx
   $results.Add($result)
+  
+  # Display real-time progress
+  $status = if($result.Passed){"[PASS]"}else{if($result.Status -eq 'MANUAL'){"[MANUAL]"}else{"[FAIL]"}}
   $statusColor = if($result.Passed){"Green"}else{if($result.Status -eq 'MANUAL'){"Yellow"}else{"Red"}}
-  Write-Host "[$($result.Id)] $($result.Title) - $($result.Status)" -ForegroundColor $statusColor
+  $manualNote = if($result.Status -eq 'MANUAL'){" (Manual Review Required)"}else{""}
+  
+  Write-Host "[$($result.Id)] $($result.Title)$manualNote" -ForegroundColor White
+  Write-Host "    Status: " -NoNewline -ForegroundColor Gray
+  Write-Host $status -ForegroundColor $statusColor
+  Write-Host ""
 }
 
 # Summary
 $total = $results.Count
 $passed = @($results | Where-Object { $_.Passed }).Count
-$failed = $total - $passed
+$manual = @($results | Where-Object { $_.Status -eq 'MANUAL' }).Count
+$failed = $total - $passed - $manual
+$successRate = if ($total -gt 0) { [math]::Round(($passed / $total) * 100, 1) } else { 0 }
 
-Write-Host "`n=============================================================" -ForegroundColor Cyan
-Write-Host "Total: $total | Passed: $passed | Failed: $failed" -ForegroundColor White
+Write-Host "`n" -ForegroundColor White
 Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "                    SCAN COMPLETED                           " -ForegroundColor Cyan
+Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "Total Checks: $total" -ForegroundColor White
+Write-Host "Passed: " -NoNewline -ForegroundColor White
+Write-Host "$passed" -ForegroundColor Green
+Write-Host "Failed: " -NoNewline -ForegroundColor White
+Write-Host "$failed" -ForegroundColor Red
+Write-Host "Manual: " -NoNewline -ForegroundColor White
+Write-Host "$manual" -ForegroundColor Yellow
+Write-Host "Success Rate: $successRate%" -ForegroundColor Yellow
+Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "`n" -ForegroundColor White
 
 Write-CSV -Results $results -OutDir $OutputDir -SystemInfo $systemInfo
+Write-HTML -Results $results -OutDir $OutputDir -SystemInfo $systemInfo
+Write-DOC -Results $results -OutDir $OutputDir -SystemInfo $systemInfo
 
 if ($seceditPath -and (Test-Path $seceditPath)) { 
   Remove-Item $seceditPath -Force -ErrorAction SilentlyContinue 
