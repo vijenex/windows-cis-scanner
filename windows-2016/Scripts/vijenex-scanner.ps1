@@ -249,8 +249,9 @@ $ctx = @{ SecEdit = $secMap }
 # Filter rules based on DC/MS
 $rules = $Global:Rules | Where-Object {
   $rule = $_
-  if ($systemInfo.IsDC -and $rule.AppliesTo -eq 'MS only') { return $false }
-  if (-not $systemInfo.IsDC -and $rule.AppliesTo -eq 'DC only') { return $false }
+  $appliesTo = if ($rule.ContainsKey('AppliesTo')) { $rule.AppliesTo } else { 'Both' }
+  if ($systemInfo.IsDC -and $appliesTo -eq 'MS') { return $false }
+  if (-not $systemInfo.IsDC -and $appliesTo -eq 'DC') { return $false }
   return $true
 }
 
