@@ -876,7 +876,7 @@ if ($systemInfo.BuildNumber -lt ($expectedBuild - 1000) -or $systemInfo.BuildNum
   }
 }
 
-Write-Host "Scanning host: $($systemInfo.Caption) ($($systemInfo.Version) Build $($systemInfo.BuildNumber))" -ForegroundColor Cyan
+Write-Host "Scanning host: $($systemInfo.Caption) ($($systemInfo.Version) - Build $($systemInfo.BuildNumber))" -ForegroundColor Cyan
 Write-Host "Machine: $($systemInfo.ComputerName) | IP: $($systemInfo.IPAddress) | Date: $($systemInfo.ScanDate)" -ForegroundColor Gray
 
 # Load milestones (all if not specified)
