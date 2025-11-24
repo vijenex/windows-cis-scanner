@@ -129,6 +129,7 @@ $Global:Rules += @(
     Section='1.2 Account Lockout Policy'
     Profile='Level1'
     Type='Manual'
+    AppliesTo='MS'
     Expected='Enabled'
     Evidence='Local Security Policy path noted in report'
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'

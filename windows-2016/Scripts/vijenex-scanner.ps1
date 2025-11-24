@@ -29,6 +29,7 @@ $Global:Rules = @()
 
 # Default-enabled controls (no registry key = compliant)
 $Global:DefaultEnabledControls = @{
+    "1.1.6" = @{ DefaultValue = "0"; ExpectedValue = "0" }  # Reversible encryption disabled
     "2.3.1.1" = @{ DefaultValue = "0"; ExpectedValue = "0" }  # Guest disabled
     "2.3.1.2" = @{ DefaultValue = "1"; ExpectedValue = "1" }  # Blank password limit
     "2.3.2.1" = @{ DefaultValue = "1"; ExpectedValue = "1" }  # Audit subcategory
@@ -37,7 +38,6 @@ $Global:DefaultEnabledControls = @{
     "2.3.6.2" = @{ DefaultValue = "1"; ExpectedValue = "1" }  # Encrypt
     "2.3.6.3" = @{ DefaultValue = "1"; ExpectedValue = "1" }  # Sign
     "2.3.6.4" = @{ DefaultValue = "0"; ExpectedValue = "0" }  # Disable pwd change
-    "2.3.6.5" = @{ DefaultValue = "30"; ExpectedValue = "30" } # Pwd age
     "2.3.6.6" = @{ DefaultValue = "1"; ExpectedValue = "1" }  # Strong key
     "2.3.7.1" = @{ DefaultValue = "0"; ExpectedValue = "0" }  # CTRL+ALT+DEL
     "2.3.8.2" = @{ DefaultValue = "1"; ExpectedValue = "1" }  # Sign if agrees
@@ -125,6 +125,17 @@ function Parse-InfFile([string]$Path){
   $map
 }
 
+function Convert-SIDToName {
+  param([string]$SID)
+  try {
+    $objSID = New-Object System.Security.Principal.SecurityIdentifier($SID)
+    $objUser = $objSID.Translate([System.Security.Principal.NTAccount])
+    return $objUser.Value
+  } catch {
+    return $SID
+  }
+}
+
 function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
   $result=[pscustomobject]@{
     Id=$Rule.Id
@@ -145,24 +156,32 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
   # Handle default-enabled controls
   if ($Global:DefaultEnabledControls.ContainsKey($Rule.Id)) {
     $defInfo = $Global:DefaultEnabledControls[$Rule.Id]
-    # Check if registry key exists
-    $keyExists = $false
+    $valueExists = $false
+    
     if ($Rule.Type -eq 'Registry') {
       $keyExists = Test-Path $Rule.Key
       if ($keyExists) {
         $val = Get-ItemProperty -Path $Rule.Key -Name $Rule.ValueName -ErrorAction SilentlyContinue | 
                Select-Object -ExpandProperty $Rule.ValueName -ErrorAction SilentlyContinue
         if ($null -ne $val) {
+          $valueExists = $true
           $result.Passed = ($val -eq $Rule.Expected)
           $result.ActualValue = "$val"
         }
       }
+    } elseif ($Rule.Type -eq 'SecEdit') {
+      if ($Global:SecEditData.ContainsKey($Rule.SectionName) -and $Global:SecEditData[$Rule.SectionName].ContainsKey($Rule.Key)) {
+        $valueExists = $true
+        $val = $Global:SecEditData[$Rule.SectionName][$Rule.Key]
+        $result.Passed = ($val -eq $Rule.Expected)
+        $result.ActualValue = "$val"
+      }
     }
     
-    if (-not $keyExists) {
-      # Key missing = default value in effect
+    if (-not $valueExists) {
+      # Value missing = default value in effect
       $result.Passed = ($defInfo.DefaultValue -eq $defInfo.ExpectedValue)
-      $result.ActualValue = "Enabled by default (compliant)"
+      $result.ActualValue = "Default (compliant)"
     }
     
     $result.Status = if ($result.Passed) { 'PASS' } else { 'FAIL' }
@@ -186,6 +205,23 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
         } else {
           $result.Passed = $false
           $result.ActualValue = "Key not found"
+        }
+      }
+      'PrivRight' {
+        if ($Global:SecEditData.ContainsKey('Privilege Rights') -and $Global:SecEditData['Privilege Rights'].ContainsKey($Rule.Key)) {
+          $actualSIDs = $Global:SecEditData['Privilege Rights'][$Rule.Key] -split ','
+          $actualNames = $actualSIDs | ForEach-Object { Convert-SIDToName $_.Trim() }
+          $expectedNames = $Rule.ExpectedPrincipals
+          
+          if ($Rule.SetMode -eq 'Exact') {
+            $result.Passed = (Compare-Object $actualNames $expectedNames | Measure-Object).Count -eq 0
+          } else {
+            $result.Passed = ($expectedNames | Where-Object { $actualNames -contains $_ }).Count -eq $expectedNames.Count
+          }
+          $result.ActualValue = ($actualNames -join ', ')
+        } else {
+          $result.Passed = $false
+          $result.ActualValue = "Not configured"
         }
       }
       default {

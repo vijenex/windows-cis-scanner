@@ -14,18 +14,5 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='5.2'
-    Title='(L2) Ensure ''Print Spooler (Spooler)'' is set to ''Disabled'' (MS only) (Automated)'
-    Section='5 System Services'
-    Profile='Level2'
-    Type='Service'
-    ServiceName='Spooler'
-    Expected='Disabled'
-    AppliesTo='MS'
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='5.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  }
+  # EXCLUDED: 5.2 - Print Spooler needed for production servers
 )

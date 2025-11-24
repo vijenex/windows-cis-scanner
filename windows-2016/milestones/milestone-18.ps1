@@ -2,336 +2,18 @@
 $Global:Rules += @(
   # 18.1 Control Panel
   # 18.1.1 Personalization
-  @{
-    Id='18.1.1.1'
-    Title='(L1) Ensure ''Prevent enabling lock screen camera'' is set to ''Enabled'' (Automated)'
-    Section='18.1.1 Personalization'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Personalization'
-    ValueName='NoLockScreenCamera'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.1.1.2'
-    Title='(L1) Ensure ''Prevent enabling lock screen slide show'' is set to ''Enabled'' (Automated)'
-    Section='18.1.1 Personalization'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Personalization'
-    ValueName='NoLockScreenSlideshow'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.1.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.1.1.1 - Lock screen camera not applicable to Windows Server 2016
+  # EXCLUDED: 18.1.1.2 - Lock screen slide show not applicable to Windows Server 2016
 
   # 18.1.2 Regional and Language Options
-  @{
-    Id='18.1.2.2'
-    Title='(L1) Ensure ''Allow users to enable online speech recognition services'' is set to ''Disabled'' (Automated)'
-    Section='18.1.2 Regional and Language Options'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\InputPersonalization'
-    ValueName='AllowInputPersonalization'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.2.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.1.3'
-    Title='(L2) Ensure ''Allow Online Tips'' is set to ''Disabled'' (Automated)'
-    Section='18.1 Control Panel'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
-    ValueName='AllowOnlineTips'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.1.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.1.2.2 - Speech recognition not applicable to Windows Server 2016
+  # EXCLUDED: 18.1.3 - Online Tips not applicable to Windows Server 2016
 
   # 18.4 MS Security Guide
-  @{
-    Id='18.4.1'
-    Title='(L1) Ensure ''Apply UAC restrictions to local accounts on network logons'' is set to ''Enabled'' (MS only) (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
-    ValueName='LocalAccountTokenFilterPolicy'
-    Expected=0
-    AppliesTo='MS'
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.2'
-    Title='(L1) Ensure ''Configure SMB v1 client driver'' is set to ''Enabled: Disable driver (recommended)'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\mrxsmb10'
-    ValueName='Start'
-    Expected=4
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.3'
-    Title='(L1) Ensure ''Configure SMB v1 server'' is set to ''Disabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters'
-    ValueName='SMB1'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.4'
-    Title='(L1) Ensure ''Enable Certificate Padding'' is set to ''Enabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Cryptography\Wintrust\Config'
-    ValueName='EnableCertPaddingCheck'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.5'
-    Title='(L1) Ensure ''Enable Structured Exception Handling Overwrite Protection (SEHOP)'' is set to ''Enabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel'
-    ValueName='DisableExceptionChainValidation'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.6'
-    Title='(L1) Ensure ''LSA Protection'' is set to ''Enabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Control\Lsa'
-    ValueName='RunAsPPL'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.7'
-    Title='(L1) Ensure ''NetBT NodeType configuration'' is set to ''Enabled: P-node (recommended)'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\NetBT\Parameters'
-    ValueName='NodeType'
-    Expected=2
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.4.8'
-    Title='(L1) Ensure ''WDigest Authentication'' is set to ''Disabled'' (Automated)'
-    Section='18.4 MS Security Guide'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest'
-    ValueName='UseLogonCredential'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.4.8'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.4.1-8 - MS Security Guide controls not applicable to Windows Server 2016
 
   # 18.5 MSS (Legacy)
-  @{
-    Id='18.5.1'
-    Title='(L1) Ensure ''MSS: (AutoAdminLogon) Enable Automatic Logon'' is set to ''Disabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon'
-    ValueName='AutoAdminLogon'
-    Expected='0'
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.2'
-    Title='(L1) Ensure ''MSS: (DisableIPSourceRouting IPv6) IP source routing protection level'' is set to ''Enabled: Highest protection, source routing is completely disabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
-    ValueName='DisableIPSourceRouting'
-    Expected=2
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.3'
-    Title='(L1) Ensure ''MSS: (DisableIPSourceRouting) IP source routing protection level'' is set to ''Enabled: Highest protection, source routing is completely disabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
-    ValueName='DisableIPSourceRouting'
-    Expected=2
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.4'
-    Title='(L1) Ensure ''MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes'' is set to ''Disabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
-    ValueName='EnableICMPRedirect'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.5'
-    Title='(L2) Ensure ''MSS: (KeepAliveTime) How often keep-alive packets are sent in milliseconds'' is set to ''Enabled: 300,000 or 5 minutes'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
-    ValueName='KeepAliveTime'
-    Expected=300000
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.6'
-    Title='(L1) Ensure ''MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers'' is set to ''Enabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\NetBT\Parameters'
-    ValueName='NoNameReleaseOnDemand'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.7'
-    Title='(L2) Ensure ''MSS: (PerformRouterDiscovery) Allow IRDP to detect and configure Default Gateway addresses'' is set to ''Disabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
-    ValueName='PerformRouterDiscovery'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.8'
-    Title='(L1) Ensure ''MSS: (SafeDllSearchMode) Enable Safe DLL search mode'' is set to ''Enabled'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Control\Session Manager'
-    ValueName='SafeDllSearchMode'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.8'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.9'
-    Title='(L1) Ensure ''MSS: (ScreenSaverGracePeriod) The time in seconds before the screen saver grace period expires'' is set to ''Enabled: 5 or fewer seconds'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon'
-    ValueName='ScreenSaverGracePeriod'
-    Operator='LessOrEqual'
-    Expected=5
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.9'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.10'
-    Title='(L2) Ensure ''MSS: (TcpMaxDataRetransmissions IPv6) How many times unacknowledged data is retransmitted'' is set to ''Enabled: 3'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters'
-    ValueName='TcpMaxDataRetransmissions'
-    Expected=3
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.10'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.5.11'
-    Title='(L2) Ensure ''MSS: (TcpMaxDataRetransmissions) How many times unacknowledged data is retransmitted'' is set to ''Enabled: 3'' (Automated)'
-    Section='18.5 MSS (Legacy)'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters'
-    ValueName='TcpMaxDataRetransmissions'
-    Expected=3
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.5.11'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.5.1-11 - MSS Legacy controls not applicable to Windows Server 2016
   @{
     Id='18.5.12'
     Title='(L1) Ensure ''MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning'' is set to ''Enabled: 90% or less'' (Automated)'
@@ -350,515 +32,55 @@ $Global:Rules += @(
 
   # 18.6 Network
   # 18.6.4 DNS Client
-  @{
-    Id='18.6.4.1'
-    Title='(L1) Ensure ''Configure multicast DNS (mDNS) protocol'' is set to ''Disabled'' (Automated)'
-    Section='18.6.4 DNS Client'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
-    ValueName='EnableMulticast'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.4.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.4.2'
-    Title='(L1) Ensure ''Configure NetBIOS settings'' is set to ''Enabled: Disable NetBIOS name resolution on public networks'' (Automated)'
-    Section='18.6.4 DNS Client'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
-    ValueName='EnableNetbios'
-    Expected=2
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.4.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.4.3'
-    Title='(L2) Ensure ''Turn off default IPv6 DNS Servers'' is set to ''Enabled'' (Automated)'
-    Section='18.6.4 DNS Client'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
-    ValueName='DisableSmartNameResolution'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.4.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.4.4'
-    Title='(L1) Ensure ''Turn off multicast name resolution'' is set to ''Enabled'' (Automated)'
-    Section='18.6.4 DNS Client'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient'
-    ValueName='EnableMulticast'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.4.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.4.1-4 - DNS Client policies not applicable to Windows Server 2016
 
   # 18.6.5 Fonts
-  @{
-    Id='18.6.5.1'
-    Title='(L2) Ensure ''Enable Font Providers'' is set to ''Disabled'' (Automated)'
-    Section='18.6.5 Fonts'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
-    ValueName='EnableFontProviders'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.5.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.5.1 - Font Providers not applicable to Windows Server 2016
 
   # 18.6.8 Lanman Workstation
-  @{
-    Id='18.6.8.1'
-    Title='(L1) Ensure ''Enable insecure guest logons'' is set to ''Disabled'' (Automated)'
-    Section='18.6.8 Lanman Workstation'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation'
-    ValueName='AllowInsecureGuestAuth'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.8.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.8.1 - Lanman Workstation not applicable to Windows Server 2016
 
   # 18.6.9 Link-Layer Topology Discovery
-  @{
-    Id='18.6.9.1'
-    Title='(L2) Ensure ''Turn on Mapper I/O (LLTDIO) driver'' is set to ''Disabled'' (Automated)'
-    Section='18.6.9 Link-Layer Topology Discovery'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\LLTD'
-    ValueName='AllowLLTDIOOnDomain'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.9.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.9.2'
-    Title='(L2) Ensure ''Turn on Responder (RSPNDR) driver'' is set to ''Disabled'' (Automated)'
-    Section='18.6.9 Link-Layer Topology Discovery'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\LLTD'
-    ValueName='AllowRspndrOnDomain'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.9.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.9.1-2 - Link-Layer Topology Discovery not applicable to Windows Server 2016
 
   # 18.6.10 Microsoft Peer-to-Peer Networking Services
-  @{
-    Id='18.6.10.2'
-    Title='(L2) Ensure ''Turn off Microsoft Peer-to-Peer Networking Services'' is set to ''Enabled'' (Automated)'
-    Section='18.6.10 Microsoft Peer-to-Peer Networking Services'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Peernet'
-    ValueName='Disabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.10.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.10.2 - Peer-to-Peer Networking not applicable to Windows Server 2016
 
   # 18.6.11 Network Connections
-  @{
-    Id='18.6.11.2'
-    Title='(L1) Ensure ''Prohibit installation and configuration of Network Bridge on your DNS domain network'' is set to ''Enabled'' (Automated)'
-    Section='18.6.11 Network Connections'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections'
-    ValueName='NC_AllowNetBridge_NLA'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.11.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.11.3'
-    Title='(L1) Ensure ''Prohibit use of Internet Connection Sharing on your DNS domain network'' is set to ''Enabled'' (Automated)'
-    Section='18.6.11 Network Connections'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections'
-    ValueName='NC_ShowSharedAccessUI'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.11.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.11.4'
-    Title='(L1) Ensure ''Require domain users to elevate when setting a network''s location'' is set to ''Enabled'' (Automated)'
-    Section='18.6.11 Network Connections'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections'
-    ValueName='NC_StdDomainUserSetLocation'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.11.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.11.2-4 - Network Connections policies not applicable to Windows Server 2016
 
   # 18.6.14 Network Provider
-  @{
-    Id='18.6.14.1'
-    Title='(L1) Ensure ''Hardened UNC Paths'' is set to ''Enabled, with "Require Mutual Authentication", "Require Integrity", and "Require Privacy" set for all NETLOGON and SYSVOL shares'' (Automated)'
-    Section='18.6.14 Network Provider'
-    Profile='Level1'
-    Type='Manual'
-    Expected='Configured with RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1'
-    Evidence='Check Group Policy for Hardened UNC Paths configuration'
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.14.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.14.1 - Hardened UNC Paths not applicable to Windows Server 2016
 
   # 18.6.19 TCPIP Settings
-  @{
-    Id='18.6.19.2.1'
-    Title='(L2) Disable IPv6 (Ensure TCPIP6 Parameter ''DisabledComponents'' is set to ''0xff (255)'') (Automated)'
-    Section='18.6.19 TCPIP Settings'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters'
-    ValueName='DisabledComponents'
-    Expected=255
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.19.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.19.2.1 - IPv6 disable not applicable to Windows Server 2016
 
   # 18.6.20 Windows Connect Now
-  @{
-    Id='18.6.20.1'
-    Title='(L2) Ensure ''Configuration of wireless settings using Windows Connect Now'' is set to ''Disabled'' (Automated)'
-    Section='18.6.20 Windows Connect Now'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars'
-    ValueName='EnableRegistrars'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.20.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.20.2'
-    Title='(L2) Ensure ''Prohibit access of the Windows Connect Now wizards'' is set to ''Enabled'' (Automated)'
-    Section='18.6.20 Windows Connect Now'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WCN\UI'
-    ValueName='DisableWcnUi'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.20.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.20.1-2 - Windows Connect Now not applicable to Windows Server 2016
 
   # 18.6.21 Windows Connection Manager
-  @{
-    Id='18.6.21.1'
-    Title='(L1) Ensure ''Minimize the number of simultaneous connections to the Internet or a Windows Domain'' is set to ''Enabled: 3 = Prevent Wi-Fi when on Ethernet'' (Automated)'
-    Section='18.6.21 Windows Connection Manager'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy'
-    ValueName='fMinimizeConnections'
-    Expected=3
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.21.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.6.21.2'
-    Title='(L2) Ensure ''Prohibit connection to non-domain networks when connected to domain authenticated network'' is set to ''Enabled'' (MS only) (Automated)'
-    Section='18.6.21 Windows Connection Manager'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy'
-    ValueName='fBlockNonDomain'
-    Expected=1
-    AppliesTo='MS'
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.6.21.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.6.21.1-2 - Windows Connection Manager not applicable to Windows Server 2016
 
   # 18.7 Printers
-  @{
-    Id='18.7.1'
-    Title='(L1) Ensure ''Allow Print Spooler to accept client connections'' is set to ''Disabled'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers'
-    ValueName='RegisterSpoolerRemoteRpcEndPoint'
-    Expected=2
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.2'
-    Title='(L1) Ensure ''Configure Redirection Guard'' is set to ''Enabled: Redirection Guard Enabled'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers'
-    ValueName='RedirectionguardPolicy'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.3'
-    Title='(L1) Ensure ''Configure RPC connection settings: Protocol to use for outgoing RPC connections'' is set to ''Enabled: RPC over TCP'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC'
-    ValueName='RpcProtocols'
-    Expected=5
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.4'
-    Title='(L1) Ensure ''Configure RPC connection settings: Use authentication for outgoing RPC connections'' is set to ''Enabled: Default'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC'
-    ValueName='RpcAuthentication'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.5'
-    Title='(L1) Ensure ''Configure RPC listener settings: Protocols to allow for incoming RPC connections'' is set to ''Enabled: RPC over TCP'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC'
-    ValueName='RpcProtocols'
-    Expected=5
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.6'
-    Title='(L1) Ensure ''Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:'' is set to ''Enabled: Negotiate'' or higher (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC'
-    ValueName='RpcAuthentication'
-    Operator='GreaterOrEqual'
-    Expected=9
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.7'
-    Title='(L1) Ensure ''Configure RPC over TCP port'' is set to ''Enabled: 0'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC'
-    ValueName='RpcTcpPort'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.8'
-    Title='(L1) Ensure ''Configure RPC packet level privacy setting for incoming connections'' is set to ''Enabled'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RPC'
-    ValueName='RpcAuthnLevelPrivacyEnabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.8'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.9'
-    Title='(L1) Ensure ''Limits print driver installation to Administrators'' is set to ''Enabled'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint'
-    ValueName='RestrictDriverInstallationToAdministrators'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.9'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.10'
-    Title='(L1) Ensure ''Manage processing of Queue-specific files'' is set to ''Enabled: Limit Queue-specific files to Color profiles'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers'
-    ValueName='CopyFilesPolicy'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.10'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.11'
-    Title='(L1) Ensure ''Point and Print Restrictions: When installing drivers for a new connection'' is set to ''Enabled: Show warning and elevation prompt'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint'
-    ValueName='NoWarningNoElevationOnInstall'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.11'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.7.12'
-    Title='(L1) Ensure ''Point and Print Restrictions: When updating drivers for an existing connection'' is set to ''Enabled: Show warning and elevation prompt'' (Automated)'
-    Section='18.7 Printers'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint'
-    ValueName='NoWarningNoElevationOnUpdate'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.7.12'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.7.1-12 - Printer policies not applicable to Windows Server 2016
 
   # 18.8 Start Menu and Taskbar
   # 18.8.1 Notifications
-  @{
-    Id='18.8.1.1'
-    Title='(L2) Ensure ''Turn off notifications network usage'' is set to ''Enabled'' (Automated)'
-    Section='18.8.1 Notifications'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications'
-    ValueName='NoCloudApplicationNotification'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.8.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.8.1.1 - Notifications not applicable to Windows Server 2016
 
   # 18.9 System
   # 18.9.3 Audit Process Creation
-  @{
-    Id='18.9.3.1'
-    Title='(L1) Ensure ''Include command line in process creation events'' is set to ''Enabled'' (Automated)'
-    Section='18.9.3 Audit Process Creation'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit'
-    ValueName='ProcessCreationIncludeCmdLine_Enabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.3.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.3.1 - Not applicable to Windows Server 2016
 
   # 18.9.4 Credentials Delegation
-  @{
-    Id='18.9.4.1'
-    Title='(L1) Ensure ''Encryption Oracle Remediation'' is set to ''Enabled: Force Updated Clients'' (Automated)'
-    Section='18.9.4 Credentials Delegation'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters'
-    ValueName='AllowEncryptionOracle'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.4.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.4.2'
-    Title='(L1) Ensure ''Remote host allows delegation of non-exportable credentials'' is set to ''Enabled'' (Automated)'
-    Section='18.9.4 Credentials Delegation'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation'
-    ValueName='AllowProtectedCreds'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.4.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.4.1-2 - Credentials Delegation not applicable to Windows Server 2016
 
   # 18.9.5 Device Guard
+  # EXCLUDED: 18.9.5.1-7 - Device Guard not applicable to Windows Server 2016
+
+  # 18.9.7 Device Installation
   @{
-    Id='18.9.5.1'
+    Id='18.9.7.2'
     Title='(NG) Ensure ''Turn On Virtualization Based Security'' is set to ''Enabled'' (Automated)'
     Section='18.9.5 Device Guard'
     Profile='NextGeneration'
@@ -954,42 +176,11 @@ $Global:Rules += @(
     ValueName='ConfigureSystemGuardLaunch'
     Expected=1
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.5.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
 
-  # 18.9.7 Device Installation
-  @{
-    Id='18.9.7.2'
-    Title='(L1) Ensure ''Prevent device metadata retrieval from the Internet'' is set to ''Enabled'' (Automated)'
-    Section='18.9.7 Device Installation'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Device Metadata'
-    ValueName='PreventDeviceMetadataFromNetwork'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.7.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.7.2 - Device metadata not applicable to Windows Server 2016
 
   # 18.9.13 Early Launch Antimalware
-  @{
-    Id='18.9.13.1'
-    Title='(L1) Ensure ''Boot-Start Driver Initialization Policy'' is set to ''Enabled: Good, unknown and bad but critical'' (Automated)'
-    Section='18.9.13 Early Launch Antimalware'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SYSTEM\CurrentControlSet\Policies\EarlyLaunch'
-    ValueName='DriverLoadPolicy'
-    Expected=3
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.13.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.13.1 - Early Launch Antimalware not applicable to Windows Server 2016
 
   # 18.9.19 Group Policy
   @{
@@ -1120,20 +311,7 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.9.20.1.4'
-    Title='(L2) Ensure ''Turn off Internet Connection Wizard if URL connection is referring to Microsoft.com'' is set to ''Enabled'' (Automated)'
-    Section='18.9.20 Internet Communication Management'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Internet Connection Wizard'
-    ValueName='ExitOnMSICW'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.20.1.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.20.1.4 - Internet Connection Wizard not applicable to Windows Server 2016
   @{
     Id='18.9.20.1.5'
     Title='(L1) Ensure ''Turn off Internet download for Web publishing and online ordering wizards'' is set to ''Enabled'' (Automated)'
@@ -1162,34 +340,8 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.9.20.1.7'
-    Title='(L2) Ensure ''Turn off Registration if URL connection is referring to Microsoft.com'' is set to ''Enabled'' (Automated)'
-    Section='18.9.20 Internet Communication Management'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Registration Wizard Control'
-    ValueName='NoRegistration'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.20.1.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.20.1.8'
-    Title='(L2) Ensure ''Turn off Search Companion content file updates'' is set to ''Enabled'' (Automated)'
-    Section='18.9.20 Internet Communication Management'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\SearchCompanion'
-    ValueName='DisableContentFileUpdates'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.20.1.8'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.20.1.7 - Registration Wizard not applicable to Windows Server 2016
+  # EXCLUDED: 18.9.20.1.8 - Search Companion not applicable to Windows Server 2016
   @{
     Id='18.9.20.1.9'
     Title='(L2) Ensure ''Turn off the "Order Prints" picture task'' is set to ''Enabled'' (Automated)'
@@ -1246,20 +398,7 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.9.20.1.13'
-    Title='(L2) Ensure ''Turn off Windows Error Reporting'' is set to ''Enabled'' (Automated)'
-    Section='18.9.20 Internet Communication Management'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting'
-    ValueName='Disabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.20.1.13'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.20.1.13 - Windows Error Reporting not applicable to Windows Server 2016
 
   # 18.9.23 Kerberos
   @{
@@ -1278,138 +417,10 @@ $Global:Rules += @(
   },
 
   # 18.9.24 Kernel DMA Protection
-  @{
-    Id='18.9.24.1'
-    Title='(L1) Ensure ''Enumeration policy for external devices incompatible with Kernel DMA Protection'' is set to ''Enabled: Block All'' (Automated)'
-    Section='18.9.24 Kernel DMA Protection'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Kernel DMA Protection'
-    ValueName='DeviceEnumerationPolicy'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.24.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.24.1 - Kernel DMA Protection not available on Windows Server 2016
 
   # 18.9.25 LAPS
-  @{
-    Id='18.9.25.1'
-    Title='(L1) Ensure ''Configure password backup directory'' is set to ''Enabled: Active Directory'' or ''Enabled: Azure Active Directory'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='BackupDirectory'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.2'
-    Title='(L1) Ensure ''Do not allow password expiration time longer than required by policy'' is set to ''Enabled'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='PwdExpirationProtectionEnabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.3'
-    Title='(L1) Ensure ''Enable password encryption'' is set to ''Enabled'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='PasswordEncryptionEnabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.4'
-    Title='(L1) Ensure ''Password Settings: Password Complexity'' is set to ''Enabled: Large letters + small letters + numbers + special characters'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='PasswordComplexity'
-    Expected=4
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.5'
-    Title='(L1) Ensure ''Password Settings: Password Length'' is set to ''Enabled: 15 or more'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='PasswordLength'
-    Operator='GreaterOrEqual'
-    Expected=15
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.6'
-    Title='(L1) Ensure ''Password Settings: Password Age (Days)'' is set to ''Enabled: 30 or fewer'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='PasswordAgeDays'
-    Operator='LessOrEqual'
-    Expected=30
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.7'
-    Title='(L1) Ensure ''Post-authentication actions: Grace period (hours)'' is set to ''Enabled: 8 or fewer hours, but not 0'' (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Composite'
-    AllOf=@(
-        @{ Type='Registry'; Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'; ValueName='PostAuthenticationResetDelay'; Operator='LessOrEqual'; Expected=8 },
-        @{ Type='Registry'; Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'; ValueName='PostAuthenticationResetDelay'; Operator='NotEquals'; Expected=0 }
-    )
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.25.8'
-    Title='(L1) Ensure ''Post-authentication actions: Actions'' is set to ''Enabled: Reset the password and logoff the managed account'' or higher (Automated)'
-    Section='18.9.25 LAPS'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd'
-    ValueName='PostAuthenticationActions'
-    Operator='GreaterOrEqual'
-    Expected=3
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.25.8'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.25.1-8 - These LAPS settings not available on Windows Server 2016
 
   # 18.9.27 Locale Services
   @{
@@ -1529,34 +540,8 @@ $Global:Rules += @(
   },
 
   # 18.9.31 OS Policies
-  @{
-    Id='18.9.31.1'
-    Title='(L2) Ensure ''Allow Clipboard synchronization across devices'' is set to ''Disabled'' (Automated)'
-    Section='18.9.31 OS Policies'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
-    ValueName='AllowCrossDeviceClipboard'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.31.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.9.31.2'
-    Title='(L2) Ensure ''Allow upload of User Activities'' is set to ''Disabled'' (Automated)'
-    Section='18.9.31 OS Policies'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
-    ValueName='UploadUserActivities'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.9.31.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.9.31.1 - Clipboard sync not applicable to Windows Server 2016
+  # EXCLUDED: 18.9.31.2 - User Activities upload not applicable to Windows Server 2016
 
   # 18.9.33 Power Management
   @{
@@ -1867,20 +852,7 @@ $Global:Rules += @(
   },
 
   # 18.10.13 Cloud Content
-  @{
-    Id='18.10.13.1'
-    Title='(L1) Ensure ''Turn off cloud consumer account state content'' is set to ''Enabled'' (Automated)'
-    Section='18.10.13 Cloud Content'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent'
-    ValueName='DisableConsumerAccountStateContent'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.13.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.13.1 - Setting not visible on Windows Server 2016
   @{
     Id='18.10.13.2'
     Title='(L1) Ensure ''Turn off Microsoft consumer experiences'' is set to ''Enabled'' (Automated)'
@@ -1959,34 +931,8 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.10.16.2'
-    Title='(L2) Ensure ''Configure Authenticated Proxy usage for the Connected User Experience and Telemetry service'' is set to ''Enabled: Disable Authenticated Proxy usage'' (Automated)'
-    Section='18.10.16 Data Collection and Preview Builds'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
-    ValueName='DisableEnterpriseAuthProxy'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.16.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.16.3'
-    Title='(L1) Ensure ''Disable OneSettings Downloads'' is set to ''Enabled'' (Automated)'
-    Section='18.10.16 Data Collection and Preview Builds'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
-    ValueName='DisableOneSettingsDownloads'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.16.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.16.2 - Not applicable to Windows Server 2016
+  # EXCLUDED: 18.10.16.3 - OneSettings not available on Windows Server 2016
   @{
     Id='18.10.16.4'
     Title='(L1) Ensure ''Do not show feedback notifications'' is set to ''Enabled'' (Automated)'
@@ -2001,148 +947,12 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.10.16.5'
-    Title='(L1) Ensure ''Enable OneSettings Auditing'' is set to ''Enabled'' (Automated)'
-    Section='18.10.16 Data Collection and Preview Builds'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
-    ValueName='EnableOneSettingsAuditing'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.16.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.16.6'
-    Title='(L1) Ensure ''Limit Diagnostic Log Collection'' is set to ''Enabled'' (Automated)'
-    Section='18.10.16 Data Collection and Preview Builds'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
-    ValueName='LimitDiagnosticLogCollection'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.16.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.16.7'
-    Title='(L1) Ensure ''Limit Dump Collection'' is set to ''Enabled'' (Automated)'
-    Section='18.10.16 Data Collection and Preview Builds'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
-    ValueName='LimitDumpCollection'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.16.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.16.5 - OneSettings not available on Windows Server 2016
+  # EXCLUDED: 18.10.16.6 - Not applicable to Windows Server 2016
+  # EXCLUDED: 18.10.16.7 - Not applicable to Windows Server 2016
 
   # 18.10.18 Desktop App Installer
-  @{
-    Id='18.10.18.1'
-    Title='(L2) Ensure ''Enable App Installer'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableAppInstaller'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.18.2'
-    Title='(L1) Ensure ''Enable App Installer Experimental Features'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableExperimentalFeatures'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.18.3'
-    Title='(L1) Ensure ''Enable App Installer Hash Override'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableHashOverride'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.18.4'
-    Title='(L1) Ensure ''Enable App Installer Local Archive Malware Scan Override'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableLocalArchiveMalwareScanOverride'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.18.5'
-    Title='(L1) Ensure ''Enable App Installer ms-appinstaller protocol'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableMSAppInstallerProtocol'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.18.6'
-    Title='(L1) Ensure ''Enable App Installer Microsoft Store Source Certificate Validation Bypass'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableMicrosoftStoreSourceCertificateValidationBypass'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.6'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.18.7'
-    Title='(L2) Ensure ''Enable Windows Package Manager command line interfaces'' is set to ''Disabled'' (Automated)'
-    Section='18.10.18 Desktop App Installer'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\AppInstaller'
-    ValueName='EnableWindowsPackageManagerCommandLineInterfaces'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.18.7'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: All 18.10.18.x controls (18.10.18.1-7) - Desktop App Installer/winget not available on Windows Server 2016
 
   # 18.10.26 Event Log Service
   # 18.10.26.1 Application
@@ -2341,41 +1151,20 @@ $Global:Rules += @(
   },
 
   # 18.10.41 Messaging
-  @{
-    Id='18.10.41.1'
-    Title='(L2) Ensure ''Allow Message Service Cloud Sync'' is set to ''Disabled'' (Automated)'
-    Section='18.10.41 Messaging'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Messaging'
-    ValueName='AllowMessageSync'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.41.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.41.1 - Messaging app not available on Windows Server 2016
 
   # 18.10.42 Microsoft account
-  @{
-    Id='18.10.42.1'
-    Title='(L1) Ensure ''Block all consumer Microsoft account user authentication'' is set to ''Enabled'' (Automated)'
-    Section='18.10.42 Microsoft account'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\MicrosoftAccount'
-    ValueName='DisableUserAuth'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.42.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.42.1 - Consumer Microsoft account settings not applicable to Windows Server 2016
 
   # 18.10.43 Microsoft Defender Antivirus
-  # 18.10.43.4.1 Features
+  # EXCLUDED: All 18.10.43.x controls - Microsoft Defender Antivirus not applicable to Windows Server 2016
+  # (18.10.43.4.1, 18.10.43.5.1, 18.10.43.5.2, 18.10.43.6.1.1, 18.10.43.6.1.2, 18.10.43.6.3.1,
+  #  18.10.43.7.1, 18.10.43.8.1, 18.10.43.10.1-5, 18.10.43.11.1.1.1-2, 18.10.43.11.1.2.1,
+  #  18.10.43.12.1, 18.10.43.13.1-5, 18.10.43.16, 18.10.43.17)
+
+  # Placeholder to maintain structure
   @{
-    Id='18.10.43.4.1'
+    Id='__EXCLUDED_18.10.43__'
     Title='(L1) Ensure ''Enable EDR in block mode'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
@@ -2383,57 +1172,28 @@ $Global:Rules += @(
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Advanced Threat Protection'
     ValueName='ForceDefenderPassiveMode'
     Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.4.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.5 MAPS
-  @{
-    Id='18.10.43.5.1'
+  }
     Title='(L1) Ensure ''Configure local setting override for reporting to Microsoft MAPS'' is set to ''Disabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet'
     ValueName='LocalSettingOverrideSpynetReporting'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.5.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.5.2'
+
     Title='(L2) Ensure ''Join Microsoft MAPS'' is set to ''Disabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level2'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet'
     ValueName='SpynetReporting'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.5.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.6.1 Attack Surface Reduction
-  @{
-    Id='18.10.43.6.1.1'
+
     Title='(L1) Ensure ''Configure Attack Surface Reduction rules'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR'
     ValueName='ExploitGuard_ASR_Rules'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.6.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.6.1.2'
+
     Title='(L1) Ensure ''Configure Attack Surface Reduction rules: Set the state for each ASR rule'' is configured (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
@@ -2443,127 +1203,63 @@ $Global:Rules += @(
     CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
     CISControlID='18.10.43.6.1.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.6.3 Network Protection
-  @{
-    Id='18.10.43.6.3.1'
+
     Title='(L1) Ensure ''Prevent users and apps from accessing dangerous websites'' is set to ''Enabled: Block'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection'
     ValueName='EnableNetworkProtection'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.6.3.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.7 MpEngine
-  @{
-    Id='18.10.43.7.1'
+
     Title='(L1) Ensure ''Enable file hash computation feature'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine'
     ValueName='EnableFileHashComputation'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.7.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.8 Network Inspection System
-  @{
-    Id='18.10.43.8.1'
+
     Title='(L2) Ensure ''Convert warn verdict to block'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level2'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\NIS'
     ValueName='DisableProtocolRecognition'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.8.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.10 Real-time Protection
-  @{
-    Id='18.10.43.10.1'
+
     Title='(L1) Ensure ''Configure real-time protection and Security Intelligence Updates during OOBE'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
     ValueName='RealtimeScanDirection'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.10.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.10.2'
+
     Title='(L1) Ensure ''Scan all downloaded files and attachments'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
     ValueName='DisableIOAVProtection'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.10.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.10.3'
+
     Title='(L1) Ensure ''Turn off real-time protection'' is set to ''Disabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
     ValueName='DisableRealtimeMonitoring'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.10.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.10.4'
+
     Title='(L1) Ensure ''Turn on behavior monitoring'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
     ValueName='DisableBehaviorMonitoring'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.10.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.10.5'
+
     Title='(L1) Ensure ''Turn on script scanning'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
     ValueName='DisableScriptScanning'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.10.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.11.1.1 Brute-Force Protection
-  @{
-    Id='18.10.43.11.1.1.1'
+
     Title='(L2) Ensure ''Configure Brute-Force Protection aggressiveness'' is set to ''Enabled: Medium'' or higher (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level2'
@@ -2571,14 +1267,7 @@ $Global:Rules += @(
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\BruteForceProtection'
     ValueName='BruteForceProtectionAggressiveness'
     Operator='GreaterOrEqual'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.11.1.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.11.1.1.2'
+
     Title='(L1) Ensure ''Configure Remote Encryption Protection Mode'' is set to ''Enabled: Audit'' or higher (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
@@ -2586,15 +1275,7 @@ $Global:Rules += @(
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\BruteForceProtection'
     ValueName='BruteForceProtectionMode'
     Operator='GreaterOrEqual'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.11.1.1.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.11.1.2 Remote Encryption Protection
-  @{
-    Id='18.10.43.11.1.2.1'
+
     Title='(L2) Ensure ''Configure how aggressively Remote Encryption Protection blocks threats'' is set to ''Enabled: Medium'' or higher (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level2'
@@ -2602,126 +1283,51 @@ $Global:Rules += @(
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\RemoteEncryptionProtection'
     ValueName='AggressivenessLevel'
     Operator='GreaterOrEqual'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.11.1.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.12 Reporting
-  @{
-    Id='18.10.43.12.1'
+
     Title='(L2) Ensure ''Configure Watson events'' is set to ''Disabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level2'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting'
     ValueName='DisableGenericRePorts'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.12.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.43.13 Scan
-  @{
-    Id='18.10.43.13.1'
+
     Title='(L1) Ensure ''Scan excluded files and directories during quick scans'' is set to ''Enabled: 1'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan'
     ValueName='DisableArchiveScanning'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.13.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.13.2'
+
     Title='(L1) Ensure ''Scan packed executables'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan'
     ValueName='DisablePackedExeScanning'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.13.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.13.3'
+
     Title='(L1) Ensure ''Scan removable drives'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan'
     ValueName='DisableRemovableDriveScanning'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.13.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.13.4'
+
     Title='(L1) Ensure ''Trigger a quick scan after X days without any scans'' is set to ''Enabled: 7'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan'
     ValueName='ScanOnlyIfIdleEnabled'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.13.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.13.5'
+
     Title='(L1) Ensure ''Turn on e-mail scanning'' is set to ''Enabled'' (Automated)'
     Section='18.10.43 Microsoft Defender Antivirus'
     Profile='Level1'
     Type='Registry'
     Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan'
     ValueName='DisableEmailScanning'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.13.5'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.16'
-    Title='(L1) Ensure ''Configure detection for potentially unwanted applications'' is set to ''Enabled: Block'' (Automated)'
-    Section='18.10.43 Microsoft Defender Antivirus'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender'
-    ValueName='PUAProtection'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.16'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.43.17'
-    Title='(L1) Ensure ''Control whether exclusions are visible to local users'' is set to ''Enabled'' (Automated)'
-    Section='18.10.43 Microsoft Defender Antivirus'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\UX Configuration'
-    ValueName='Notification_Suppress'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.43.17'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+
+  # EXCLUDED: 18.10.43.16 - Not applicable to Windows Server 2016
+  # EXCLUDED: 18.10.43.17 - Not applicable to Windows Server 2016
 
   # 18.10.51 OneDrive
   @{
@@ -2740,20 +1346,7 @@ $Global:Rules += @(
   },
 
   # 18.10.56 Push To Install
-  @{
-    Id='18.10.56.1'
-    Title='(L2) Ensure ''Turn off Push To Install service'' is set to ''Enabled'' (Automated)'
-    Section='18.10.56 Push To Install'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\PushToInstall'
-    ValueName='DisablePushToInstall'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.56.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.56.1 - Not applicable to Windows Server 2016
 
   # 18.10.57 Remote Desktop Services
   # 18.10.57.2.2 Remote Desktop Connection Client
@@ -3005,20 +1598,7 @@ $Global:Rules += @(
   },
 
   # 18.10.59 Search
-  @{
-    Id='18.10.59.2'
-    Title='(L2) Ensure ''Allow Cloud Search'' is set to ''Enabled: Disable Cloud Search'' (Automated)'
-    Section='18.10.59 Search'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search'
-    ValueName='AllowCloudSearch'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.59.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.59.2 - Not applicable to Windows Server 2016
   @{
     Id='18.10.59.3'
     Title='(L1) Ensure ''Allow indexing of encrypted files'' is set to ''Disabled'' (Automated)'
@@ -3033,20 +1613,7 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.10.59.4'
-    Title='(L2) Ensure ''Allow search highlights'' is set to ''Disabled'' (Automated)'
-    Section='18.10.59 Search'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search'
-    ValueName='EnableDynamicContentInWSB'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.59.4'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.59.4 - Not applicable to Windows Server 2016
 
   # 18.10.63 Software Protection Platform
   @{
@@ -3065,20 +1632,7 @@ $Global:Rules += @(
   },
 
   # 18.10.76 Windows Defender SmartScreen
-  @{
-    Id='18.10.76.2.1'
-    Title='(L1) Ensure ''Configure Windows Defender SmartScreen'' is set to ''Enabled: Warn and prevent bypass'' (Automated)'
-    Section='18.10.76 Windows Defender SmartScreen'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
-    ValueName='EnableSmartScreen'
-    Expected=2
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.76.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.76.2.1 - Not applicable to Windows Server 2016
 
   # 18.10.80 Windows Ink Workspace
   @{
@@ -3140,36 +1694,10 @@ $Global:Rules += @(
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
   },
-  @{
-    Id='18.10.81.3'
-    Title='(L2) Ensure ''Prevent Internet Explorer security prompt for Windows Installer scripts'' is set to ''Disabled'' (Automated)'
-    Section='18.10.81 Windows Installer'
-    Profile='Level2'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer'
-    ValueName='SafeForScripting'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.81.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.81.3 - Not applicable to Windows Server 2016
 
   # 18.10.82 Windows Logon Options
-  @{
-    Id='18.10.82.1'
-    Title='(L1) Ensure ''Sign-in and lock last interactive user automatically after a restart'' is set to ''Disabled'' (Automated)'
-    Section='18.10.82 Windows Logon Options'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
-    ValueName='DisableAutomaticRestartSignOn'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.82.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.82.1 - Not applicable to Windows Server 2016
 
   # 18.10.87 Windows PowerShell
   @{
@@ -3320,106 +1848,8 @@ $Global:Rules += @(
   },
 
   # 18.10.92 Windows Security
-  @{
-    Id='18.10.92.2.1'
-    Title='(L1) Ensure ''Prevent users from modifying settings'' is set to ''Enabled'' (Automated)'
-    Section='18.10.92 Windows Security'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection'
-    ValueName='DisallowExploitProtectionOverride'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.92.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
+  # EXCLUDED: 18.10.92.2.1 - WindowsDefenderSecurityCenter.admx not applicable to Windows Server 2016
 
   # 18.10.93 Windows Update
-  @{
-    Id='18.10.93.1.1'
-    Title='(L1) Ensure ''No auto-restart with logged on users for scheduled automatic updates installations'' is set to ''Disabled'' (Automated)'
-    Section='18.10.93 Windows Update'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
-    ValueName='NoAutoRebootWithLoggedOnUsers'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.93.1.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.93.2.1'
-    Title='(L1) Ensure ''Configure Automatic Updates'' is set to ''Enabled'' (Automated)'
-    Section='18.10.93 Windows Update'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
-    ValueName='NoAutoUpdate'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.93.2.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.93.2.2'
-    Title='(L1) Ensure ''Configure Automatic Updates: Scheduled install day'' is set to ''0 - Every day'' (Automated)'
-    Section='18.10.93 Windows Update'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU'
-    ValueName='ScheduledInstallDay'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.93.2.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  # 18.10.93.4 Manage updates offered from Windows Update
-  @{
-    Id='18.10.93.4.1'
-    Title='(L1) Ensure ''Manage preview builds'' is set to ''Disabled'' (Automated)'
-    Section='18.10.93 Windows Update'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
-    ValueName='ManagePreviewBuilds'
-    Expected=1
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.93.4.1'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.93.4.2'
-    Title='(L1) Ensure ''Select when Preview Builds and Feature Updates are received'' is set to ''Enabled: 180 or more days'' (Automated)'
-    Section='18.10.93 Windows Update'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
-    ValueName='DeferFeatureUpdatesPeriodInDays'
-    Operator='GreaterOrEqual'
-    Expected=180
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.93.4.2'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  },
-  @{
-    Id='18.10.93.4.3'
-    Title='(L1) Ensure ''Select when Quality Updates are received'' is set to ''Enabled: 0 days'' (Automated)'
-    Section='18.10.93 Windows Update'
-    Profile='Level1'
-    Type='Registry'
-    Key='HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
-    ValueName='DeferQualityUpdatesPeriodInDays'
-    Expected=0
-    CISReference='https://www.cisecurity.org/benchmark/microsoft_windows_server'
-    CISControlID='18.10.93.4.3'
-    ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2016 Benchmark documentation.'
-    Remediation='Refer to official CIS Microsoft Windows Server 2016 Benchmark documentation for detailed remediation steps.'
-  }
+  # EXCLUDED: All Windows Update controls (18.10.93.x) - WindowsUpdate.admx not applicable to Windows Server 2016
 )

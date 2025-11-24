@@ -1,0 +1,55 @@
+Windows Server 2019 - Controls to Exclude (Not Applicable)
+==========================================================
+
+Based on 2016 exclusions, these 2019 controls should be excluded:
+
+ALREADY EXIST - NEED TO EXCLUDE:
+- 18.1.1.1, 18.1.1.2 - Lock screen (not applicable to Server 2019)
+- 18.1.2.2 - Speech recognition (not applicable)
+- 18.1.3 - Online Tips (not applicable)
+- 18.6.4.1-4 - DNS Client (not applicable)
+- 18.6.5.1 - Fonts (not applicable)
+- 18.6.8.1 - Lanman Workstation (not applicable)
+- 18.6.9.1-2 - Link-Layer Topology Discovery (not applicable)
+- 18.6.10.2 - Peer-to-Peer (not applicable)
+- 18.6.11.2-4 - Network Connections (not applicable)
+- 18.6.19.2.1 - TCPIP IPv6 disable (not applicable)
+- 18.6.20.1-2 - Windows Connect Now (not applicable)
+- 18.6.21.1-2 - Windows Connection Manager (not applicable)
+- 18.7.1-12 - Printers (not applicable)
+- 18.8.1.1 - Notifications (not applicable)
+- 18.9.3.1 - Audit Process Creation (not applicable)
+- 18.9.4.1-2 - Credentials Delegation (not applicable)
+- 18.9.7.2 - Device metadata (not applicable)
+- 18.9.13.1 - Early Launch Antimalware (not applicable)
+- 18.9.20.1.4 - Internet Connection Wizard (not applicable)
+- 18.9.20.1.7 - Registration Wizard (not applicable)
+- 18.9.20.1.8 - Search Companion (not applicable)
+- 18.9.20.1.13 - Windows Error Reporting (not applicable)
+- 18.9.24.1 - Kernel DMA Protection (not applicable to 2019)
+- 18.9.25.1-8 - LAPS (not applicable to 2019)
+- 18.9.31.1-2 - OS Policies (not applicable)
+- 18.10.13.1 - Cloud Content (not applicable)
+- 18.10.16.2-3,5-7 - Data Collection OneSettings (not applicable)
+- 18.10.18.1-7 - Desktop App Installer (not applicable)
+- 18.10.41.1 - Messaging (not applicable)
+- 18.10.42.1 - Microsoft Account (not applicable)
+- 18.10.43.x - Microsoft Defender Antivirus (not applicable to 2019)
+- 18.10.56.1 - Push To Install (not applicable)
+- 18.10.59.2,4 - Search (not applicable)
+- 18.10.76.2.1 - SmartScreen (not applicable)
+- 18.10.81.3 - Windows Installer (not applicable)
+- 18.10.82.1 - Windows Logon Options (not applicable)
+- 18.10.92.2.1 - Windows Security (not applicable)
+- 18.10.93.x - Windows Update (not applicable)
+
+SUMMARY:
+- Scanner code is GOOD (has all bug fixes from 2016)
+- 2.3.x controls use Registry type (CORRECT - no false positives expected)
+- Need to exclude ~100+ controls from milestone-18.ps1
+- Ready to rescan after exclusions
+
+ACTION NEEDED:
+1. Exclude non-applicable controls from milestone-18.ps1
+2. Rescan 1-2 servers to verify
+3. If good, scan all 20 servers
