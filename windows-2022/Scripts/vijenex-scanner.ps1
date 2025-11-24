@@ -1,4 +1,4 @@
-<#
+﻿<#
   Windows Server 2022 CIS-style Scanner (Audit-only)
   - Loads all *.ps1 rule packs from ../milestones (unless -Milestones passed)
   - Reads live settings via `secedit` and `auditpol`
