@@ -1017,11 +1017,11 @@ foreach ($m in $Milestones) {
 
 Write-Host "Loaded rules: $($Global:Rules.Count)" -ForegroundColor Yellow
 
-# Load controls list from CSV
+# Load controls list
 $controlsListPath = Join-Path (Split-Path $PSScriptRoot) "windows_CIS-Hardening_lIST.csv"
 $allowedControlIds = @()
 if (Test-Path $controlsListPath) {
-    Write-Host "Loading controls list from CSV..." -ForegroundColor Cyan
+    Write-Host "Loading controls list..." -ForegroundColor Cyan
     $content = Get-Content $controlsListPath -Raw
     $lines = $content -split "`r?`n"
     foreach ($line in $lines) {
@@ -1033,7 +1033,7 @@ if (Test-Path $controlsListPath) {
     }
     Write-Host "Controls to scan: $($allowedControlIds.Count)" -ForegroundColor Yellow
 } else {
-    Write-Warning "Controls list CSV not found. Scanning all controls."
+    Write-Warning "Controls list not found. Scanning all controls."
 }
 
 # Export all data sources once
@@ -1156,20 +1156,26 @@ foreach($rule in $excludedRules) {
 }
 
 # Display summary like Linux scanner
+$scannedChecks = @($results | Where-Object { $_.Passed -ne $null }).Count
+$passedChecks = @($results | Where-Object { $_.Passed -eq $true }).Count
+$failedChecks = @($results | Where-Object { $_.Passed -eq $false }).Count
+$excludedChecks = @($results | Where-Object { $_.Passed -eq $null }).Count
 $totalChecks = $results.Count
-$passedChecks = @($results | Where-Object { $_.Passed }).Count
-$failedChecks = $totalChecks - $passedChecks
-$successRate = if ($totalChecks -gt 0) { [math]::Round(($passedChecks / $totalChecks) * 100, 1) } else { 0 }
+$successRate = if ($scannedChecks -gt 0) { [math]::Round(($passedChecks / $scannedChecks) * 100, 1) } else { 0 }
 
 Write-Host "`n" -ForegroundColor White
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host "                    SCAN COMPLETED                           " -ForegroundColor Cyan
 Write-Host "=============================================================" -ForegroundColor Cyan
-Write-Host "Total Checks: $totalChecks" -ForegroundColor White
+Write-Host "Total Controls: $totalChecks" -ForegroundColor White
+Write-Host "Scanned: " -NoNewline -ForegroundColor White
+Write-Host "$scannedChecks" -ForegroundColor Cyan
 Write-Host "Passed: " -NoNewline -ForegroundColor White
 Write-Host "$passedChecks" -ForegroundColor Green
 Write-Host "Failed: " -NoNewline -ForegroundColor White
 Write-Host "$failedChecks" -ForegroundColor Red
+Write-Host "Excluded: " -NoNewline -ForegroundColor White
+Write-Host "$excludedChecks" -ForegroundColor Yellow
 Write-Host "Success Rate: $successRate%" -ForegroundColor Yellow
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host "`n" -ForegroundColor White
