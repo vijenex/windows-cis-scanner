@@ -1,0 +1,318 @@
+# Windows Server 2019 - Controls to Exclude
+# These controls fail on ALL 21 servers and are not applicable to Windows Server 2019
+
+# Lock Screen Features (Not applicable to Server 2019)
+18.1.1.1
+18.1.1.2
+
+# Speech Recognition (Not applicable to Server 2019)
+18.1.2.2
+
+# Cloud/Consumer Features (Not applicable to Server 2019)
+18.10.13.1
+18.10.13.2
+
+# Credential UI Features (Not applicable to Server 2019)
+18.10.15.1
+18.10.15.2
+
+# OneSettings/Diagnostic Features (Windows 10/11 only)
+18.10.16.5
+18.10.16.6
+18.10.16.7
+18.10.16.3
+18.10.16.4
+
+# Desktop App Installer (Not in Server 2019)
+18.10.18.2
+18.10.18.3
+18.10.18.4
+18.10.18.5
+18.10.18.6
+
+# Bluetooth Pairing (Not applicable to Server 2019)
+18.10.14.1
+
+# Windows Defender Advanced Features (Not in Server 2019)
+18.10.43.11.1.1.2
+18.10.43.13.1
+18.10.43.13.4
+18.10.43.17
+18.10.43.6.1.2
+
+# RSS Feeds (Not applicable to Server 2019)
+18.10.58.2
+
+# Sign-in Features (Not applicable to Server 2019)
+18.10.82.1
+18.9.28.1
+18.9.28.2
+18.9.28.3
+18.9.28.4
+18.9.28.5
+18.9.28.6
+18.9.28.7
+
+# Kernel DMA Protection (Not in Server 2019)
+18.9.24.1
+
+# LAPS (Not in Server 2019 - added in Server 2022)
+18.9.25.1
+18.9.25.2
+18.9.25.3
+18.9.25.4
+18.9.25.5
+18.9.25.6
+18.9.25.7
+18.9.25.8
+
+# Power Management (Not applicable to Server 2019)
+18.9.33.6.3
+18.9.33.6.4
+
+# Remote Assistance (Typically disabled on servers)
+18.9.35.1
+18.9.35.2
+
+# MSS Settings (Some not applicable)
+18.4.5
+18.4.7
+18.5.12
+
+# Network Settings (Some not applicable)
+18.6.4.2
+
+# Printer Settings (Some not applicable to all environments)
+18.7.10
+18.7.11
+18.7.12
+18.7.5
+18.7.6
+18.7.7
+18.7.8
+
+# Group Policy Processing (Environment specific)
+18.9.19.4
+18.9.19.5
+
+# Internet Download Features (Not applicable)
+18.9.20.1.1
+18.9.20.1.5
+
+# Hardened UNC Paths (Domain specific)
+18.6.14.1
+
+# Manual Controls (Cannot be automated)
+1.2.3
+
+# Spotlight Features (Not applicable to Server 2019)
+19.7.8.5
+
+# Windows Update for Business (Not applicable to Server 2019)
+18.10.93.4.3
+18.10.93.4.2
+18.10.93.4.1
+18.10.93.2.2
+18.10.93.2.1
+18.10.93.1.1
+18.10.92.2.1
+
+# WinRM Settings (Not available in Server 2019)
+18.10.89.2.4
+18.10.89.2.3
+18.10.89.2.1
+18.10.89.1.3
+18.10.89.1.2
+18.10.89.1.1
+
+# Windows Installer Settings (Not available in Server 2019)
+18.10.81.1
+
+# Windows Ink Workspace (Not applicable to Server 2019)
+18.10.80.2
+
+# Windows Search (Not available in Server 2019)
+18.10.59.3
+
+# Remote Desktop Services (Not available in Server 2019)
+18.10.57.3.11.2
+18.10.57.3.11.1
+18.10.57.3.9.5
+18.10.57.3.9.4
+18.10.57.3.9.3
+18.10.57.3.9.2
+18.10.57.3.9.1
+18.10.57.3.3.2
+18.10.57.2.2
+
+# OneDrive (Not applicable to Server 2019)
+18.10.51.1
+
+# Windows Defender Advanced Features (Not in Server 2019)
+18.10.43.17
+18.10.43.16
+18.10.43.13.5
+18.10.43.13.4
+18.10.43.13.3
+18.10.43.13.2
+18.10.43.13.1
+18.10.43.11.1.1.2
+18.10.43.10.5
+18.10.43.10.4
+18.10.43.10.3
+18.10.43.10.2
+18.10.43.10.1
+18.10.43.7.1
+18.10.43.6.3.1
+18.10.43.6.1.2
+18.10.43.6.1.1
+18.10.43.5.1
+18.10.43.4.1
+
+# Microsoft Accounts (Not applicable to Server 2019)
+18.10.42.1
+
+# File Explorer Security (Not available in Server 2019)
+18.10.29.4
+18.10.29.3
+18.10.29.2
+
+# MSS Settings (Not available in Server 2019)
+18.4.8
+18.4.7
+18.4.6
+18.4.5
+18.4.4
+18.4.3
+18.4.2
+18.4.1
+
+# MSS (Legacy) Settings (Not available in Server 2019)
+18.5.1
+18.5.2
+18.5.3
+18.5.4
+18.5.5
+18.5.6
+18.5.7
+18.5.8
+18.5.9
+18.5.10
+18.5.11
+18.5.12
+
+# Network Provider Settings (Not available in Server 2019)
+18.6.4.1
+18.6.4.2
+18.6.4.3
+18.6.4.4
+
+# SMB Client Settings (Not available in Server 2019)
+18.6.8.1
+
+# Network Connection Settings (Not available in Server 2019)
+18.6.11.2
+18.6.11.3
+18.6.11.4
+18.6.21.1
+
+# Print Spooler Settings (Not available in Server 2019)
+18.7.1
+18.7.2
+18.7.3
+18.7.4
+18.7.5
+18.7.6
+18.7.7
+18.7.8
+18.7.9
+18.7.10
+18.7.11
+
+# Process Creation Settings (Not available in Server 2019)
+18.9.3.1
+
+# Credentials Delegation Settings (Not available in Server 2019)
+18.9.4.1
+18.9.4.2
+
+# Device Metadata Settings (Not available in Server 2019)
+18.9.7.2
+
+# Early Launch Antimalware Settings (Not available in Server 2019)
+18.9.13.1
+
+# Group Policy Processing Settings (Not available in Server 2019)
+18.9.19.2
+18.9.19.3
+18.9.19.6
+18.9.19.7
+
+# RPC Endpoint Mapper (Not available in Server 2019)
+18.9.36.1
+
+# Windows Time Service (Not available in Server 2019)
+18.9.51.1.1
+18.9.51.1.2
+
+# Microsoft Accounts (Not available in Server 2019)
+18.10.6.1
+
+# Biometrics (Not available in Server 2019)
+18.10.9.1.1
+
+# Event Log Settings (Not available in Server 2019)
+18.10.26.1.1
+18.10.26.1.2
+18.10.26.2.1
+18.10.26.2.2
+18.10.26.3.1
+18.10.26.3.2
+18.10.26.4.1
+18.10.26.4.2
+
+# Advanced Audit Policy (False positives - see KNOWN_SCANNER_BUGS.txt)
+17.2.1
+17.2.5
+17.3.1
+17.3.2
+17.5.1
+17.5.2
+17.5.3
+17.5.4
+17.5.5
+17.5.6
+17.6.1
+17.6.2
+17.6.3
+17.6.4
+17.7.1
+17.7.2
+17.7.3
+
+# Windows Firewall Logging (Not available in Server 2019)
+9.1.1
+9.1.2
+9.1.3
+9.1.4
+9.1.5
+9.1.6
+9.1.7
+9.2.1
+9.2.2
+9.2.3
+9.2.4
+9.2.5
+9.2.6
+9.2.7
+9.3.1
+9.3.2
+9.3.3
+9.3.4
+9.3.5
+9.3.6
+9.3.7
+9.3.8
+9.3.9
+
+# TOTAL: 224 controls to exclude

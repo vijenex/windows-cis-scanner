@@ -525,7 +525,16 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           
           $curSet = Normalize-PrincipalSet -Tokens $curTokens
           $expSet = Normalize-PrincipalSet -Tokens $Rule.ExpectedPrincipals
-          $mode = if ($Rule.SetMode) { $Rule.SetMode } else { 'Exact' }
+          
+          # Determine mode from title if not explicitly set
+          $mode = if ($Rule.SetMode) { 
+            $Rule.SetMode 
+          } elseif ($Rule.Title -match '\bto include\b') { 
+            'Superset' 
+          } else { 
+            'Exact' 
+          }
+          
           $result.Passed = Compare-StringSets -Current $curSet -Expected $expSet -Mode $mode
           
           $result.ActualValue = if ($curTokens.Count -gt 0) { ($curTokens -join ', ') } else { "Not configured (No principals assigned)" }
@@ -550,22 +559,24 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
           $expectedValue = $Rule.Expected
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
           
-          # Try to get from pre-parsed registry export first (faster)
-          $lookupKey = "$regPath\$valueName"
-          $currentValue = if ($Context.RegistryCache.ContainsKey($lookupKey)) {
-            $Context.RegistryCache[$lookupKey]
-          } else {
-            # Fallback to direct registry read if not in cache
-            if (Test-Path $regPath) {
-              Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $valueName -ErrorAction SilentlyContinue
-            } else {
-              $null
+          # Always read directly from registry for accuracy
+          $currentValue = $null
+          if (Test-Path $regPath) {
+            try {
+              $prop = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
+              if ($prop) {
+                $currentValue = $prop.$valueName
+              }
+            } catch {
+              $currentValue = $null
             }
           }
           
+          # Compare actual value
           if ($null -ne $currentValue) {
             $result.Passed = ($currentValue -eq $expectedValue)
           } else {
+            # Value not set - check if default matches expected
             if ($null -ne $defaultValue) {
               $result.Passed = ($defaultValue -eq $expectedValue)
             } else {
@@ -643,8 +654,8 @@ function Write-Reports([System.Collections.Generic.List[object]]$Results,[string
   
   # Generate CSV if requested
   if ($Formats -contains 'All' -or $Formats -contains 'CSV') {
-    # Generate CSV with evidence columns
-    $csvData = $Results | Select-Object Id, Title, Section, Status, ActualValue, EvidenceCommand, CISReference, Remediation, Description
+    # Generate CSV without evidence and description columns
+    $csvData = $Results | Select-Object Id, Title, Section, Status, ActualValue, CISReference, Remediation
     $csvData | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
     $outputs['CSV'] = $csv
     Write-Host "CSV:  $csv" -ForegroundColor Green
@@ -1006,6 +1017,23 @@ foreach ($m in $Milestones) {
 
 Write-Host "Loaded rules: $($Global:Rules.Count)" -ForegroundColor Yellow
 
+# Load controls list from CSV
+$controlsListPath = Join-Path (Split-Path $PSScriptRoot) "windows_CIS-Hardening_lIST.csv"
+$allowedControlIds = @()
+if (Test-Path $controlsListPath) {
+    Write-Host "Loading controls list from CSV..." -ForegroundColor Cyan
+    $content = Get-Content $controlsListPath -Raw
+    $lines = $content -split "`r?`n"
+    foreach ($line in $lines) {
+        if ($line -match '^(\d+\.\d+\.?\d*\.?\d*):') {
+            $allowedControlIds += $Matches[1]
+        }
+    }
+    Write-Host "Controls to scan: $($allowedControlIds.Count)" -ForegroundColor Yellow
+} else {
+    Write-Warning "Controls list CSV not found. Scanning all controls."
+}
+
 # Export all data sources once
 Write-Host "Exporting security policies..." -ForegroundColor Cyan
 $seceditPath = Export-SecEdit
@@ -1026,32 +1054,45 @@ $ctx = @{
   RegistryCache = $regCache
 }
 
-# Filter rules
-$rules = $Global:Rules
+# Filter rules based on CSV list
+$allRules = $Global:Rules
+$isDC = $systemInfo.Caption -match 'Domain Controller'
 
-# Exclude MSS-Legacy, Windows 10/11, DC-only (if MS), MS-only (if DC) controls
-$rules = $rules | Where-Object {
-  $rule = $_
+# Separate rules into scanned (in CSV) and excluded (not in CSV)
+$rulesToScan = @()
+$excludedRules = @()
+
+foreach ($rule in $allRules) {
   $tags = if ($rule.ContainsKey('Tags')) { $rule.Tags } else { '' }
   
-  # Always exclude MSS-Legacy and Windows 10/11
+  # Skip MSS-Legacy and Windows 10/11 entirely
   if ($tags -match 'MSS-Legacy|Windows-10-11') {
-    return $false
+    continue
   }
   
-  # Exclude DC-only if Member Server
-  $isDC = $systemInfo.Caption -match 'Domain Controller'
-  if (-not $isDC -and $tags -match 'DC-only') {
-    return $false
-  }
+  # Check if control is in CSV list
+  $inCsvList = $allowedControlIds.Count -eq 0 -or $allowedControlIds -contains $rule.Id
   
-  # Exclude MS-only if Domain Controller
-  if ($isDC -and $tags -match 'MS-only') {
-    return $false
+  if ($inCsvList) {
+    # Exclude DC-only if Member Server
+    if (-not $isDC -and $tags -match 'DC-only') {
+      $excludedRules += $rule
+      continue
+    }
+    
+    # Exclude MS-only if Domain Controller
+    if ($isDC -and $tags -match 'MS-only') {
+      $excludedRules += $rule
+      continue
+    }
+    
+    $rulesToScan += $rule
+  } else {
+    $excludedRules += $rule
   }
-  
-  return $true
 }
+
+$rules = $rulesToScan
 
 if ($Profile){ 
   $rules = $rules | Where-Object { $_.Profile -eq $Profile } 
@@ -1084,6 +1125,30 @@ foreach($rule in $rules){
   Write-Host "    Status: " -NoNewline -ForegroundColor Gray
   Write-Host $status -ForegroundColor $statusColor
   Write-Host ""
+}
+
+# Add excluded controls with tags
+foreach($rule in $excludedRules) {
+  $tags = if ($rule.ContainsKey('Tags')) { $rule.Tags } else { '' }
+  $excludeReason = 'Not in scan list'
+  
+  if ($tags -match 'DC-only') { $excludeReason = 'DC-only (Not Applicable)' }
+  elseif ($tags -match 'MS-only') { $excludeReason = 'MS-only (Not Applicable)' }
+  elseif ($tags -match 'Optional') { $excludeReason = 'Optional Feature' }
+  
+  $result = [pscustomobject]@{
+    Id=$rule.Id
+    Title=$rule.Title
+    Section=$rule.Section
+    Status=$excludeReason
+    Profile=$rule.Profile
+    Type=$rule.Type
+    Passed=$null
+    CISReference=if($rule.ContainsKey('CISReference')){$rule.CISReference}else{'Refer to CIS Benchmark documentation'}
+    Remediation='Not scanned - excluded from scan list'
+    ActualValue='N/A'
+  }
+  $results.Add($result)
 }
 
 # Display summary like Linux scanner

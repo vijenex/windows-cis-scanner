@@ -1,0 +1,79 @@
+# Windows Server 2019 - Known Scanner Bugs
+
+## False Positives (Scanner reports FAIL but setting is correct)
+
+### ALL SECTION 2.3.x CONTROLS - Registry Check Bug
+**Issue**: All Local Policies (Section 2.3.x) are reporting FALSE POSITIVES
+**Root Cause**: Registry path or value check logic is incorrect
+**Workaround**: Manually verify all 2.3.x controls via Group Policy Editor and document as PASS with screenshots
+
+**Affected Controls:**
+
+### 2.3.2.2: Audit: Shut down system immediately if unable to log security audits
+- **Expected**: Disabled (registry value = 0)
+- **Actual on server**: Disabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.4.1: Devices: Prevent users from installing printer drivers
+- **Expected**: Enabled (registry value = 1)
+- **Actual on server**: Enabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.6.1: Domain member: Digitally encrypt or sign secure channel data (always)
+- **Expected**: Enabled
+- **Actual on server**: Enabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.6.2: Domain member: Digitally encrypt secure channel data (when possible)
+- **Expected**: Enabled
+- **Actual on server**: Enabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.6.3: Domain member: Digitally sign secure channel data (when possible)
+- **Expected**: Enabled
+- **Actual on server**: Enabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.6.4: Domain member: Disable machine account password changes
+- **Expected**: Disabled
+- **Actual on server**: Disabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.6.5: Domain member: Maximum machine account password age
+- **Expected**: 30 or fewer days, but not 0
+- **Actual on server**: Compliant
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
+
+### 2.3.6.6: Domain member: Require strong session key
+### 2.3.7.7: Interactive logon: Prompt user to change password before expiration
+### 2.3.8.1: Microsoft network client: Digitally sign communications (always)
+### 2.3.8.2: Microsoft network client: Digitally sign communications (if server agrees)
+### 2.3.8.3: Microsoft network client: Send unencrypted password to third-party SMB servers
+### 2.3.9.1: Microsoft network server: Amount of idle time required before suspending session
+### 2.3.9.2: Microsoft network server: Digitally sign communications (always)
+### 2.3.9.3: Microsoft network server: Digitally sign communications (if client agrees)
+### 2.3.9.4: Microsoft network server: Disconnect clients when logon hours expire
+### 2.3.10.1: Network access: Allow anonymous SID/Name translation
+
+**Note**: This appears to be a systematic issue with ALL Section 2.3.x controls. Same issue exists in Windows Server 2016 scanner.
+
+### 2.3.17.8: User Account Control: Virtualize file and registry write failures to per-user locations
+- **Expected**: Enabled
+- **Actual on server**: Enabled
+- **Scanner reports**: FAIL
+- **Issue**: Registry check may be failing incorrectly
+- **Workaround**: Manually verify and document as PASS with screenshot
