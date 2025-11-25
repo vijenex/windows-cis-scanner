@@ -15,7 +15,9 @@ $Global:Rules += @{
   # Operator = "Equals"
   CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
   Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
+  }
 
 $Global:Rules += @{
   Id = "43.6.1.2"
@@ -29,7 +31,9 @@ $Global:Rules += @{
   # Operator = "Equals"
   CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
   Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
+  }
 
 $Global:Rules += @{
   Id = "43.6.3.1"
@@ -43,4 +47,6 @@ $Global:Rules += @{
   # Operator = "Equals"
   CISReference = "https://www.cisecurity.org/benchmark/microsoft_windows_server"
   Remediation = "Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps."
-}
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
+  }

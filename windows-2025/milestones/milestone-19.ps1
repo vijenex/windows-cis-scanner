@@ -14,6 +14,8 @@ $Global:Rules += @(
     CISControlID='19.5.1.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
 
   # 19.6.6.1 Internet Communication settings
@@ -30,6 +32,8 @@ $Global:Rules += @(
     CISControlID='19.6.6.1.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
 
   # 19.7 Windows Components
@@ -47,6 +51,8 @@ $Global:Rules += @(
     CISControlID='19.7.5.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
   @{
     Id='19.7.5.2'
@@ -61,6 +67,8 @@ $Global:Rules += @(
     CISControlID='19.7.5.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
 
   # 19.7.8 Cloud Content
@@ -77,6 +85,8 @@ $Global:Rules += @(
     CISControlID='19.7.8.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Client_Only'
+    NotApplicableReason='Windows Spotlight - client only'
   },
   @{
     Id='19.7.8.2'
@@ -91,6 +101,8 @@ $Global:Rules += @(
     CISControlID='19.7.8.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Client_Only'
+    NotApplicableReason='Windows Spotlight - client only'
   },
   @{
     Id='19.7.8.3'
@@ -105,6 +117,8 @@ $Global:Rules += @(
     CISControlID='19.7.8.3'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
   @{
     Id='19.7.8.4'
@@ -119,6 +133,8 @@ $Global:Rules += @(
     CISControlID='19.7.8.4'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
   @{
     Id='19.7.8.5'
@@ -133,6 +149,8 @@ $Global:Rules += @(
     CISControlID='19.7.8.5'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   },
 
   # 19.7.26 Network Sharing
@@ -149,6 +167,8 @@ $Global:Rules += @(
     CISControlID='19.7.26.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Client_Only'
+    NotApplicableReason='Network Sharing - client only'
   },
 
   # 19.7.44 Windows Installer
@@ -165,6 +185,7 @@ $Global:Rules += @(
     CISControlID='19.7.44.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
 
   # 19.7.46.2 Windows Media Player - Playback
@@ -181,5 +202,7 @@ $Global:Rules += @(
     CISControlID='19.7.46.2.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='NotApplicable'
+    NotApplicableReason='Not in approved list'
   }
 )

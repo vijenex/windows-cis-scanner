@@ -12,7 +12,8 @@ $Global:Rules += @{
     Expected = 24
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -22,7 +23,9 @@ $Global:Rules += @{
     Profile = 'Level1'
     Type = 'Composite'
     AllOf = @(
-        @{ SectionName='System Access'; Key='MaximumPasswordAge'; Operator='LessOrEqual'; Expected=365 }
+        @{ SectionName='System Access'; Key='MaximumPasswordAge'; Operator='LessOrEqual'; Expected=365
+    AppliesTo='Applicable'
+  }
         @{ SectionName='System Access'; Key='MaximumPasswordAge'; Operator='NotEquals'; Expected=0 }
     )
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
@@ -42,7 +45,8 @@ $Global:Rules += @{
     Expected = 1
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -57,7 +61,8 @@ $Global:Rules += @{
     Expected = 14
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -72,7 +77,8 @@ $Global:Rules += @{
     Expected = 1
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -86,7 +92,8 @@ $Global:Rules += @{
     Expected = 1
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -101,7 +108,8 @@ $Global:Rules += @{
     Expected = 0
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 # 1.2 Account Lockout Policy
 
@@ -118,7 +126,8 @@ $Global:Rules += @{
     Expected = 15
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -128,7 +137,9 @@ $Global:Rules += @{
     Profile = 'Level1'
     Type = 'Composite'
     AllOf = @(
-        @{ SectionName='System Access'; Key='LockoutBadCount'; Operator='LessOrEqual'; Expected=5 }
+        @{ SectionName='System Access'; Key='LockoutBadCount'; Operator='LessOrEqual'; Expected=5
+    AppliesTo='Applicable'
+  }
         @{ SectionName='System Access'; Key='LockoutBadCount'; Operator='NotEquals'; Expected=0 }
     )
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
@@ -146,7 +157,8 @@ $Global:Rules += @{
     Evidence = 'Check Local Security Policy manually'
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }
 
 
 $Global:Rules += @{
@@ -161,4 +173,5 @@ $Global:Rules += @{
     Expected = 15
     CISReference = 'https://www.cisecurity.org/benchmark/microsoft_windows_server'
     Remediation = 'Configure via Local Security Policy or Group Policy'
-}
+    AppliesTo='Applicable'
+  }

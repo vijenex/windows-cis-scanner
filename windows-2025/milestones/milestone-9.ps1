@@ -14,6 +14,7 @@ $Global:Rules += @(
     CISControlID='9.1.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.1.2'
@@ -28,6 +29,7 @@ $Global:Rules += @(
     CISControlID='9.1.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.1.3'
@@ -42,6 +44,7 @@ $Global:Rules += @(
     CISControlID='9.1.3'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.1.4'
@@ -56,6 +59,7 @@ $Global:Rules += @(
     CISControlID='9.1.4'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.1.5'
@@ -71,6 +75,7 @@ $Global:Rules += @(
     CISControlID='9.1.5'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.1.6'
@@ -85,6 +90,7 @@ $Global:Rules += @(
     CISControlID='9.1.6'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.1.7'
@@ -99,6 +105,7 @@ $Global:Rules += @(
     CISControlID='9.1.7'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
 
   # 9.2 Private Profile
@@ -115,6 +122,7 @@ $Global:Rules += @(
     CISControlID='9.2.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.2.2'
@@ -129,6 +137,7 @@ $Global:Rules += @(
     CISControlID='9.2.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.2.3'
@@ -143,6 +152,7 @@ $Global:Rules += @(
     CISControlID='9.2.3'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.2.4'
@@ -157,6 +167,7 @@ $Global:Rules += @(
     CISControlID='9.2.4'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.2.5'
@@ -172,6 +183,7 @@ $Global:Rules += @(
     CISControlID='9.2.5'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.2.6'
@@ -186,6 +198,7 @@ $Global:Rules += @(
     CISControlID='9.2.6'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.2.7'
@@ -200,6 +213,7 @@ $Global:Rules += @(
     CISControlID='9.2.7'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
 
   # 9.3 Public Profile
@@ -216,6 +230,7 @@ $Global:Rules += @(
     CISControlID='9.3.1'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.2'
@@ -230,6 +245,7 @@ $Global:Rules += @(
     CISControlID='9.3.2'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.3'
@@ -244,6 +260,7 @@ $Global:Rules += @(
     CISControlID='9.3.3'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.4'
@@ -258,6 +275,7 @@ $Global:Rules += @(
     CISControlID='9.3.4'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.5'
@@ -272,6 +290,7 @@ $Global:Rules += @(
     CISControlID='9.3.5'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.6'
@@ -286,6 +305,7 @@ $Global:Rules += @(
     CISControlID='9.3.6'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.7'
@@ -301,6 +321,7 @@ $Global:Rules += @(
     CISControlID='9.3.7'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.8'
@@ -315,6 +336,7 @@ $Global:Rules += @(
     CISControlID='9.3.8'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   },
   @{
     Id='9.3.9'
@@ -329,5 +351,6 @@ $Global:Rules += @(
     CISControlID='9.3.9'
     ReferenceNote='For detailed description, rationale, impact assessment, and remediation steps, refer to the CIS Reference link and official CIS Microsoft Windows Server 2025 Benchmark documentation.'
     Remediation='Refer to official CIS Microsoft Windows Server 2025 Benchmark documentation for detailed remediation steps.'
+    AppliesTo='Applicable'
   }
 )

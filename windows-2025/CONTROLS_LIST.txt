@@ -1,0 +1,208 @@
+===============================================================
+Windows Server 2025 CIS Benchmark - Controls List
+===============================================================
+
+Total Controls: 302
+Applicable Controls: 288
+Not Applicable: 14 (DC-only, Optional Features, Client-only)
+
+This scanner audits the following CIS Benchmark controls:
+
+===============================================================
+Section 1: Account Policies (11 controls)
+===============================================================
+1.1 Password Policy
+  1.1.1 - Enforce password history
+  1.1.2 - Maximum password age
+  1.1.3 - Minimum password age
+  1.1.4 - Minimum password length
+  1.1.5 - Password complexity requirements
+  1.1.6 - Store passwords using reversible encryption
+  1.1.7 - Relax minimum password length limits
+
+1.2 Account Lockout Policy
+  1.2.1 - Account lockout duration
+  1.2.2 - Account lockout threshold
+  1.2.3 - Allow Administrator account lockout (Manual)
+  1.2.4 - Reset account lockout counter
+
+===============================================================
+Section 2: Local Policies (98 controls)
+===============================================================
+2.2 User Rights Assignment (40+ controls)
+  - Access Credential Manager
+  - Access this computer from network
+  - Act as part of operating system
+  - Adjust memory quotas
+  - Allow log on locally
+  - Back up files and directories
+  - Create global objects
+  - Debug programs
+  - Deny access from network
+  - Deny log on as batch job
+  - And many more...
+
+2.3 Security Options (50+ controls)
+  - Accounts: Guest account status
+  - Accounts: Rename administrator account
+  - Audit: Force audit policy subcategory settings
+  - Devices: Prevent printer driver installation
+  - Domain member: Digitally encrypt secure channel
+  - Interactive logon: Do not require CTRL+ALT+DEL
+  - Microsoft network client: Digital signatures
+  - Microsoft network server: Digital signatures
+  - Network access: Anonymous SID/Name translation
+  - System objects: Strengthen default permissions
+  - And many more...
+
+===============================================================
+Section 9: Windows Firewall (23 controls)
+===============================================================
+9.1 Domain Profile
+9.2 Private Profile
+9.3 Public Profile
+  - Firewall state
+  - Inbound connections
+  - Outbound connections
+  - Display notifications
+  - Log file settings
+
+===============================================================
+Section 17: Advanced Audit Policy (27 controls)
+===============================================================
+17.1 Account Logon
+17.2 Account Management
+17.3 Detailed Tracking
+17.5 Logon/Logoff
+17.6 Object Access
+17.7 Policy Change
+17.8 Privilege Use
+17.9 System
+  - Credential Validation
+  - Application Group Management
+  - PNP Activity
+  - Process Creation
+  - Account Lockout
+  - Group Membership
+  - Logon/Logoff events
+  - File Share access
+  - Audit Policy Change
+  - Sensitive Privilege Use
+  - IPsec Driver
+  - System Integrity
+  - And many more...
+
+===============================================================
+Section 18: Administrative Templates (142 controls)
+===============================================================
+18.1 Control Panel
+18.6 Network
+18.7 Printers
+18.9 System
+18.10 Windows Components
+  - Lock screen settings
+  - Diagnostic data collection
+  - Event log settings
+  - File Explorer settings
+  - Microsoft accounts
+  - OneDrive
+  - Remote Desktop Services
+  - Windows Defender
+  - Windows Update
+  - And many more...
+
+===============================================================
+Section 19: User Administrative Templates (1 control)
+===============================================================
+19.5 Start Menu and Taskbar
+19.7 Windows Components
+
+===============================================================
+NOT APPLICABLE Controls (Excluded from Scan)
+===============================================================
+
+DC-Only Controls (10 controls):
+  - Controls specific to Domain Controllers
+  - Automatically excluded on Member Servers
+  - Examples: DC-specific user rights, Kerberos settings
+
+Optional Features (3 controls):
+  - LAPS (Local Administrator Password Solution)
+  - Microsoft Defender ATP (requires E5 license)
+  - BitLocker (not on most servers)
+
+Client-Only Controls (1 control):
+  - Windows Spotlight
+  - Network Sharing
+  - Attachment Manager
+  - Toast notifications
+
+===============================================================
+Control Categories
+===============================================================
+
+By Type:
+  - Registry: ~150 controls
+  - User Rights: ~40 controls
+  - Security Options: ~50 controls
+  - Audit Policy: ~27 controls
+  - Firewall: ~23 controls
+  - Composite: ~10 controls
+  - Manual: ~2 controls
+
+By Profile:
+  - Level 1: ~280 controls (Basic security)
+  - Level 2: ~22 controls (Enhanced security)
+
+===============================================================
+Scanning Methodology
+===============================================================
+
+This scanner performs 100% READ-ONLY audits:
+  ✓ Reads security policies via secedit
+  ✓ Reads audit policies via auditpol
+  ✓ Reads registry settings
+  ✓ Reads firewall configuration
+  ✗ Does NOT make any changes
+  ✗ Does NOT remediate findings
+  ✗ Does NOT modify system settings
+
+All findings must be reviewed by a qualified administrator
+before any remediation is performed.
+
+===============================================================
+Output Formats
+===============================================================
+
+The scanner generates:
+  - CSV: Machine-readable results
+  - HTML: Interactive web report
+  - PDF: Printable report (via browser)
+  - Word: Editable document
+
+Each report includes:
+  - Control ID and title
+  - Current status (PASS/FAIL/N/A)
+  - Actual value found
+  - Evidence command used
+  - Remediation guidance
+  - CIS reference link
+
+===============================================================
+For More Information
+===============================================================
+
+Official CIS Benchmark:
+  https://www.cisecurity.org/cis-benchmarks
+
+Scanner Documentation:
+  See README.md in this folder
+
+Report Issues:
+  https://github.com/YOUR_ORG/Windows-Server-CIS-Audit/issues
+
+===============================================================
+Last Updated: 2024
+CIS Benchmark Version: Windows Server 2025 v1.0.0
+Scanner Version: v2.0.0-beta
+===============================================================
