@@ -1025,7 +1025,9 @@ if (Test-Path $controlsListPath) {
     $content = Get-Content $controlsListPath -Raw
     $lines = $content -split "`r?`n"
     foreach ($line in $lines) {
-        if ($line -match '^(\d+\.\d+\.?\d*\.?\d*):') {
+        # Remove leading quotes if present
+        $cleanLine = $line.TrimStart('"')
+        if ($cleanLine -match '^(\d+\.\d+\.?\d*\.?\d*):') {
             $allowedControlIds += $Matches[1]
         }
     }
@@ -1146,6 +1148,8 @@ foreach($rule in $excludedRules) {
     Passed=$null
     CISReference=if($rule.ContainsKey('CISReference')){$rule.CISReference}else{'Refer to CIS Benchmark documentation'}
     Remediation='Not scanned - excluded from scan list'
+    Description=''
+    EvidenceCommand=''
     ActualValue='N/A'
   }
   $results.Add($result)
