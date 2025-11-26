@@ -554,7 +554,7 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       
       'Registry' {
         try {
-          $regPath = $Rule.Key
+          $regPath = $Rule.Key -replace '^HKLM\\', 'HKLM:\'
           $valueName = $Rule.ValueName
           $expectedValue = $Rule.Expected
           $defaultValue = if ($Rule.ContainsKey('DefaultValue')) { $Rule.DefaultValue } else { $null }
@@ -610,25 +610,30 @@ function Evaluate-Rule([hashtable]$Rule,[hashtable]$Context){
       }
       
       'Manual' { 
-        $result.Passed=$false
+        $result.Passed=$null
+        $result.Status='Manual Review Required'
         $result.Remediation = if ($Rule.Remediation) { $Rule.Remediation } else { 'Manual review required - see CIS Benchmark' }
         $result.Description = "This control requires manual verification and cannot be automated."
       }
       
       default { 
-        $result.Passed=$false
+        $result.Passed=$null
+        $result.Status='Not Supported'
         $result.Remediation = 'Unsupported control type'
         $result.Description = 'This control type is not supported by the scanner.'
       }
     }
   } catch { 
-    $result.Passed=$false
+    $result.Passed=$null
+    $result.Status='Error'
     $result.Remediation = 'Error occurred during evaluation'
     $result.Description = "Exception: $($_.Exception.Message)"
   }
   
-  # Set Status field based on Passed
-  $result.Status = if ($result.Passed) { 'PASS' } else { 'FAIL' }
+  # Set Status field based on Passed (only if not already set)
+  if (-not $result.Status) {
+    $result.Status = if ($result.Passed) { 'PASS' } else { 'FAIL' }
+  }
   
   $result
 }
